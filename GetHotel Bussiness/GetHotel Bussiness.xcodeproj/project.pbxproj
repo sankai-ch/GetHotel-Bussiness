@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		841D5B1A1F568F4A00B24FEE /* AirPrice.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841D5B191F568F4A00B24FEE /* AirPrice.storyboard */; };
+		841D5B1E1F56915000B24FEE /* HotelIssued.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841D5B1D1F56915000B24FEE /* HotelIssued.storyboard */; };
+		841D5B211F56923A00B24FEE /* AirPriceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D5B201F56923A00B24FEE /* AirPriceViewController.m */; };
+		841D5B241F56943300B24FEE /* HotelIssuedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D5B231F56943300B24FEE /* HotelIssuedViewController.m */; };
 		84F8DDA81F56692C000DF6D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8DDA71F56692C000DF6D0 /* main.m */; };
 		84F8DDAB1F56692C000DF6D0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8DDAA1F56692C000DF6D0 /* AppDelegate.m */; };
 		84F8DDB11F56692C000DF6D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84F8DDAF1F56692C000DF6D0 /* Main.storyboard */; };
@@ -82,6 +86,12 @@
 /* Begin PBXFileReference section */
 		34BDB21FE6CB3E9A7B4E1723 /* Pods-GetHotel Bussiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetHotel Bussiness.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GetHotel Bussiness/Pods-GetHotel Bussiness.debug.xcconfig"; sourceTree = "<group>"; };
 		8065AAC638376F0624A080EA /* Pods-GetHotel Bussiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetHotel Bussiness.release.xcconfig"; path = "Pods/Target Support Files/Pods-GetHotel Bussiness/Pods-GetHotel Bussiness.release.xcconfig"; sourceTree = "<group>"; };
+		841D5B191F568F4A00B24FEE /* AirPrice.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AirPrice.storyboard; sourceTree = "<group>"; };
+		841D5B1D1F56915000B24FEE /* HotelIssued.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HotelIssued.storyboard; sourceTree = "<group>"; };
+		841D5B1F1F56923A00B24FEE /* AirPriceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirPriceViewController.h; sourceTree = "<group>"; };
+		841D5B201F56923A00B24FEE /* AirPriceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirPriceViewController.m; sourceTree = "<group>"; };
+		841D5B221F56943300B24FEE /* HotelIssuedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotelIssuedViewController.h; sourceTree = "<group>"; };
+		841D5B231F56943300B24FEE /* HotelIssuedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotelIssuedViewController.m; sourceTree = "<group>"; };
 		84F8DDA31F56692C000DF6D0 /* GetHotel Bussiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GetHotel Bussiness.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8DDA71F56692C000DF6D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		84F8DDA91F56692C000DF6D0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -241,6 +251,38 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		841D5B131F568E4500B24FEE /* AirStoryboard */ = {
+			isa = PBXGroup;
+			children = (
+				841D5B191F568F4A00B24FEE /* AirPrice.storyboard */,
+			);
+			name = AirStoryboard;
+			sourceTree = "<group>";
+		};
+		841D5B161F568EC900B24FEE /* IssuedStoryboard */ = {
+			isa = PBXGroup;
+			children = (
+				841D5B1D1F56915000B24FEE /* HotelIssued.storyboard */,
+			);
+			name = IssuedStoryboard;
+			sourceTree = "<group>";
+		};
+		841D5B251F5697E500B24FEE /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				84F8DDB71F56692C000DF6D0 /* LaunchScreen.storyboard */,
+			);
+			name = LaunchScreen;
+			sourceTree = "<group>";
+		};
+		841D5B261F5697FA00B24FEE /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				84F8DDAF1F56692C000DF6D0 /* Main.storyboard */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
 		84F8DD9A1F56692C000DF6D0 = {
 			isa = PBXGroup;
 			children = (
@@ -393,6 +435,10 @@
 		84F8DDFE1F5669F7000DF6D0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				841D5B1F1F56923A00B24FEE /* AirPriceViewController.h */,
+				841D5B201F56923A00B24FEE /* AirPriceViewController.m */,
+				841D5B221F56943300B24FEE /* HotelIssuedViewController.h */,
+				841D5B231F56943300B24FEE /* HotelIssuedViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -475,8 +521,10 @@
 		84F8DE311F5669F7000DF6D0 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				84F8DDAF1F56692C000DF6D0 /* Main.storyboard */,
-				84F8DDB71F56692C000DF6D0 /* LaunchScreen.storyboard */,
+				841D5B261F5697FA00B24FEE /* Main */,
+				841D5B251F5697E500B24FEE /* LaunchScreen */,
+				841D5B161F568EC900B24FEE /* IssuedStoryboard */,
+				841D5B131F568E4500B24FEE /* AirStoryboard */,
 				84F8DE321F5669F7000DF6D0 /* Assets.xcassets */,
 			);
 			path = View;
@@ -592,8 +640,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				84F8DDB91F56692C000DF6D0 /* LaunchScreen.storyboard in Resources */,
+				841D5B1E1F56915000B24FEE /* HotelIssued.storyboard in Resources */,
 				84F8DE561F5669F7000DF6D0 /* Assets.xcassets in Resources */,
 				84F8DE5B1F566A20000DF6D0 /* Cities.plist in Resources */,
+				841D5B1A1F568F4A00B24FEE /* AirPrice.storyboard in Resources */,
 				84F8DDB11F56692C000DF6D0 /* Main.storyboard in Resources */,
 				84F8DE5A1F566A20000DF6D0 /* agreement.txt in Resources */,
 			);
@@ -685,9 +735,11 @@
 				84F8DE3E1F5669F7000DF6D0 /* SKTagButton.m in Sources */,
 				84F8DE441F5669F7000DF6D0 /* DataSigner.m in Sources */,
 				84F8DE331F5669F7000DF6D0 /* DOPDropDownMenu.m in Sources */,
+				841D5B211F56923A00B24FEE /* AirPriceViewController.m in Sources */,
 				84F8DE3C1F5669F7000DF6D0 /* BasicEncodingRules.m in Sources */,
 				84F8DE4E1F5669F7000DF6D0 /* NSData+Base64.m in Sources */,
 				84F8DE4A1F5669F7000DF6D0 /* RSADataVerifier.m in Sources */,
+				841D5B241F56943300B24FEE /* HotelIssuedViewController.m in Sources */,
 				84F8DE391F5669F7000DF6D0 /* qrspec.m in Sources */,
 				84F8DE361F5669F7000DF6D0 /* mask.m in Sources */,
 				84F8DE541F5669F7000DF6D0 /* UIImage+MDQRCode.m in Sources */,
