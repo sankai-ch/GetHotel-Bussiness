@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,13 +21,79 @@
                     <view key="view" contentMode="scaleToFill" id="sJn-PA-GOq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="58" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="amJ-w4-yAx">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="myHotel" rowHeight="150" id="NWB-yz-aZq" customClass="MyHotelTableViewCell">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="150"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NWB-yz-aZq" id="gPG-wf-Twg">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="149.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="天马行空大酒店" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S84-tS-mqo">
+                                                    <rect key="frame" x="23" y="18" width="114.5" height="19.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.05933342087" green="0.39348114249999999" blue="0.94055716040000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="S84-tS-mqo" firstAttribute="top" secondItem="gPG-wf-Twg" secondAttribute="topMargin" constant="10" id="cyr-UX-LqA"/>
+                                                <constraint firstItem="S84-tS-mqo" firstAttribute="leading" secondItem="gPG-wf-Twg" secondAttribute="leadingMargin" constant="15" id="gus-CU-N61"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="8vG-Ks-UAf" id="P4t-E3-Arr"/>
+                                    <outlet property="delegate" destination="8vG-Ks-UAf" id="oPK-cX-E32"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.094117647058823528" green="0.48627450980392156" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="amJ-w4-yAx" secondAttribute="bottom" id="5GM-uC-vNB"/>
+                            <constraint firstItem="amJ-w4-yAx" firstAttribute="top" secondItem="sJn-PA-GOq" secondAttribute="top" id="7ox-ML-Yd4"/>
+                            <constraint firstItem="amJ-w4-yAx" firstAttribute="leading" secondItem="sJn-PA-GOq" secondAttribute="leading" id="Laa-K7-apO"/>
+                            <constraint firstAttribute="trailing" secondItem="amJ-w4-yAx" secondAttribute="trailing" id="r5e-nD-6fa"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Qfu-uh-Eld"/>
+                    <navigationItem key="navigationItem" id="Qfu-uh-Eld">
+                        <barButtonItem key="rightBarButtonItem" image="check_out" id="xt6-3j-vES">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="sXG-6l-sUw" kind="show" id="q1x-GF-9UB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8PK-DY-0VC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1487.2" y="-94.002998500749626"/>
+        </scene>
+        <!--酒店发布-->
+        <scene sceneID="qRD-AM-mm4">
+            <objects>
+                <viewController title="酒店发布" id="sXG-6l-sUw" customClass="ReleaseHotelViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="guy-8l-9qw"/>
+                        <viewControllerLayoutGuide type="bottom" id="VO3-Ro-5S1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PT6-jI-fir">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ev4-38-B51" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2300" y="-94"/>
         </scene>
         <!--酒店发布-->
         <scene sceneID="jhx-VA-9t8">
@@ -50,6 +117,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="check_out" width="24" height="22"/>
         <image name="hotel" width="22" height="22"/>
     </resources>
 </document>
