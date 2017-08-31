@@ -7,9 +7,11 @@
 //
 
 #import "AirPriceViewController.h"
-
+#import "HMSegmentedControl.h"
 @interface AirPriceViewController ()
-
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *titleView;
+@property (strong,nonatomic)HMSegmentedControl *segmentedControl;
 @end
 
 @implementation AirPriceViewController
@@ -18,6 +20,7 @@
     [super viewDidLoad];
     [self naviConfig];
     // Do any additional setup after loading the view.
+    [self setSegment];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,5 +51,21 @@
     // Pass the selected object to the new view controller.
 }
 */
-
+-(void)setSegment{
+    _segmentedControl =[[HMSegmentedControl alloc]initWithSectionTitles:@[@"可报价",@"已过期"]];
+    _segmentedControl.frame=CGRectMake(0, 0, UI_SCREEN_W, 40);
+    _segmentedControl.selectedSegmentIndex=0;
+    _segmentedControl.backgroundColor=UIColorFromRGB(15, 100, 240);
+    _segmentedControl.selectionIndicatorHeight=2.5;
+    _segmentedControl.selectionStyle=HMSegmentedControlSelectionStyleFullWidthStripe;
+    _segmentedControl.selectionIndicatorLocation=HMSegmentedControlSelectionIndicatorLocationDown;
+    _segmentedControl.titleTextAttributes=
+    @{NSForegroundColorAttributeName:UIColorFromRGB(230, 230, 230),NSFontAttributeName:[UIFont boldSystemFontOfSize:20]};
+    _segmentedControl.selectedTitleTextAttributes=@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:20]};
+    __weak typeof(self) weakSelf=self;
+    [_segmentedControl setIndexChangeBlock:^(NSInteger index) {
+        [weakSelf.scrollView scrollRectToVisible:CGRectMake(UI_SCREEN_W*index, 0,UI_SCREEN_W , 200) animated:YES];
+    }];
+    [self.view addSubview:_segmentedControl];
+}
 @end
