@@ -9,6 +9,8 @@
 #import "ReleaseHotelViewController.h"
 
 @interface ReleaseHotelViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *chooseHotelBtn;
+- (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event;
 
 @end
 
@@ -17,6 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self btnStyle];
+    
     [self naviConfig];
 }
 
@@ -24,7 +28,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+#pragma mark - Navigation
 //这个方法专门做导航条的控制
 - (void)naviConfig{
     //设置导航条标题的文字
@@ -37,6 +41,16 @@
     //为导航条左上角创建一个按钮
     UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(backAction)];
     self.navigationItem.leftBarButtonItem = left;
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(Issue)];
+    self.navigationItem.rightBarButtonItem = right;
+    //设置边框颜色
+//   _chooseHotelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+//    //设置边框宽度
+//    _chooseHotelBtn.layer.borderWidth = 1.0f;
+//   _chooseHotelBtn.layer.masksToBounds = YES;
+}
+- (void)Issue{
+    
 }
 
 
@@ -44,6 +58,11 @@
 - (void)backAction{
     //[self dismissViewControllerAnimated:YES completion:nil];
     [self.navigationController popViewControllerAnimated:YES];//用push返回上一页
+}
+
+#pragma mark - 选择酒店按钮样式
+- (void)btnStyle{
+    [_chooseHotelBtn.layer setBorderColor:[UIColor colorWithRed:0.19 green:0.57 blue:0.95 alpha:1].CGColor];//边框颜色
 }
 /*
 #pragma mark - Navigation
@@ -55,4 +74,6 @@
 }
 */
 
+- (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event {
+}
 @end

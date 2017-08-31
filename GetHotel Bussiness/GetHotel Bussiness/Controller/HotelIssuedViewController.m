@@ -9,6 +9,7 @@
 #import "HotelIssuedViewController.h"
 #import "MyHotelTableViewCell.h"
 @interface HotelIssuedViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (strong, nonatomic) NSMutableArray *arr;
 
 @end
 
@@ -16,6 +17,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _arr = [NSMutableArray new];
     // Do any additional setup after loading the view.
     [self naviConfig];
 }
@@ -33,11 +36,12 @@
     self.navigationController.navigationBar.barTintColor = UIColorFromRGB(15, 100, 240);
     //设置是否需要毛玻璃效果
     self.navigationController.navigationBar.translucent = YES;
+    //self.navigationController.navigationBar.frame = CGRectMake(0, 20, 320, 200);
     //设置导航条标题颜色
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+    self.navigationController.
     //设置导航条是否被隐藏
     self.navigationController.navigationBar.hidden = NO;
-    
     
 }
 
@@ -50,9 +54,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MyHotelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myHotel" forIndexPath:indexPath];
+    
     return cell;
 }
 
+//设置cell的高度
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 150.f;
+}
+
+#pragma mark - request
+- (void)request{
+    
+}
 /*
 #pragma mark - Navigation
 

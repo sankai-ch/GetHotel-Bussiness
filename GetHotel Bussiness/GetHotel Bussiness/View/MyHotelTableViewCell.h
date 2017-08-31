@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface MyHotelTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *hotelNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *hotelImg;
+@property (weak, nonatomic) IBOutlet UILabel *hotelDescribeLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *hotelAreaLabel;
+@property (weak, nonatomic) IBOutlet UILabel *hotelPirceLabel;
 
 @end
