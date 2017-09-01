@@ -24,7 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self naviConfig];
+    
     // Do any additional setup after loading the view.
     [self setSegment];
 }
@@ -44,7 +44,7 @@
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     
     //设置导航条是否被隐藏
-    self.navigationController.navigationBar.hidden = YES;
+    [self.navigationController setNavigationBarHidden:YES];
     
 }
 
@@ -63,7 +63,8 @@
     _segmentedControl.frame=CGRectMake(0, 84, UI_SCREEN_W, 40);
     _segmentedControl.selectedSegmentIndex=0;
     _segmentedControl.backgroundColor=self.headView.backgroundColor;
-    _segmentedControl.selectionIndicatorHeight=2.5;
+    _segmentedControl.selectionIndicatorHeight=4;
+    _segmentedControl.selectionIndicatorColor=[UIColor lightGrayColor];
     _segmentedControl.selectionStyle=HMSegmentedControlSelectionStyleFullWidthStripe;
     _segmentedControl.selectionIndicatorLocation=HMSegmentedControlSelectionIndicatorLocationDown;
     _segmentedControl.titleTextAttributes=
@@ -85,7 +86,7 @@
 }
 //设置每组多少行
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    return 2;
 }
 -(UITableView *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
