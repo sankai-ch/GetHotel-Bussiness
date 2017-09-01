@@ -120,7 +120,7 @@
                                             <outlet property="hotelDescribeLabel" destination="4KD-Fa-WQd" id="AkU-cv-HLu"/>
                                             <outlet property="hotelImg" destination="qoz-XN-cj1" id="0Na-eX-1de"/>
                                             <outlet property="hotelNameLabel" destination="S84-tS-mqo" id="BqB-XH-gJo"/>
-                                            <outlet property="hotelPirceLabel" destination="ueo-Uw-WIm" id="SuC-FI-pBW"/>
+                                            <outlet property="hotelPriceLabel" destination="ueo-Uw-WIm" id="Jvy-yL-6Lt"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

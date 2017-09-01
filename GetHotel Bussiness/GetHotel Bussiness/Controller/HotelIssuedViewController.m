@@ -17,9 +17,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _arr = [NSMutableArray new];
-    // Do any additional setup after loading the view.
+    
+    NSDictionary *dictA = @{@"hotelName":@"海天大酒店",@"hotelArea":@"39",@"hotelDescribe":@"含早 大床",@"hotelPrice":@"500",@"hotelImg":@"hotel"};
+    
+    NSDictionary *dictB = @{@"hotelName":@"天马行空大酒店",@"hotelArea":@"79",@"hotelDescribe":@"含早 大床",@"hotelPrice":@"600",@"hotelImg":@"setting"};
+    
+    NSDictionary *dictC = @{@"hotelName":@"滴滴滴大酒店",@"hotelArea":@"130",@"hotelDescribe":@"含早 套房",@"hotelPrice":@"900",@"hotelImg":@"hotel"};
+    _arr = [NSMutableArray arrayWithObjects:dictA,dictB,dictC, nil];
+    
     [self naviConfig];
 }
 
@@ -46,16 +52,87 @@
 }
 
 #pragma mark - tableView
+//多少行
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    return _arr.count;
 }
 
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MyHotelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myHotel" forIndexPath:indexPath];
+    NSDictionary *dict = _arr[indexPath.row];
+    cell.hotelNameLabel.text = dict[@"hotelName"];
+    cell.hotelDescribeLabel.text = dict[@"hotelDescribe"];
+    cell.hotelAreaLabel.text = dict[@"hotelArea"];
+    cell.hotelPriceLabel.text = dict[@"hotelPrice"];
+    
+    //[_arr addObject:hotelModel];
+    //[_hotelTableView reloadData];
+    
+    //_arr = @[dictA,dictB,dictC];
+    //HotelDetailModel *hotelModel = _arr[indexPath.row];
+    //    cell.hotelNameLabel.text = hotelModel.hotelName;
+    //    cell.hotelPirceLabel.text = hotelModel.hotelPrice;
+    //    cell.hotelAreaLabel.text = hotelModel.hotelArea;
+    //    cell.hotelDescribeLabel.text = hotelModel.hotelDescribe;
+    /*
+     if (indexPath.row == 0){
+     cell.hotelNameLabel.text = @"海天大酒店";
+     cell.hotelImg.image = [UIImage imageNamed:@"hotels"];
+     cell.hotelAreaLabel.text = @"39";
+     cell.hotelPirceLabel.text = @"500";
+     cell.hotelDescribeLabel.text = @"含早 大床";
+     
+     }else if (indexPath.row == 1){
+     cell.hotelNameLabel.text = @"天马行空大酒店";
+     cell.hotelDescribeLabel.text = @"不含早 大床";
+     cell.hotelPirceLabel.text = @"999";
+     cell.hotelAreaLabel.text = @"79";
+     cell.hotelImg.image = [UIImage imageNamed:@"setting"];
+     }else {
+     cell.hotelNameLabel.text = @"滴滴滴大酒店";
+     cell.hotelDescribeLabel.text = @"含早 套房";
+     cell.hotelPirceLabel.text = @"1999";
+     cell.hotelAreaLabel.text = @"179";
+     cell.hotelImg.image = [UIImage imageNamed:@"hotel"];
+     }
+     */
+    
+    //NSDictionary *dictC = @{@"hotelName":@"书香世家大酒店",@"hotelDescribe":@"含早 套房",@"hotelArea":@"129平米",@"hotelPrice":@"1500",@"hotelImg":@"hotel"};
+    
+    //cell.hotelNameLabel.text = _arr[@"hotelName"];
+    
     
     return cell;
+}
+
+////按钮显示的内容
+//- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    [_arr removeObjectAtIndex:indexPath.row];
+//    return @"删除";
+//}
+//
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//
+//
+//    [_arr removeObjectAtIndex:indexPath.row];
+//    //[_hotelTableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];  //删除对应数据的cell
+//    [_hotelTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//}
+
+
+
+
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        
+        //先删数据 再删UI
+        [_arr removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }];
+    return @[deleteAction];
 }
 
 //设置cell的高度

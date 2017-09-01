@@ -14,6 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *hotelDescribeLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *hotelAreaLabel;
-@property (weak, nonatomic) IBOutlet UILabel *hotelPirceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *hotelPriceLabel;
 
 @end
