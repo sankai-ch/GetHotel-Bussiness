@@ -8,9 +8,15 @@
 
 #import "AirPriceViewController.h"
 #import "HMSegmentedControl.h"
-@interface AirPriceViewController ()
+#import "AirPriceTableViewCell.h"
+#import "staleTableViewCell.h"
+@interface AirPriceViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIView *titleView;
+@property (weak, nonatomic) IBOutlet UITableView *offeringList;
+@property (weak, nonatomic) IBOutlet UIView *headView;
+@property (weak, nonatomic) IBOutlet UITableView *offeredList;
+
+
 @property (strong,nonatomic)HMSegmentedControl *segmentedControl;
 @end
 
@@ -36,8 +42,9 @@
     self.navigationController.navigationBar.barTintColor = UIColorFromRGB(15, 100, 240);
     //设置导航条标题颜色
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+    
     //设置导航条是否被隐藏
-    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.navigationBar.hidden = YES;
     
 }
 
@@ -53,9 +60,9 @@
 */
 -(void)setSegment{
     _segmentedControl =[[HMSegmentedControl alloc]initWithSectionTitles:@[@"可报价",@"已过期"]];
-    _segmentedControl.frame=CGRectMake(0, 0, UI_SCREEN_W, 40);
+    _segmentedControl.frame=CGRectMake(0, 84, UI_SCREEN_W, 40);
     _segmentedControl.selectedSegmentIndex=0;
-    _segmentedControl.backgroundColor=UIColorFromRGB(15, 100, 240);
+    _segmentedControl.backgroundColor=self.headView.backgroundColor;
     _segmentedControl.selectionIndicatorHeight=2.5;
     _segmentedControl.selectionStyle=HMSegmentedControlSelectionStyleFullWidthStripe;
     _segmentedControl.selectionIndicatorLocation=HMSegmentedControlSelectionIndicatorLocationDown;
@@ -68,4 +75,29 @@
     }];
     [self.view addSubview:_segmentedControl];
 }
+#pragma mark -tableview
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 125.f;
+}
+//设置多少组
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+//设置每组多少行
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 1;
+}
+-(UITableView *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if(tableView==_offeringList){
+    AirPriceTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
+    return cell;
+    }
+    else if(tableView==_offeredList){
+        staleTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"offeredCell" forIndexPath:indexPath];
+        return cell;
+    }
+    return nil;
+}
+
 @end
