@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="58" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="amJ-w4-yAx">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="84" width="375" height="583"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="myHotel" rowHeight="150" id="NWB-yz-aZq" customClass="MyHotelTableViewCell">
@@ -129,28 +129,42 @@
                                     <outlet property="delegate" destination="8vG-Ks-UAf" id="oPK-cX-E32"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qtW-Ak-qVU">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的酒店" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j7W-ds-Eks">
+                                        <rect key="frame" x="137" y="27" width="101.5" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.058823529411764705" green="0.39215686274509803" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" id="ZsJ-6y-e2K"/>
+                                    <constraint firstItem="j7W-ds-Eks" firstAttribute="centerY" secondItem="qtW-Ak-qVU" secondAttribute="centerY" id="mfT-3B-uEB"/>
+                                    <constraint firstItem="j7W-ds-Eks" firstAttribute="centerX" secondItem="qtW-Ak-qVU" secondAttribute="centerX" id="u9Q-sr-7B0"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="0.094117647058823528" green="0.48627450980392156" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="qtW-Ak-qVU" firstAttribute="leading" secondItem="sJn-PA-GOq" secondAttribute="leading" id="4s1-kT-eh8"/>
                             <constraint firstAttribute="bottom" secondItem="amJ-w4-yAx" secondAttribute="bottom" id="5GM-uC-vNB"/>
-                            <constraint firstItem="amJ-w4-yAx" firstAttribute="top" secondItem="sJn-PA-GOq" secondAttribute="top" id="7ox-ML-Yd4"/>
+                            <constraint firstAttribute="trailing" secondItem="qtW-Ak-qVU" secondAttribute="trailing" id="DiE-Tx-K8E"/>
+                            <constraint firstItem="amJ-w4-yAx" firstAttribute="top" secondItem="qtW-Ak-qVU" secondAttribute="bottom" id="EVV-N2-KKY"/>
                             <constraint firstItem="amJ-w4-yAx" firstAttribute="leading" secondItem="sJn-PA-GOq" secondAttribute="leading" id="Laa-K7-apO"/>
+                            <constraint firstItem="qtW-Ak-qVU" firstAttribute="top" secondItem="sJn-PA-GOq" secondAttribute="top" id="Th3-I7-FQ2"/>
                             <constraint firstAttribute="trailing" secondItem="amJ-w4-yAx" secondAttribute="trailing" id="r5e-nD-6fa"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Qfu-uh-Eld">
-                        <barButtonItem key="rightBarButtonItem" image="check_out" id="xt6-3j-vES">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <segue destination="sXG-6l-sUw" kind="show" id="RZD-3h-nJm"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="Qfu-uh-Eld"/>
+                    <nil key="simulatedTopBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8PK-DY-0VC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1489" y="-94"/>
+            <point key="canvasLocation" x="1488.8" y="-94.002998500749626"/>
         </scene>
         <!--酒店发布-->
         <scene sceneID="qRD-AM-mm4">
@@ -363,7 +377,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="check_out" width="24" height="22"/>
         <image name="hotel" width="22" height="22"/>
         <image name="hotels" width="82" height="61"/>
         <image name="png2" width="69" height="46"/>

@@ -26,7 +26,7 @@
     NSDictionary *dictC = @{@"hotelName":@"滴滴滴大酒店",@"hotelArea":@"130",@"hotelDescribe":@"含早 套房",@"hotelPrice":@"900",@"hotelImg":@"hotel"};
     _arr = [NSMutableArray arrayWithObjects:dictA,dictB,dictC, nil];
     
-    [self naviConfig];
+   [self naviConfig];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,9 +45,9 @@
     //self.navigationController.navigationBar.frame = CGRectMake(0, 20, 320, 200);
     //设置导航条标题颜色
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
-    self.navigationController.
+    
     //设置导航条是否被隐藏
-    self.navigationController.navigationBar.hidden = NO;
+    [self.navigationController setNavigationBarHidden:YES];
     
 }
 
