@@ -24,7 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self naviConfig];
     // Do any additional setup after loading the view.
     [self setSegment];
 }
