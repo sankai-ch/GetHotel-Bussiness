@@ -83,5 +83,28 @@
     quoteTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
     return cell;
 }
+//创建左滑删除按钮
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        
+        //先删数据 再删UI
+       
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }];
+    return @[deleteAction];
+}
+#pragma -action
+- (IBAction)ConfirmAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    UITouch *touch=[[event allTouches] anyObject];
+    //触摸实例在特定坐标系中的位置
+    CGPoint location=[touch locationInView:_confirmButton];
+    //创一个视图座位涟漪效果的展示体，以point为中心
+    UIView *ripple=[[UIView alloc]initWithFrame:CGRectMake(location.x-10, location.y-10, 20, 20)];
+    ripple.layer.cornerRadius=10;
+    ripple.backgroundColor=[[UIColor whiteColor]colorWithAlphaComponent:0.5];
+    [_confirmButton addSubview:ripple];
+    
+}
 
 @end

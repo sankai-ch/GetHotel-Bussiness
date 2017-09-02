@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface OfferViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 
 @end
