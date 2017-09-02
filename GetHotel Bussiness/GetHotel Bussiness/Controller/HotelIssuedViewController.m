@@ -10,6 +10,7 @@
 #import "MyHotelTableViewCell.h"
 @interface HotelIssuedViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) NSMutableArray *arr;
+@property (weak, nonatomic) IBOutlet UITableView *hotelTableView;
 
 @end
 
@@ -58,7 +59,7 @@
 }
 
 
-
+//细胞长什么样
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MyHotelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myHotel" forIndexPath:indexPath];
     NSDictionary *dict = _arr[indexPath.row];
@@ -106,24 +107,7 @@
     
     return cell;
 }
-
-////按钮显示的内容
-//- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [_arr removeObjectAtIndex:indexPath.row];
-//    return @"删除";
-//}
-//
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//
-//
-//    [_arr removeObjectAtIndex:indexPath.row];
-//    //[_hotelTableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];  //删除对应数据的cell
-//    [_hotelTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//}
-
-
-
-
+//创建左滑删除按钮
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
@@ -139,6 +123,17 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 150.f;
 }
+
+//细胞选中后做什么
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    //取消选中
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    
+}
+
+#pragma mark - 单击手势
+//添加一个单击手势事件
 
 #pragma mark - request
 - (void)request{
