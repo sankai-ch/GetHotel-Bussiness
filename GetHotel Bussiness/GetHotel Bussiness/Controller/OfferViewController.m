@@ -8,6 +8,7 @@
 
 #import "OfferViewController.h"
 #import "quoteTableViewCell.h"
+#import "POP.h"
 @interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *quoteTable;
 
@@ -102,9 +103,24 @@
     //创一个视图座位涟漪效果的展示体，以point为中心
     UIView *ripple=[[UIView alloc]initWithFrame:CGRectMake(location.x-10, location.y-10, 20, 20)];
     ripple.layer.cornerRadius=10;
-    ripple.backgroundColor=[[UIColor whiteColor]colorWithAlphaComponent:0.5];
+    ripple.backgroundColor=[[UIColor whiteColor]colorWithAlphaComponent:0.2];
     [_confirmButton addSubview:ripple];
+    POPBasicAnimation *rippleSizeAnimation=[POPBasicAnimation animation];
+    rippleSizeAnimation.property=[POPAnimatableProperty propertyWithName:kPOPLayerSize];
+    rippleSizeAnimation.duration=0.5;
+    rippleSizeAnimation.toValue=[NSValue valueWithCGSize:CGSizeMake((_confirmButton.frame.size.width+_confirmButton.frame.size.height)*2, (_confirmButton.frame.size.width+_confirmButton.frame.size.height)*2)];
+    [ripple pop_addAnimation:rippleSizeAnimation forKey:@"rippleSizeAnimation"];
     
+    POPBasicAnimation *rippleCRAnimation =[POPBasicAnimation animation];
+    rippleCRAnimation.property=[POPAnimatableProperty propertyWithName:kPOPLayerCornerRadius];
+    rippleCRAnimation.duration=0.5;
+    rippleCRAnimation.toValue=@(_confirmButton.frame.size.width+_confirmButton.frame.size.height);
+    [ripple.layer pop_addAnimation:rippleCRAnimation forKey:@"rippleCRAnimation"];
+    rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
+        [ripple removeFromSuperview];
+        //具体按钮事件的逻辑可以在这里开始执行
+    };
+
 }
 
 @end
