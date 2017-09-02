@@ -7,8 +7,9 @@
 //
 
 #import "OfferViewController.h"
-
-@interface OfferViewController ()
+#import "quoteTableViewCell.h"
+@interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+@property (weak, nonatomic) IBOutlet UITableView *quoteTable;
 
 @end
 
@@ -66,4 +67,21 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     //[self.navigationController popViewControllerAnimated:YES];//用push返回上一页
 }
+#pragma mark -tableview
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 140.f;
+}
+//设置多少组
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+//设置每组多少行
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 2;
+}
+-(UITableView *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    quoteTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
+    return cell;
+}
+
 @end

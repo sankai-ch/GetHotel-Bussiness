@@ -69,6 +69,7 @@
 		B287A2441F58FBE200AF36E7 /* staleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B287A2431F58FBE200AF36E7 /* staleTableViewCell.m */; };
 		B287A2471F59539600AF36E7 /* OfferViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B287A2461F59539600AF36E7 /* OfferViewController.m */; };
 		B2E7A4C31F5802AE00854477 /* AirPriceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E7A4C21F5802AE00854477 /* AirPriceTableViewCell.m */; };
+		B2F2538A1F5A54B500782901 /* quoteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F253891F5A54B500782901 /* quoteTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,6 +205,8 @@
 		B287A2461F59539600AF36E7 /* OfferViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfferViewController.m; sourceTree = "<group>"; };
 		B2E7A4C11F5802AE00854477 /* AirPriceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirPriceTableViewCell.h; sourceTree = "<group>"; };
 		B2E7A4C21F5802AE00854477 /* AirPriceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirPriceTableViewCell.m; sourceTree = "<group>"; };
+		B2F253881F5A54B400782901 /* quoteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quoteTableViewCell.h; sourceTree = "<group>"; };
+		B2F253891F5A54B500782901 /* quoteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = quoteTableViewCell.m; sourceTree = "<group>"; };
 		BB692E57BB1D320ABDFD4278 /* libPods-GetHotel Bussiness.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GetHotel Bussiness.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -274,6 +277,8 @@
 				B2E7A4C21F5802AE00854477 /* AirPriceTableViewCell.m */,
 				B287A2421F58FBE200AF36E7 /* staleTableViewCell.h */,
 				B287A2431F58FBE200AF36E7 /* staleTableViewCell.m */,
+				B2F253881F5A54B400782901 /* quoteTableViewCell.h */,
+				B2F253891F5A54B500782901 /* quoteTableViewCell.m */,
 			);
 			name = AirStoryboard;
 			sourceTree = "<group>";
@@ -780,6 +785,7 @@
 				84F8DE3F1F5669F7000DF6D0 /* SKTagView.m in Sources */,
 				84F8DE501F5669F7000DF6D0 /* NSDateFormatter+Category.m in Sources */,
 				B2E7A4C31F5802AE00854477 /* AirPriceTableViewCell.m in Sources */,
+				B2F2538A1F5A54B500782901 /* quoteTableViewCell.m in Sources */,
 				84F8DE451F5669F7000DF6D0 /* DataVerifier.m in Sources */,
 				84F8DE4B1F5669F7000DF6D0 /* AppAPIClient.m in Sources */,
 				84F8DDA81F56692C000DF6D0 /* main.m in Sources */,
