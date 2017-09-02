@@ -8,7 +8,7 @@
 
 #import "ReleaseHotelViewController.h"
 
-@interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource>
+@interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *chooseHotelBtn;
 - (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickView;
@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSArray *pickerArr;
 @property (strong, nonatomic) NSArray *arr;
 - (IBAction)yesAction:(UIBarButtonItem *)sender;
+@property (weak, nonatomic) IBOutlet UIImageView *IssuePic;
 
 @end
 
@@ -31,6 +32,12 @@
     [_pickView selectRow:2 inComponent:0 animated:NO];
     [_pickView reloadComponent:0];
     [_pickView reloadComponent:1];
+    //[_IssuePic addGestureRecognizer:]
+    //[self addTapGestureRecognizer:_IssuePic];
+    
+//    [self addGestureRecognizer:_IssuePic];
+    //[self.view addGestureRecognizer:_IssuePic];
+    [self addTapGestureRecognizer];
     
     [self btnStyle];
     [self naviConfig];
@@ -110,6 +117,54 @@
 //设置每列的宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
     return _pickView.frame.size.width/2.3;
+}
+#pragma mark - 手势
+//添加一个单击手势事件
+- (void)addTapGestureRecognizer{
+    //初始化一个单击手势，设置它的响应事件为tapClick:
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapClick:)];
+    //将手势添加给入参
+    [self.view addGestureRecognizer:tap];
+}
+//小图单击手势响应事件
+- (void)tapClick: (UITapGestureRecognizer *)tap{
+    NSUInteger sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    if (tap.state == UIGestureRecognizerStateRecognized){
+        NSLog(@"你单击了");
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"选取照片" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //imagePickerController.delegate = self;
+            imagePickerController.allowsEditing = YES;
+            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        }];
+        
+        UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"从相册中选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            imagePickerController.sourceType =UIImagePickerControllerSourceTypePhotoLibrary;
+        }];
+        UIAlertAction *actionC = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        [alert addAction:actionA];
+        [alert addAction:actionB];
+        [alert addAction:actionC];
+        [self presentViewController:alert animated:YES completion:^{
+            
+        }];
+     
+        [self presentViewController:imagePickerController animated:YES completion:^{
+            
+        }];
+        
+    }
+}
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    self.IssuePic.image = image;
 }
 
 /*

@@ -64,33 +64,33 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="天马行空大酒店" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S84-tS-mqo">
-                                                    <rect key="frame" x="18" y="8" width="128.5" height="21.5"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" red="0.05933342087" green="0.39348114249999999" blue="0.94055716040000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <rect key="frame" x="18" y="18" width="128.5" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" red="0.058823529411764705" green="0.39348114249999999" blue="0.94055716040000004" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hotels" translatesAutoresizingMaskIntoConstraints="NO" id="qoz-XN-cj1">
-                                                    <rect key="frame" x="18" y="44.5" width="130" height="80"/>
+                                                    <rect key="frame" x="18" y="54.5" width="130" height="80"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="80" id="Squ-lj-xbR"/>
                                                         <constraint firstAttribute="width" constant="130" id="oOQ-0i-ssw"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="描述:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FT6-Vx-jBa">
-                                                    <rect key="frame" x="163" y="44" width="30.5" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="163" y="54" width="33" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="面积:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdK-rh-YjI">
-                                                    <rect key="frame" x="163" y="70" width="30.5" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="163" y="86" width="33" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="价格¥:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j1a-Ek-Hjc">
-                                                    <rect key="frame" x="163" y="91" width="39" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="163" y="108" width="41.5" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -102,36 +102,45 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="含早 大床" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KD-Fa-WQd">
-                                                    <rect key="frame" x="194.5" y="44" width="57" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="197" y="54" width="61" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="38平米" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMP-nG-OX3">
-                                                    <rect key="frame" x="194.5" y="70" width="43" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="38" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMP-nG-OX3">
+                                                    <rect key="frame" x="197" y="86" width="17.5" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="569" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ueo-Uw-WIm">
-                                                    <rect key="frame" x="203" y="91" width="24.5" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="205.5" y="108" width="26.5" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="平米" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EnN-yS-lxI">
+                                                    <rect key="frame" x="214.5" y="86" width="29" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="EnN-yS-lxI" firstAttribute="leading" secondItem="YMP-nG-OX3" secondAttribute="trailing" id="6hm-FU-EVT"/>
                                                 <constraint firstItem="ueo-Uw-WIm" firstAttribute="leading" secondItem="j1a-Ek-Hjc" secondAttribute="trailing" constant="1" id="8EZ-6j-TTP"/>
                                                 <constraint firstItem="YMP-nG-OX3" firstAttribute="bottom" secondItem="IdK-rh-YjI" secondAttribute="bottom" id="Api-pm-i6I"/>
                                                 <constraint firstItem="YMP-nG-OX3" firstAttribute="top" secondItem="IdK-rh-YjI" secondAttribute="top" id="G7N-MX-hMv"/>
                                                 <constraint firstItem="j1a-Ek-Hjc" firstAttribute="leading" secondItem="IdK-rh-YjI" secondAttribute="leading" id="Gmw-Od-CpW"/>
                                                 <constraint firstItem="4KD-Fa-WQd" firstAttribute="top" secondItem="FT6-Vx-jBa" secondAttribute="top" id="PIK-uE-LuJ"/>
-                                                <constraint firstItem="IdK-rh-YjI" firstAttribute="top" secondItem="FT6-Vx-jBa" secondAttribute="bottom" constant="10" id="Pko-UU-Ibu"/>
+                                                <constraint firstItem="IdK-rh-YjI" firstAttribute="top" secondItem="FT6-Vx-jBa" secondAttribute="bottom" constant="15" id="Pko-UU-Ibu"/>
                                                 <constraint firstItem="qoz-XN-cj1" firstAttribute="leading" secondItem="S84-tS-mqo" secondAttribute="leading" id="Q6v-p0-Qzk"/>
                                                 <constraint firstItem="4KD-Fa-WQd" firstAttribute="leading" secondItem="FT6-Vx-jBa" secondAttribute="trailing" constant="1" id="QPe-gR-tdx"/>
                                                 <constraint firstItem="j1a-Ek-Hjc" firstAttribute="top" secondItem="IdK-rh-YjI" secondAttribute="bottom" constant="5" id="VK9-q6-0RN"/>
+                                                <constraint firstItem="EnN-yS-lxI" firstAttribute="bottom" secondItem="YMP-nG-OX3" secondAttribute="bottom" id="YL9-rh-udE"/>
+                                                <constraint firstItem="EnN-yS-lxI" firstAttribute="top" secondItem="YMP-nG-OX3" secondAttribute="top" id="ZII-9d-ACF"/>
                                                 <constraint firstItem="IdK-rh-YjI" firstAttribute="leading" secondItem="FT6-Vx-jBa" secondAttribute="leading" id="bo0-BR-OB1"/>
-                                                <constraint firstItem="S84-tS-mqo" firstAttribute="top" secondItem="gPG-wf-Twg" secondAttribute="topMargin" id="cyr-UX-LqA"/>
+                                                <constraint firstItem="S84-tS-mqo" firstAttribute="top" secondItem="gPG-wf-Twg" secondAttribute="topMargin" constant="10" id="cyr-UX-LqA"/>
                                                 <constraint firstItem="ueo-Uw-WIm" firstAttribute="top" secondItem="j1a-Ek-Hjc" secondAttribute="top" id="g0i-79-yeo"/>
                                                 <constraint firstItem="S84-tS-mqo" firstAttribute="leading" secondItem="gPG-wf-Twg" secondAttribute="leadingMargin" constant="10" id="gus-CU-N61"/>
                                                 <constraint firstItem="4KD-Fa-WQd" firstAttribute="bottom" secondItem="FT6-Vx-jBa" secondAttribute="bottom" id="icy-np-CN4"/>
@@ -150,6 +159,7 @@
                                             <outlet property="hotelImg" destination="qoz-XN-cj1" id="0Na-eX-1de"/>
                                             <outlet property="hotelNameLabel" destination="S84-tS-mqo" id="BqB-XH-gJo"/>
                                             <outlet property="hotelPriceLabel" destination="ueo-Uw-WIm" id="Jvy-yL-6Lt"/>
+                                            <outlet property="zoomIV" destination="qoz-XN-cj1" id="MmX-Hg-K42"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -173,6 +183,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="Qfu-uh-Eld"/>
                     <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="hotelTableView" destination="amJ-w4-yAx" id="x8g-xg-lu5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8PK-DY-0VC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -392,6 +405,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="hyS-xE-ems"/>
                     <connections>
+                        <outlet property="IssuePic" destination="MO4-qM-J8e" id="43L-zF-TOA"/>
                         <outlet property="chooseHotelBtn" destination="aVN-rV-WkB" id="vpm-6M-Kgf"/>
                         <outlet property="pickView" destination="FEo-GK-F1t" id="6zl-ZD-PMP"/>
                         <outlet property="toolBar" destination="BJw-KI-XhE" id="W12-NF-l8v"/>
