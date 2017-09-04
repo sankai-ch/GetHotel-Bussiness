@@ -7,8 +7,13 @@
 //
 
 #import "ReleaseHotelViewController.h"
-
-@interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
+@interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
+    
+    UIImagePickerController *imagePickerController;
+}
 @property (weak, nonatomic) IBOutlet UIButton *chooseHotelBtn;
 - (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickView;
@@ -18,7 +23,9 @@
 @property (strong, nonatomic) NSArray *pickerArr;
 @property (strong, nonatomic) NSArray *arr;
 - (IBAction)yesAction:(UIBarButtonItem *)sender;
-@property (weak, nonatomic) IBOutlet UIImageView *IssuePic;
+@property (weak, nonatomic) IBOutlet UIImageView *hotelPic;
+@property (weak, nonatomic) IBOutlet UIView *grayView;
+
 
 @end
 
@@ -32,12 +39,14 @@
     [_pickView selectRow:2 inComponent:0 animated:NO];
     [_pickView reloadComponent:0];
     [_pickView reloadComponent:1];
-    //[_IssuePic addGestureRecognizer:]
-    //[self addTapGestureRecognizer:_IssuePic];
     
-//    [self addGestureRecognizer:_IssuePic];
-    //[self.view addGestureRecognizer:_IssuePic];
-    [self addTapGestureRecognizer];
+    //将手势添加到hotelPic这个视图中
+    [self addTapGestureRecognizer:_hotelPic];
+    
+    imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.delegate = self;
+    imagePickerController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    imagePickerController.allowsEditing = YES;
     
     [self btnStyle];
     [self naviConfig];
@@ -52,12 +61,9 @@
 - (void)naviConfig{
     //设置导航条标题的文字
     self.navigationItem.title = @"酒店发布";
-    
-    
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     //设置导航条的颜色（风格颜色）
     self.navigationController.navigationBar.barTintColor = UIColorFromRGB(15, 100, 240);
-    
     [self.navigationController.navigationBar setTitleTextAttributes:
   @{NSFontAttributeName:[UIFont systemFontOfSize:17],
     NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -91,6 +97,139 @@
     [_chooseHotelBtn.layer setBorderColor:[UIColor colorWithRed:0.19 green:0.57 blue:0.95 alpha:1].CGColor];//边框颜色
 }
 
+#pragma mark - 单击手势
+
+- (void)addTapGestureRecognizer: (id)any{
+    //初始化一个单击手势，设置它的响应事件为tapClick
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+    //用户交互启用
+    _hotelPic.userInteractionEnabled = YES;
+    //将手势添加入参
+    [any addGestureRecognizer:tap];
+}
+
+- (void)tapClick: (UITapGestureRecognizer *)tap {
+    if (tap.state == UIGestureRecognizerStateRecognized) {
+        NSLog(@"你单击了");
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选取相片来源" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self selectImageFromCamera];
+            
+        }];
+        
+        UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"从相册中选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self selectImageFromAlbum];
+            //[self image:_hotelPic didFinishSavingWithError:nil contextInfo:nil];
+           // _hotelPic = UIImagePickerControllerSourceTypePhotoLibrary;
+        }];
+        UIAlertAction *actionC = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        [alert addAction:actionA];
+        [alert addAction:actionB];
+        [alert addAction:actionC];
+        [self presentViewController:alert animated:YES completion:^{
+            
+        }];
+
+    }
+}
+
+#pragma mark - 相机拍照获取图片
+//从相机中获取图片
+- (void)selectImageFromCamera{
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;//设置类型为相机
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];//初始化
+        picker.delegate = self;//设置代理
+        picker.allowsEditing = YES;//设置照片可编辑
+        picker.sourceType = sourceType;
+        //设置是否显示相机控制按钮 默认为YES
+        picker.showsCameraControls = YES;
+        
+        //        //创建叠加层(例如添加的相框)
+        //        UIView *overLayView=[[UIView alloc]initWithFrame:CGRectMake(0, 120, 320, 254)];
+        //        //取景器的背景图片，该图片中间挖掉了一块变成透明，用来显示摄像头获取的图片；
+        //        UIImage *overLayImag=[UIImage imageNamed:@"zhaoxiangdingwei.png"];
+        //        UIImageView *bgImageView=[[UIImageView alloc]initWithImage:overLayImag];
+        //        [overLayView addSubview:bgImageView];
+        //        picker.cameraOverlayView=overLayView;
+        
+        //选择前置摄像头或后置摄像头
+        picker.cameraDevice=UIImagePickerControllerCameraDeviceFront;
+        [self presentViewController:picker animated:YES completion:^{
+        }];
+    }
+    else {  
+        [Utilities popUpAlertViewWithMsg:@"该设备无相机" andTitle:@"提示" onView:self];
+    }
+}
+
+//从相册中获取图片
+- (void)selectImageFromAlbum{
+    NSLog(@"相册");
+    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    [self presentViewController:imagePickerController animated:YES completion:nil];
+}
+
+
+#pragma mark - 从相册选择图片后操作
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    //NSLog(@"%@",info);
+    
+    //获取源图像（未经裁剪）
+    //    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    //获取裁剪后的图像
+    UIImage *image = info[UIImagePickerControllerEditedImage];
+    
+    //将照片存到媒体库
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+    
+    _hotelPic.image = image;
+    
+    //将照片存到沙盒
+    [self saveImage:image];
+    
+    [picker dismissViewControllerAnimated:YES completion:^{
+    }];
+}
+
+#pragma mark - 照片存到本地后的回调
+- (void)image:(UIImage*)image didFinishSavingWithError:(NSError*)error contextInfo:(void*)contextInfo{
+    if (!error) {
+        NSLog(@"存储成功");
+    } else {
+        NSLog(@"存储失败：%@", error);
+    }
+}
+#pragma mark - 保存图片
+- (void) saveImage:(UIImage *)currentImage {
+    //设置照片的品质
+    NSData *imageData = UIImageJPEGRepresentation(currentImage, 0.5);
+    
+    NSLog(@"%@",NSHomeDirectory());
+    // 获取沙盒目录
+    NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/currentImage.png"];
+    // 将图片写入文件
+    [imageData writeToFile:filePath atomically:NO];
+    //将选择的图片显示出来
+    //    [self.photoImage setImage:[UIImage imageWithContentsOfFile:filePath]];
+    
+}
+#pragma mark - 取消操作时调用
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^{
+    }];
+}
+
+//#pragma mark 图片保存完毕的回调
+//- (void) image: (UIImage *) image didFinishSavingWithError:(NSError *) error contextInfo: (void *)contextInf{
+//    
+//}
+
+
 #pragma mark - pickerView
 //多少列
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -118,54 +257,6 @@
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
     return _pickView.frame.size.width/2.3;
 }
-#pragma mark - 手势
-//添加一个单击手势事件
-- (void)addTapGestureRecognizer{
-    //初始化一个单击手势，设置它的响应事件为tapClick:
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapClick:)];
-    //将手势添加给入参
-    [self.view addGestureRecognizer:tap];
-}
-//小图单击手势响应事件
-- (void)tapClick: (UITapGestureRecognizer *)tap{
-    NSUInteger sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    if (tap.state == UIGestureRecognizerStateRecognized){
-        NSLog(@"你单击了");
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"选取照片" preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            //imagePickerController.delegate = self;
-            imagePickerController.allowsEditing = YES;
-            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        }];
-        
-        UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"从相册中选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            imagePickerController.sourceType =UIImagePickerControllerSourceTypePhotoLibrary;
-        }];
-        UIAlertAction *actionC = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:actionA];
-        [alert addAction:actionB];
-        [alert addAction:actionC];
-        [self presentViewController:alert animated:YES completion:^{
-            
-        }];
-     
-        [self presentViewController:imagePickerController animated:YES completion:^{
-            
-        }];
-        
-    }
-}
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    [picker dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-    
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    self.IssuePic.image = image;
-}
 
 /*
 #pragma mark - Navigation
@@ -176,14 +267,24 @@
     // Pass the selected object to the new view controller.
 }
 */
+//键盘收回
+- (void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    //让根视图结束编辑状态达到收起键盘的目的
+    [self.view endEditing:YES];
+    //[self.view _ endEditing:YES];
+}
+
+
 
 - (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    _toolBar.hidden=NO;
-    _pickView.hidden=NO;
+    _toolBar.hidden = NO;
+    _pickView.hidden = NO;
+    _grayView.hidden = NO;
 }
 - (IBAction)cancelAction:(UIBarButtonItem *)sender {
-    _toolBar.hidden=YES;
-    _pickView.hidden=YES;
+    _toolBar.hidden = YES;
+    _pickView.hidden = YES;
+    _grayView.hidden = YES;
 }
 
 - (IBAction)yesAction:(UIBarButtonItem *)sender {
@@ -197,7 +298,8 @@
     [_chooseHotelBtn setTitle:[title stringByAppendingString:ti] forState:UIControlStateNormal];
     
     // [_popupBtn setTitle:ti forState:UIControlStateNormal];
-    _toolBar.hidden=YES;
-    _pickView.hidden=YES;
+    _toolBar.hidden = YES;
+    _pickView.hidden = YES;
+    _grayView.hidden = YES;
 }
 @end

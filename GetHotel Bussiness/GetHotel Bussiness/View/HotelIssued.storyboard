@@ -320,6 +320,10 @@
                                     <constraint firstAttribute="height" constant="1" id="0al-aW-qu9"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fBf-IM-g7G">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                             <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FEo-GK-F1t">
                                 <rect key="frame" x="0.0" y="451" width="375" height="216"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -348,6 +352,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="fBf-IM-g7G" secondAttribute="trailing" id="15B-Ka-h20"/>
+                            <constraint firstItem="fBf-IM-g7G" firstAttribute="top" secondItem="guy-8l-9qw" secondAttribute="bottom" id="3We-8o-vdU"/>
                             <constraint firstItem="FSM-44-R1J" firstAttribute="top" secondItem="aVN-rV-WkB" secondAttribute="bottom" constant="20" id="3Xy-da-zAz"/>
                             <constraint firstItem="dqg-4F-Hbo" firstAttribute="top" secondItem="5Um-0s-b5T" secondAttribute="bottom" constant="6" id="5fo-NR-qub"/>
                             <constraint firstItem="D3X-uD-Mhc" firstAttribute="top" secondItem="8PE-OU-S0t" secondAttribute="bottom" constant="6" id="5vC-b3-P0P"/>
@@ -362,7 +368,9 @@
                             <constraint firstItem="D3X-uD-Mhc" firstAttribute="leading" secondItem="8PE-OU-S0t" secondAttribute="leading" id="Hjm-nz-i8G"/>
                             <constraint firstItem="dqg-4F-Hbo" firstAttribute="leading" secondItem="5Um-0s-b5T" secondAttribute="leading" id="J0M-tZ-zvR"/>
                             <constraint firstItem="aVN-rV-WkB" firstAttribute="centerX" secondItem="PT6-jI-fir" secondAttribute="centerX" id="K6U-aX-JJD"/>
+                            <constraint firstAttribute="bottom" secondItem="fBf-IM-g7G" secondAttribute="bottom" id="Kuv-T0-pq0"/>
                             <constraint firstItem="FEo-GK-F1t" firstAttribute="top" secondItem="BJw-KI-XhE" secondAttribute="bottom" id="M2k-hc-eYo"/>
+                            <constraint firstItem="fBf-IM-g7G" firstAttribute="leading" secondItem="PT6-jI-fir" secondAttribute="leading" id="M51-xb-1fC"/>
                             <constraint firstItem="FSM-44-R1J" firstAttribute="leading" secondItem="Syr-jj-CUC" secondAttribute="leading" id="MKU-Rv-udd"/>
                             <constraint firstItem="xYd-xi-gKr" firstAttribute="trailing" secondItem="JZ0-j4-MUR" secondAttribute="trailing" id="OaF-Kw-HVZ"/>
                             <constraint firstAttribute="trailing" secondItem="8PE-OU-S0t" secondAttribute="trailing" constant="40" id="PMO-Iw-1O1"/>
@@ -405,8 +413,9 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="hyS-xE-ems"/>
                     <connections>
-                        <outlet property="IssuePic" destination="MO4-qM-J8e" id="43L-zF-TOA"/>
                         <outlet property="chooseHotelBtn" destination="aVN-rV-WkB" id="vpm-6M-Kgf"/>
+                        <outlet property="grayView" destination="fBf-IM-g7G" id="rd7-Qe-fDW"/>
+                        <outlet property="hotelPic" destination="MO4-qM-J8e" id="MNl-dB-rSN"/>
                         <outlet property="pickView" destination="FEo-GK-F1t" id="6zl-ZD-PMP"/>
                         <outlet property="toolBar" destination="BJw-KI-XhE" id="W12-NF-l8v"/>
                     </connections>

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <MobileCoreServices/MobileCoreServices.h>
 @interface ReleaseHotelViewController : UIViewController
 
 @end
