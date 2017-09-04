@@ -9,8 +9,13 @@
 #import "OfferViewController.h"
 #import "quoteTableViewCell.h"
 #import "POP.h"
+#import "CityListViewController.h"
 @interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *quoteTable;
+- (IBAction)depart:(UIButton *)sender forEvent:(UIEvent *)event;
+- (IBAction)destination:(UIButton *)sender forEvent:(UIEvent *)event;
+@property (weak, nonatomic) IBOutlet UIButton *departButton;
+@property (weak, nonatomic) IBOutlet UIButton *destinationButton;
 
 @end
 
@@ -20,6 +25,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self naviConfig];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDepartCity:) name:@"depart" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDestinationCity:) name:@"destination" object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -122,5 +130,44 @@
     };
 
 }
+#pragma mark - Action
+- (IBAction)depart:(UIButton *)sender forEvent:(UIEvent *)event {
+      NSNumber  *tag=@0;
+   // [self performSegueWithIdentifier:@"departAction" sender:tag];
+    CityListViewController *cityListVC=[Utilities getStoryboardInstance:@"AirPrice" byIdentity:@"CityListID"];
+    [cityListVC setTag:tag];
+    UINavigationController *nc=[[UINavigationController alloc]initWithRootViewController:cityListVC];
+    [self presentViewController:nc animated:YES completion:nil];
+}
 
+
+- (IBAction)destination:(UIButton *)sender forEvent:(UIEvent *)event {
+    NSNumber  *tag=@1;
+    // [self performSegueWithIdentifier:@"departAction" sender:tag];
+    CityListViewController *cityListVC=[Utilities getStoryboardInstance:@"AirPrice" byIdentity:@"CityListID"];
+    [cityListVC setTag:tag];
+    UINavigationController *nc=[[UINavigationController alloc]initWithRootViewController:cityListVC];
+    [self presentViewController:nc animated:YES completion:nil];
+}
+//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+//    CityListViewController *CityListViewController=[segue destinationViewController];
+//    if ([segue.identifier isEqualToString:@"departAction"]) {
+//        CityListViewController.tag=sender;
+//    }else{
+//        CityListViewController.tag=sender;
+//    }
+//}
+#pragma  mark - notification
+-(void)checkDepartCity:(NSNotification *)note{
+    NSString *cityStr=note.object;
+    if(![_departButton.titleLabel.text isEqualToString:cityStr]){
+        [_departButton setTitle:cityStr forState:UIControlStateNormal];
+    }
+}
+-(void)checkDestinationCity:(NSNotification *)note{
+    NSString *cityStr=note.object;
+    if(![_destinationButton.titleLabel.text isEqualToString:cityStr]){
+        [_destinationButton setTitle:cityStr forState:UIControlStateNormal];
+}
+}
 @end
