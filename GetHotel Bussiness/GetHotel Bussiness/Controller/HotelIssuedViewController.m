@@ -26,6 +26,7 @@
     
     NSDictionary *dictC = @{@"hotelName":@"滴滴滴大酒店",@"hotelArea":@"130",@"hotelDescribe":@"含早 套房",@"hotelPrice":@"900",@"hotelImg":@"hotel"};
     _arr = [NSMutableArray arrayWithObjects:dictA,dictB,dictC, nil];
+    self.hotelTableView.tableFooterView = [UIView new];
     
    [self naviConfig];
 }
@@ -132,13 +133,11 @@
     
 }
 
-#pragma mark - 单击手势
-//添加一个单击手势事件
-
 #pragma mark - request
 - (void)request{
     
 }
+
 /*
 #pragma mark - Navigation
 
