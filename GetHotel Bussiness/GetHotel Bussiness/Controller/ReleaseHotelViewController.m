@@ -25,6 +25,13 @@
 - (IBAction)yesAction:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *hotelPic;
 @property (weak, nonatomic) IBOutlet UIView *grayView;
+@property (weak, nonatomic) IBOutlet UITextField *roomNameLabel;
+@property (weak, nonatomic) IBOutlet UITextField *breakfastLabel;
+@property (weak, nonatomic) IBOutlet UITextField *bedTypeLabel;
+@property (weak, nonatomic) IBOutlet UITextField *roomAreaLabel;
+@property (weak, nonatomic) IBOutlet UITextField *roomPriceLabel;
+@property (weak, nonatomic) IBOutlet UITextField *weekendsPriceLabel;
+
 
 
 @end
@@ -82,7 +89,8 @@
 //   _chooseHotelBtn.layer.masksToBounds = YES;
 }
 - (void)Issue{
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"issue" object:self userInfo:@{@"hotelName":_roomNameLabel.text}];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

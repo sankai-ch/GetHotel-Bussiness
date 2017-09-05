@@ -234,7 +234,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写酒店名称" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8PE-OU-S0t">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写房间名称" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8PE-OU-S0t">
                                 <rect key="frame" x="40" y="220" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -412,11 +412,17 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Zjb-fj-MZ4"/>
                     <connections>
+                        <outlet property="bedTypeLabel" destination="Ftx-9W-k6f" id="mUy-Pz-KCg"/>
+                        <outlet property="breakfastLabel" destination="2dX-6L-RXE" id="Jce-Rj-2sG"/>
                         <outlet property="chooseHotelBtn" destination="aVN-rV-WkB" id="vpm-6M-Kgf"/>
                         <outlet property="grayView" destination="fBf-IM-g7G" id="rd7-Qe-fDW"/>
                         <outlet property="hotelPic" destination="MO4-qM-J8e" id="MNl-dB-rSN"/>
                         <outlet property="pickView" destination="FEo-GK-F1t" id="6zl-ZD-PMP"/>
+                        <outlet property="roomAreaLabel" destination="aeb-X2-jZp" id="TRZ-TZ-YWX"/>
+                        <outlet property="roomNameLabel" destination="8PE-OU-S0t" id="xU4-3N-OS3"/>
+                        <outlet property="roomPriceLabel" destination="JZ0-j4-MUR" id="RDu-fk-Xag"/>
                         <outlet property="toolBar" destination="BJw-KI-XhE" id="W12-NF-l8v"/>
+                        <outlet property="weekendsPriceLabel" destination="5Um-0s-b5T" id="bdi-ET-FNv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ev4-38-B51" userLabel="First Responder" sceneMemberID="firstResponder"/>

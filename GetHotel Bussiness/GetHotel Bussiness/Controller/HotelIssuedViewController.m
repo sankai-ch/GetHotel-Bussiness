@@ -28,7 +28,17 @@
     _arr = [NSMutableArray arrayWithObjects:dictA,dictB,dictC, nil];
     self.hotelTableView.tableFooterView = [UIView new];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(issueRoom:) name:@"issue" object:nil];
+    
    [self naviConfig];
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)issueRoom:(NSNotification *)notification{
+    
 }
 
 - (void)didReceiveMemoryWarning {
