@@ -10,12 +10,25 @@
 #import "quoteTableViewCell.h"
 #import "POP.h"
 #import "CityListViewController.h"
-@interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+@interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
+    BOOL tags;
+}
 @property (weak, nonatomic) IBOutlet UITableView *quoteTable;
 - (IBAction)depart:(UIButton *)sender forEvent:(UIEvent *)event;
 - (IBAction)destination:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIButton *departButton;
 @property (weak, nonatomic) IBOutlet UIButton *destinationButton;
+@property (weak, nonatomic) IBOutlet UIView *datePickView;
+
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+- (IBAction)cancelAction:(UIBarButtonItem *)sender;
+- (IBAction)confirmAction:(UIBarButtonItem *)sender;
+- (IBAction)departuretime:(UIButton *)sender forEvent:(UIEvent *)event;
+- (IBAction)arrivaltime:(UIButton *)sender forEvent:(UIEvent *)event;
+@property (weak, nonatomic) IBOutlet UIButton *arrivaltimeBtn;
+@property (weak, nonatomic) IBOutlet UIButton *departuretimeBtn;
+
+
 
 @end
 
@@ -28,7 +41,7 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDepartCity:) name:@"depart" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDestinationCity:) name:@"destination" object:nil];
     self.quoteTable.tableFooterView = [UIView new];
-    
+    tags=nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -170,5 +183,35 @@
     if(![_destinationButton.titleLabel.text isEqualToString:cityStr]){
         [_destinationButton setTitle:cityStr forState:UIControlStateNormal];
 }
+}
+
+- (IBAction)cancelAction:(UIBarButtonItem *)sender {
+    _datePickView.hidden=YES;
+}
+
+- (IBAction)confirmAction:(UIBarButtonItem *)sender {
+    NSData *pickerDate= _datePicker.date;
+    NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
+    [pickerFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateString =[pickerFormatter stringFromDate:pickerDate];
+    if(tags){
+        _departuretimeBtn.titleLabel.text=dateString;
+        _datePickView.hidden=YES;
+    }
+    else{
+        
+        _arrivaltimeBtn.titleLabel.text=dateString;
+        _datePickView.hidden=YES;
+    }
+}
+
+- (IBAction)departuretime:(UIButton *)sender forEvent:(UIEvent *)event {
+    _datePickView.hidden=NO;
+    tags=YES;
+}
+
+- (IBAction)arrivaltime:(UIButton *)sender forEvent:(UIEvent *)event {
+    _datePickView.hidden=NO;
+    tags=NO;
 }
 @end
