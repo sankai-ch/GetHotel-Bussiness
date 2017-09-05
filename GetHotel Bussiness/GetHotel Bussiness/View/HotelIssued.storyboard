@@ -37,7 +37,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="KAo-cD-om3" kind="presentation" id="hcM-YP-xtI"/>
+                                            <segue destination="Gud-q5-rhE" kind="presentation" id="KLt-cF-QSX"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -234,7 +234,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写房间名称" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8PE-OU-S0t">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写酒店名称" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8PE-OU-S0t">
                                 <rect key="frame" x="40" y="220" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -410,7 +410,7 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="hyS-xE-ems"/>
+                    <navigationItem key="navigationItem" id="Zjb-fj-MZ4"/>
                     <connections>
                         <outlet property="chooseHotelBtn" destination="aVN-rV-WkB" id="vpm-6M-Kgf"/>
                         <outlet property="grayView" destination="fBf-IM-g7G" id="rd7-Qe-fDW"/>
@@ -421,7 +421,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ev4-38-B51" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3367.1999999999998" y="-94.002998500749626"/>
+            <point key="canvasLocation" x="3476" y="-94.002998500749626"/>
         </scene>
         <!--酒店发布-->
         <scene sceneID="jhx-VA-9t8">
@@ -444,22 +444,23 @@
             <point key="canvasLocation" x="548" y="-94.002998500749626"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="NmA-bb-ymt">
+        <scene sceneID="P5V-dH-D5p">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KAo-cD-om3" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gud-q5-rhE" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5kr-jt-vKI">
+                    <navigationItem key="navigationItem" id="qcD-Gv-4QA"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0IP-Xa-cmP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="sXG-6l-sUw" kind="relationship" relationship="rootViewController" id="2kr-3M-lfS"/>
+                        <segue destination="sXG-6l-sUw" kind="relationship" relationship="rootViewController" id="ngN-b8-lzh"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="O38-sc-NeB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GCw-iu-OYD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2428" y="-94.002998500749626"/>
+            <point key="canvasLocation" x="2536.8000000000002" y="-94.002998500749626"/>
         </scene>
     </scenes>
     <resources>
