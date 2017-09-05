@@ -27,6 +27,7 @@
     [self naviConfig];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDepartCity:) name:@"depart" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDestinationCity:) name:@"destination" object:nil];
+    self.quoteTable.tableFooterView = [UIView new];
     
 }
 
