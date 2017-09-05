@@ -648,6 +648,7 @@
 				TargetAttributes = {
 					84F8DDA21F56692C000DF6D0 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = B4DRDKXK6E;
 						ProvisioningStyle = Automatic;
 					};
 					84F8DDBE1F56692C000DF6D0 = {
@@ -966,6 +967,8 @@
 			baseConfigurationReference = 34BDB21FE6CB3E9A7B4E1723 /* Pods-GetHotel Bussiness.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = B4DRDKXK6E;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
@@ -975,13 +978,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GetHotel Bussiness/PrefixHeader.pch";
 				INFOPLIST_FILE = "GetHotel Bussiness/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.GetHotel-Bussiness";
+				PRODUCT_BUNDLE_IDENTIFIER = com.etit.gethotelsbusiness;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -991,6 +995,8 @@
 			baseConfigurationReference = 8065AAC638376F0624A080EA /* Pods-GetHotel Bussiness.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = B4DRDKXK6E;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
@@ -1000,13 +1006,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GetHotel Bussiness/PrefixHeader.pch";
 				INFOPLIST_FILE = "GetHotel Bussiness/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.GetHotel-Bussiness";
+				PRODUCT_BUNDLE_IDENTIFIER = com.etit.gethotelsbusiness;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
