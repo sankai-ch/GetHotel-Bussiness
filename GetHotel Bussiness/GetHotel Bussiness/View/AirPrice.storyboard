@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -402,6 +401,9 @@
                                 <state key="normal" title="选择起飞日期 时间">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="departuretime:forEvent:" destination="CyR-Xh-2ky" eventType="touchUpInside" id="qH1-SI-CDb"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="origin" translatesAutoresizingMaskIntoConstraints="NO" id="4AV-Zd-8pa">
                                 <rect key="frame" x="15" y="216" width="9" height="9"/>
@@ -442,7 +444,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="124"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fh5-Wz-Kmb" id="KGx-Y3-0Bo">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="123.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="123"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="无锡——北京 机票" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVt-Zw-lBB">
@@ -557,6 +559,9 @@
                                 <state key="normal" title="选择到达日期 时间">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="arrivaltime:forEvent:" destination="CyR-Xh-2ky" eventType="touchUpInside" id="cg1-iv-UjN"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LaL-hA-1Kb">
                                 <rect key="frame" x="174" y="190" width="110" height="1"/>
@@ -578,7 +583,7 @@
                                     <constraint firstAttribute="height" constant="1" id="xZh-gy-vKJ"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x6Q-xH-UYq">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x6Q-xH-UYq">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PQe-5S-sGi">
@@ -593,9 +598,17 @@
                                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4hd-e1-LWH">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                                 <items>
-                                                    <barButtonItem title="Item" id="qgG-by-DFD"/>
+                                                    <barButtonItem title="取消" id="qgG-by-DFD">
+                                                        <connections>
+                                                            <action selector="cancelAction:" destination="CyR-Xh-2ky" id="GP6-Xl-lAO"/>
+                                                        </connections>
+                                                    </barButtonItem>
                                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Yd5-OF-1Px"/>
-                                                    <barButtonItem title="Item" id="R0c-VN-o85"/>
+                                                    <barButtonItem title="确定" id="R0c-VN-o85">
+                                                        <connections>
+                                                            <action selector="confirmAction:" destination="CyR-Xh-2ky" id="h67-cH-ArY"/>
+                                                        </connections>
+                                                    </barButtonItem>
                                                 </items>
                                             </toolbar>
                                         </subviews>
@@ -657,7 +670,6 @@
                             <constraint firstItem="QOr-fd-9gY" firstAttribute="leading" secondItem="25M-9D-w9v" secondAttribute="trailing" constant="15" id="MgZ-bx-m1B"/>
                             <constraint firstItem="25M-9D-w9v" firstAttribute="leading" secondItem="Thw-cY-Rgh" secondAttribute="trailing" constant="15" id="Mne-0q-8QC"/>
                             <constraint firstItem="Thw-cY-Rgh" firstAttribute="top" secondItem="Jkf-3U-JiG" secondAttribute="bottom" constant="16" id="MpN-SE-RC4"/>
-                            <constraint firstItem="bVk-yB-dXN" firstAttribute="trailing" secondItem="heh-R1-lyx" secondAttribute="trailing" id="NCX-4o-P0o"/>
                             <constraint firstItem="Dmx-lM-BcN" firstAttribute="centerY" secondItem="heh-R1-lyx" secondAttribute="centerY" id="Nkk-tY-MVH"/>
                             <constraint firstItem="Thw-cY-Rgh" firstAttribute="leading" secondItem="UvF-oA-8iU" secondAttribute="trailing" constant="5" id="OaY-fK-Ltr"/>
                             <constraint firstItem="PU5-NO-Kkm" firstAttribute="top" secondItem="qez-d2-OVv" secondAttribute="bottom" id="OgF-IL-ORs"/>
@@ -674,6 +686,7 @@
                             <constraint firstItem="udp-ac-bMd" firstAttribute="bottom" secondItem="64C-Qe-mnq" secondAttribute="bottom" id="Zo4-XM-QaJ"/>
                             <constraint firstItem="udp-ac-bMd" firstAttribute="leading" secondItem="g8a-MW-2mw" secondAttribute="leading" id="auc-PN-0yo"/>
                             <constraint firstItem="udp-ac-bMd" firstAttribute="top" secondItem="64C-Qe-mnq" secondAttribute="top" id="bUC-lg-dJZ"/>
+                            <constraint firstItem="bVk-yB-dXN" firstAttribute="centerX" secondItem="heh-R1-lyx" secondAttribute="centerX" id="buP-Q2-KU0"/>
                             <constraint firstItem="64C-Qe-mnq" firstAttribute="top" secondItem="Xb5-TP-LAl" secondAttribute="bottom" constant="10" id="dbW-TS-bvL"/>
                             <constraint firstItem="qez-d2-OVv" firstAttribute="top" secondItem="64C-Qe-mnq" secondAttribute="top" id="dcR-O9-zEG"/>
                             <constraint firstItem="bVk-yB-dXN" firstAttribute="top" secondItem="heh-R1-lyx" secondAttribute="bottom" id="eit-cW-cWQ"/>
@@ -683,7 +696,7 @@
                             <constraint firstItem="hLJ-LY-Yxm" firstAttribute="leading" secondItem="qez-d2-OVv" secondAttribute="trailing" constant="12" id="gCO-hZ-BUx"/>
                             <constraint firstAttribute="trailing" secondItem="r7C-pe-I8L" secondAttribute="trailing" constant="15" id="gf8-46-OJz"/>
                             <constraint firstItem="Jkf-3U-JiG" firstAttribute="top" secondItem="64C-Qe-mnq" secondAttribute="bottom" id="gqn-oL-udF"/>
-                            <constraint firstItem="bVk-yB-dXN" firstAttribute="leading" secondItem="heh-R1-lyx" secondAttribute="leading" id="ha7-P6-NnG"/>
+                            <constraint firstItem="LaL-hA-1Kb" firstAttribute="width" secondItem="UTO-4l-Asa" secondAttribute="width" id="jeR-QY-Kd4"/>
                             <constraint firstItem="PU5-NO-Kkm" firstAttribute="width" secondItem="qez-d2-OVv" secondAttribute="width" id="kQt-Q6-kZc"/>
                             <constraint firstItem="4AV-Zd-8pa" firstAttribute="top" secondItem="Dmx-lM-BcN" secondAttribute="bottom" constant="35" id="kcl-5G-Tvq"/>
                             <constraint firstItem="T3Z-AN-62R" firstAttribute="leading" secondItem="Thw-cY-Rgh" secondAttribute="leading" id="lBg-ct-Hcj"/>
@@ -693,6 +706,7 @@
                             <constraint firstItem="LaL-hA-1Kb" firstAttribute="leading" secondItem="UTO-4l-Asa" secondAttribute="leading" id="nsa-fB-s3a"/>
                             <constraint firstItem="g8a-MW-2mw" firstAttribute="top" secondItem="udp-ac-bMd" secondAttribute="bottom" id="qFZ-DU-Ovx"/>
                             <constraint firstItem="x6Q-xH-UYq" firstAttribute="top" secondItem="sHE-nc-QI9" secondAttribute="top" id="sEC-Y8-DFS"/>
+                            <constraint firstItem="bVk-yB-dXN" firstAttribute="width" secondItem="heh-R1-lyx" secondAttribute="width" id="sXF-SL-wn1"/>
                             <constraint firstItem="4AV-Zd-8pa" firstAttribute="width" secondItem="4AV-Zd-8pa" secondAttribute="height" multiplier="1:1" id="tdy-tZ-bc0"/>
                             <constraint firstItem="heh-R1-lyx" firstAttribute="leading" secondItem="Thw-cY-Rgh" secondAttribute="leading" id="uDG-ZD-8G8"/>
                             <constraint firstItem="64C-Qe-mnq" firstAttribute="leading" secondItem="sHE-nc-QI9" secondAttribute="leading" constant="15" id="uti-Il-094"/>
@@ -707,8 +721,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="479-Bd-cGu"/>
                     <connections>
+                        <outlet property="arrivaltimeBtn" destination="UTO-4l-Asa" id="alq-0T-psq"/>
                         <outlet property="confirmButton" destination="r7C-pe-I8L" id="Gwb-ZV-C9f"/>
+                        <outlet property="datePickView" destination="x6Q-xH-UYq" id="dWx-Rb-vdn"/>
+                        <outlet property="datePicker" destination="e7k-QM-Nwx" id="SyJ-HZ-OZn"/>
                         <outlet property="departButton" destination="64C-Qe-mnq" id="vRk-4C-A7S"/>
+                        <outlet property="departuretimeBtn" destination="heh-R1-lyx" id="f8i-m4-iDe"/>
                         <outlet property="destinationButton" destination="qez-d2-OVv" id="bSp-Tz-uZd"/>
                         <outlet property="quoteTable" destination="ri3-dV-RvC" id="zPy-jS-5Lu"/>
                     </connections>
