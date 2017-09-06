@@ -92,6 +92,7 @@
 }
 - (void)Issue{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"issue" object:self userInfo:@{@"hotelName":_roomNameLabel.text}];
+    [self request];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -105,6 +106,36 @@
 #pragma mark - 选择酒店按钮样式
 - (void)btnStyle{
     [_chooseHotelBtn.layer setBorderColor:[UIColor colorWithRed:0.19 green:0.57 blue:0.95 alpha:1].CGColor];//边框颜色
+}
+
+
+#pragma mark - request
+- (void)request{
+    NSInteger row = [_pickView selectedRowInComponent:0];
+    NSString *title= _pickerArr[row];
+    
+    //拿到某一列中选中的行号
+    NSInteger raw =[_pickView selectedRowInComponent:1];
+    
+    //根据上面拿到的行号，找到对应的数据（选中行的标题）
+    NSString *ti= _arr[raw];
+    
+    //把拿到的标题显示在button
+    [_chooseHotelBtn setTitle:[title stringByAppendingString:ti] forState:UIControlStateNormal];
+
+    
+    [RequestAPI requestURL:@"/addHotel" withParameters:@{@"business_id":@2,@"hotel_name":ti, @"hotel_type":_breakfastLabel.text, @"hotel_facility":_roomPriceLabel , @"remark": _roomAreaLabel , @"room_imgs": _hotelPic} andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
+        NSLog(@"addHotel=%@",responseObject);
+        if ([responseObject[@"flag"] isEqualToString:@"success"]){
+            NSDictionary *result = responseObject[@"result"];
+            NSArray *list = result[@"list"];
+            NSLog(@"%@",list);
+        }
+        
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"错误码=%ld",(long)statusCode);
+    }];
+
 }
 
 #pragma mark - 单击手势
