@@ -648,8 +648,7 @@
 				TargetAttributes = {
 					84F8DDA21F56692C000DF6D0 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = B4DRDKXK6E;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					84F8DDBE1F56692C000DF6D0 = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -967,7 +966,7 @@
 			baseConfigurationReference = 34BDB21FE6CB3E9A7B4E1723 /* Pods-GetHotel Bussiness.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = B4DRDKXK6E;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -985,8 +984,9 @@
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.etit.gethotelsbusiness;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edu.GHBussiness;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -995,7 +995,7 @@
 			baseConfigurationReference = 8065AAC638376F0624A080EA /* Pods-GetHotel Bussiness.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = B4DRDKXK6E;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1013,8 +1013,9 @@
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
 					"$(PROJECT_DIR)/GetHotel\\ Bussiness",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.etit.gethotelsbusiness;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edu.GHBussiness;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
