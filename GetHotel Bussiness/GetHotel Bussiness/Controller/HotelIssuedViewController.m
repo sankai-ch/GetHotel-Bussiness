@@ -8,9 +8,15 @@
 
 #import "HotelIssuedViewController.h"
 #import "MyHotelTableViewCell.h"
+#import "ReleaseHotelViewController.h"
+#import "FindHotelModel.h"
 @interface HotelIssuedViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) NSMutableArray *arr;
 @property (weak, nonatomic) IBOutlet UITableView *hotelTableView;
+- (IBAction)pushAction:(UIButton *)sender forEvent:(UIEvent *)event;
+@property (strong, nonatomic) UIActivityIndicatorView *avi;
+@property (strong, nonatomic) NSMutableArray *typeArr;
+@property (strong, nonatomic) NSMutableArray *resetArr;
 
 @end
 
@@ -19,18 +25,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _arr = [NSMutableArray new];
+    _typeArr = [NSMutableArray new];
+    _resetArr = [NSMutableArray new];
     
-    NSDictionary *dictA = @{@"hotelName":@"海天大酒店",@"hotelArea":@"39",@"hotelDescribe":@"含早 大床",@"hotelPrice":@"500",@"hotelImg":@"hotel"};
+    _hotelTableView.tableFooterView = [UIView new];
     
-    NSDictionary *dictB = @{@"hotelName":@"天马行空大酒店",@"hotelArea":@"79",@"hotelDescribe":@"含早 大床",@"hotelPrice":@"600",@"hotelImg":@"setting"};
-    
-    NSDictionary *dictC = @{@"hotelName":@"滴滴滴大酒店",@"hotelArea":@"130",@"hotelDescribe":@"含早 套房",@"hotelPrice":@"900",@"hotelImg":@"hotel"};
-    _arr = [NSMutableArray arrayWithObjects:dictA,dictB,dictC, nil];
-    self.hotelTableView.tableFooterView = [UIView new];
+    [self initializeData];
+    [self setRefreshControl];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(issueRoom:) name:@"issue" object:nil];
     
-   [self naviConfig];
+    [self naviConfig];
 }
 
 - (void)dealloc{
@@ -63,58 +68,52 @@
     
 }
 
+
+
+
 #pragma mark - tableView
 //多少行
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
     return _arr.count;
 }
 
 
 //细胞长什么样
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+ 
     MyHotelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myHotel" forIndexPath:indexPath];
-    NSDictionary *dict = _arr[indexPath.row];
-    cell.hotelNameLabel.text = dict[@"hotelName"];
-    cell.hotelDescribeLabel.text = dict[@"hotelDescribe"];
-    cell.hotelAreaLabel.text = dict[@"hotelArea"];
-    cell.hotelPriceLabel.text = dict[@"hotelPrice"];
+    FindHotelModel *findHotel =_arr[indexPath.row];
     
-    //[_arr addObject:hotelModel];
-    //[_hotelTableView reloadData];
+    NSString *userAgent = @"";
+    userAgent = [NSString stringWithFormat:@"%@/%@ (%@; iOS %@; Scale/%0.2f)", [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleExecutableKey] ?: [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] ?: [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleVersionKey], [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [[UIScreen mainScreen] scale]];
     
-    //_arr = @[dictA,dictB,dictC];
-    //HotelDetailModel *hotelModel = _arr[indexPath.row];
-    //    cell.hotelNameLabel.text = hotelModel.hotelName;
-    //    cell.hotelPirceLabel.text = hotelModel.hotelPrice;
-    //    cell.hotelAreaLabel.text = hotelModel.hotelArea;
-    //    cell.hotelDescribeLabel.text = hotelModel.hotelDescribe;
-    /*
-     if (indexPath.row == 0){
-     cell.hotelNameLabel.text = @"海天大酒店";
-     cell.hotelImg.image = [UIImage imageNamed:@"hotels"];
-     cell.hotelAreaLabel.text = @"39";
-     cell.hotelPirceLabel.text = @"500";
-     cell.hotelDescribeLabel.text = @"含早 大床";
-     
-     }else if (indexPath.row == 1){
-     cell.hotelNameLabel.text = @"天马行空大酒店";
-     cell.hotelDescribeLabel.text = @"不含早 大床";
-     cell.hotelPirceLabel.text = @"999";
-     cell.hotelAreaLabel.text = @"79";
-     cell.hotelImg.image = [UIImage imageNamed:@"setting"];
-     }else {
-     cell.hotelNameLabel.text = @"滴滴滴大酒店";
-     cell.hotelDescribeLabel.text = @"含早 套房";
-     cell.hotelPirceLabel.text = @"1999";
-     cell.hotelAreaLabel.text = @"179";
-     cell.hotelImg.image = [UIImage imageNamed:@"hotel"];
-     }
-     */
+    if (userAgent) {
+        if (![userAgent canBeConvertedToEncoding:NSASCIIStringEncoding]) {
+            NSMutableString *mutableUserAgent = [userAgent mutableCopy];
+            if (CFStringTransform((__bridge CFMutableStringRef)(mutableUserAgent), NULL, (__bridge CFStringRef)@"Any-Latin; Latin-ASCII; [:^ASCII:] Remove", false)) {
+                userAgent = mutableUserAgent;
+            }
+        }
+        [[SDWebImageDownloader sharedDownloader] setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    }
+
     
-    //NSDictionary *dictC = @{@"hotelName":@"书香世家大酒店",@"hotelDescribe":@"含早 套房",@"hotelArea":@"129平米",@"hotelPrice":@"1500",@"hotelImg":@"hotel"};
+    for(NSInteger i = 0; i < _typeArr.count; i++){
+        _resetArr = _typeArr[i];
+        cell.hotelDescribeLabel.text = [NSString stringWithFormat:@"%@ %@", _resetArr[2],_resetArr[1]];
+        
+        cell.hotelAreaLabel.text = _resetArr[3];
+        
+    }
+    NSURL *url = [NSURL URLWithString:findHotel.hotelImg];
+    //cell.hotelImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:findHotel.roomImg]]];
+    [cell.hotelImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"hotels"]];
     
-    //cell.hotelNameLabel.text = _arr[@"hotelName"];
-    
+    cell.hotelNameLabel.text = findHotel.hotelName;
+    cell.hotelPriceLabel.text = [NSString stringWithFormat:@"%ld",(long)findHotel.price];
+    //cell.hotelDescribeLabel.text = findHotel.hotelType;
+    NSLog(@"hotelName = %@",findHotel.hotelName);
     
     return cell;
 }
@@ -144,18 +143,82 @@
 }
 
 #pragma mark - request
+
+//下拉刷新
+- (void)setRefreshControl{
+    UIRefreshControl *acquireRef = [UIRefreshControl new];
+    [acquireRef addTarget:self action:@selector(acquireRef) forControlEvents:UIControlEventValueChanged];
+    acquireRef.tag = 10001;
+    [_hotelTableView addSubview:acquireRef];
+}
+- (void)acquireRef{
+    [self request];
+}
+- (void)initializeData{
+    _avi = [Utilities getCoverOnView:self.view];
+    [self request];
+}
+
 - (void)request{
-    
+    NSDictionary *para = @{@"business_id":@1};
+    [RequestAPI requestURL:@"/findHotelBySelf" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
+        
+        NSLog(@"responseObject = %@",responseObject[@"content"]);
+        UIRefreshControl *ref = (UIRefreshControl *)[_hotelTableView viewWithTag:10001];
+        [ref endRefreshing];
+        
+        if ([responseObject[@"result"]integerValue] == 1) {
+            
+            [_avi stopAnimating];
+            NSArray *arr = responseObject[@"content"];
+            
+            NSLog(@"123=%@",arr);
+            
+            for(NSDictionary *dict in arr ){
+                //用类中FindHotelModel类中定义的初始化方法initWithDict:将遍历得来的字典dict 转换成字典对象
+                FindHotelModel *findModel = [[FindHotelModel alloc] initWithDict:dict];
+                //将实例好的model对象插入_arr数组中
+                [_arr addObject:findModel];
+                NSString *roomInfoJSONStr = dict[@"hotel_type"];
+                id roomInfoObj = [roomInfoJSONStr JSONCol];
+                [_typeArr addObject:roomInfoObj];
+            }
+            //NSLog(@"%@",_typeArr[1]);
+            //重载数据
+            [_hotelTableView reloadData];
+        }else {
+            [_avi stopAnimating];
+            [Utilities popUpAlertViewWithMsg:@"请求发生了错误，请稍后再试" andTitle:@"提示" onView:self];
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"错误码:%ld",(long)statusCode);
+        UIRefreshControl *ref = (UIRefreshControl *)
+        [_hotelTableView viewWithTag:10004];
+        [ref endRefreshing];
+        //[Utilities forceLogoutCheck:statusCode fromViewController:self];
+        
+        //[Utilities force]
+    }];
 }
 
 /*
-#pragma mark - Navigation
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)pushAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    ReleaseHotelViewController *Release = [Utilities getStoryboardInstance:@"HotelIssued" byIdentity:@"ReleaseHotel"];
+    
+    UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:Release];
+    
+    [self presentViewController:nc animated:YES completion:nil];
+    
+    //[self.navigationController pushViewController:nc animated:YES];
+    //[self.navigationController pushViewController:nc animated:YES];
 }
-*/
-
 @end

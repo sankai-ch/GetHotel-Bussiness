@@ -19,4 +19,5 @@
 #import "NSDate+Utility.h"
 #import "NSString+Crypt.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "JSONS.h"
 #endif /* PrefixHeader_pch */
