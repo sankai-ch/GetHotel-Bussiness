@@ -31,7 +31,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *roomAreaLabel;
 @property (weak, nonatomic) IBOutlet UITextField *roomPriceLabel;
 @property (weak, nonatomic) IBOutlet UITextField *weekendsPriceLabel;
-
+@property (strong, nonatomic) NSMutableArray *hotelNamePickerArr;
 
 
 @end
@@ -46,6 +46,7 @@
     [_pickView selectRow:2 inComponent:0 animated:NO];
     [_pickView reloadComponent:0];
     [_pickView reloadComponent:1];
+    _hotelNamePickerArr = [NSMutableArray new];
     
     //将手势添加到hotelPic这个视图中
     [self addTapGestureRecognizer:_hotelPic];
@@ -255,11 +256,7 @@
 }
 //设置每行的标题
 - (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component __TVOS_PROHIBITED{
-    if (component ==0) {
-        return _pickerArr[row];
-    }else{
-        return _arr[row];
-    }
+    return _hotelNamePickerArr[row];
 }
 //设置每列的宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
@@ -281,7 +278,16 @@
     [self.view endEditing:YES];
     //[self.view _ endEditing:YES];
 }
-
+#pragma mark - Request
+- (void)issueRequest{
+    //NSDictionary *para = @{@"business_id":@2,@"hotel_name":@"海天",@""};
+    
+    [RequestAPI requestURL:@"/addHotel" withParameters:@{@"":@2} andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
+        
+    } failure:^(NSInteger statusCode, NSError *error) {
+        
+    }];
+}
 
 
 - (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event {
