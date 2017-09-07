@@ -70,6 +70,7 @@
 		B22386AC1F5CE6F30017B531 /* CityListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B22386AB1F5CE6F30017B531 /* CityListModel.m */; };
 		B287A2441F58FBE200AF36E7 /* staleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B287A2431F58FBE200AF36E7 /* staleTableViewCell.m */; };
 		B287A2471F59539600AF36E7 /* OfferViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B287A2461F59539600AF36E7 /* OfferViewController.m */; };
+		B2A66BDF1F5FDEED00C56B12 /* SelectOfferModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A66BDE1F5FDEED00C56B12 /* SelectOfferModel.m */; };
 		B2E7A4C31F5802AE00854477 /* AirPriceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E7A4C21F5802AE00854477 /* AirPriceTableViewCell.m */; };
 		B2F2538A1F5A54B500782901 /* quoteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F253891F5A54B500782901 /* quoteTableViewCell.m */; };
 		B2F254681F5AA16C00782901 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F254671F5AA16C00782901 /* libc++.tbd */; };
@@ -210,6 +211,8 @@
 		B287A2431F58FBE200AF36E7 /* staleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = staleTableViewCell.m; sourceTree = "<group>"; };
 		B287A2451F59539600AF36E7 /* OfferViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfferViewController.h; sourceTree = "<group>"; };
 		B287A2461F59539600AF36E7 /* OfferViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfferViewController.m; sourceTree = "<group>"; };
+		B2A66BDD1F5FDEED00C56B12 /* SelectOfferModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectOfferModel.h; sourceTree = "<group>"; };
+		B2A66BDE1F5FDEED00C56B12 /* SelectOfferModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectOfferModel.m; sourceTree = "<group>"; };
 		B2E7A4C11F5802AE00854477 /* AirPriceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirPriceTableViewCell.h; sourceTree = "<group>"; };
 		B2E7A4C21F5802AE00854477 /* AirPriceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirPriceTableViewCell.m; sourceTree = "<group>"; };
 		B2F253881F5A54B400782901 /* quoteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quoteTableViewCell.h; sourceTree = "<group>"; };
@@ -497,6 +500,8 @@
 				84F8DE031F5669F7000DF6D0 /* Order.m */,
 				B22386AA1F5CE6F30017B531 /* CityListModel.h */,
 				B22386AB1F5CE6F30017B531 /* CityListModel.m */,
+				B2A66BDD1F5FDEED00C56B12 /* SelectOfferModel.h */,
+				B2A66BDE1F5FDEED00C56B12 /* SelectOfferModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -766,6 +771,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2A66BDF1F5FDEED00C56B12 /* SelectOfferModel.m in Sources */,
 				B22386AC1F5CE6F30017B531 /* CityListModel.m in Sources */,
 				84F8DE491F5669F7000DF6D0 /* RSADataSigner.m in Sources */,
 				B287A2471F59539600AF36E7 /* OfferViewController.m in Sources */,
