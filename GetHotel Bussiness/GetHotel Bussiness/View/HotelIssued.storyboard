@@ -37,7 +37,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="Gud-q5-rhE" kind="presentation" id="KLt-cF-QSX"/>
+                                            <action selector="pushAction:forEvent:" destination="8vG-Ks-UAf" eventType="touchUpInside" id="VFB-k3-igM"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -193,7 +193,7 @@
         <!--酒店发布-->
         <scene sceneID="qRD-AM-mm4">
             <objects>
-                <viewController title="酒店发布" hidesBottomBarWhenPushed="YES" id="sXG-6l-sUw" customClass="ReleaseHotelViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ReleaseHotel" title="酒店发布" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sXG-6l-sUw" customClass="ReleaseHotelViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="guy-8l-9qw"/>
                         <viewControllerLayoutGuide type="bottom" id="VO3-Ro-5S1"/>
@@ -203,13 +203,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="选择酒店" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Syr-jj-CUC">
-                                <rect key="frame" x="15" y="84" width="77.5" height="23"/>
+                                <rect key="frame" x="15" y="40" width="77.5" height="23"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aVN-rV-WkB">
-                                <rect key="frame" x="15" y="122" width="345" height="35"/>
+                                <rect key="frame" x="15" y="78" width="345" height="35"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="zrx-vy-ZBk"/>
@@ -229,98 +229,98 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房型描述" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSM-44-R1J">
-                                <rect key="frame" x="15" y="177" width="77.5" height="23"/>
+                                <rect key="frame" x="15" y="133" width="77.5" height="23"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写房间名称" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8PE-OU-S0t">
-                                <rect key="frame" x="40" y="220" width="295" height="21"/>
+                                <rect key="frame" x="40" y="176" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D3X-uD-Mhc">
-                                <rect key="frame" x="40" y="247" width="295" height="1"/>
+                                <rect key="frame" x="40" y="203" width="295" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="22K-TB-sz1"/>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="png2" translatesAutoresizingMaskIntoConstraints="NO" id="MO4-qM-J8e">
-                                <rect key="frame" x="40" y="273" width="140" height="90"/>
+                                <rect key="frame" x="40" y="229" width="140" height="90"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="EDs-Vg-o6H"/>
                                     <constraint firstAttribute="height" constant="90" id="ltO-Uy-iXQ"/>
                                 </constraints>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="是否含早" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2dX-6L-RXE">
-                                <rect key="frame" x="40" y="388" width="295" height="21"/>
+                                <rect key="frame" x="40" y="344" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uSQ-n0-Zkk">
-                                <rect key="frame" x="40" y="415" width="295" height="1"/>
+                                <rect key="frame" x="40" y="371" width="295" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="OnL-w1-Jhe"/>
                                 </constraints>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写床型" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ftx-9W-k6f">
-                                <rect key="frame" x="40" y="446" width="295" height="21"/>
+                                <rect key="frame" x="40" y="402" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S2a-sI-goj">
-                                <rect key="frame" x="40" y="473" width="295" height="1"/>
+                                <rect key="frame" x="40" y="429" width="295" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="SwK-mA-Wgu"/>
                                 </constraints>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写房间面积" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aeb-X2-jZp">
-                                <rect key="frame" x="40" y="504" width="295" height="21"/>
+                                <rect key="frame" x="40" y="460" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tRe-mw-rew">
-                                <rect key="frame" x="40" y="531" width="295" height="1"/>
+                                <rect key="frame" x="40" y="487" width="295" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="vLQ-yn-Oen"/>
                                 </constraints>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写价格" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JZ0-j4-MUR">
-                                <rect key="frame" x="40" y="562" width="295" height="21"/>
+                                <rect key="frame" x="40" y="518" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xYd-xi-gKr">
-                                <rect key="frame" x="40" y="589" width="295" height="1"/>
+                                <rect key="frame" x="40" y="545" width="295" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="R5q-fy-Z0x"/>
                                 </constraints>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写周末节假日加价" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Um-0s-b5T">
-                                <rect key="frame" x="40" y="620" width="295" height="21"/>
+                                <rect key="frame" x="40" y="576" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dqg-4F-Hbo">
-                                <rect key="frame" x="40" y="647" width="295" height="1"/>
+                                <rect key="frame" x="40" y="603" width="295" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="0al-aW-qu9"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fBf-IM-g7G">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FEo-GK-F1t">
@@ -430,7 +430,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ev4-38-B51" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3476" y="-94.002998500749626"/>
+            <point key="canvasLocation" x="2310" y="-94"/>
         </scene>
         <!--酒店发布-->
         <scene sceneID="jhx-VA-9t8">
@@ -451,25 +451,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6jI-wS-xVM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="548" y="-94.002998500749626"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="P5V-dH-D5p">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gud-q5-rhE" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="qcD-Gv-4QA"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0IP-Xa-cmP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="sXG-6l-sUw" kind="relationship" relationship="rootViewController" id="ngN-b8-lzh"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GCw-iu-OYD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2536.8000000000002" y="-94.002998500749626"/>
         </scene>
     </scenes>
     <resources>

@@ -10,4 +10,11 @@
 
 @implementation addHotelModel
 
+- (instancetype)initWithDict:(NSDictionary *)dict{
+    self = [super init];
+    if (self) {
+        self.hotelName = [Utilities nullAndNilCheck:dict[@"hotel_name"] replaceBy:@"未知"];
+    }
+    return self;
+}
 @end
