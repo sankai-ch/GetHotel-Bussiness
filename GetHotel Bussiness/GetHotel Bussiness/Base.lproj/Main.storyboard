@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2ff-5o-iBq">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Tab Bar Controller-->
+        <scene sceneID="k9V-PR-CIb">
+            <objects>
+                <tabBarController id="2ff-5o-iBq" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="cjZ-Xz-lWf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="duA-R7-ZPu" kind="relationship" relationship="viewControllers" id="0BM-c2-dn4"/>
+                        <segue destination="wts-fK-c72" kind="relationship" relationship="viewControllers" id="lds-SR-NgV"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nSf-QJ-XDe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-452" y="-5"/>
+        </scene>
+        <!--AirPrice-->
+        <scene sceneID="u8d-93-Rgt">
+            <objects>
+                <viewControllerPlaceholder storyboardName="AirPrice" id="duA-R7-ZPu" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" image="blue_plane" id="e3d-wS-BvD"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ag1-YF-t7b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="366" y="-44"/>
+        </scene>
+        <!--HotelIssued-->
+        <scene sceneID="pb5-qm-U1h">
+            <objects>
+                <viewControllerPlaceholder storyboardName="HotelIssued" id="wts-fK-c72" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" image="hotel" id="M5B-NJ-XQk"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wi8-bF-J1W" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="367" y="55"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="blue_plane" width="32" height="31"/>
+        <image name="hotel" width="22" height="22"/>
+    </resources>
+</document>
