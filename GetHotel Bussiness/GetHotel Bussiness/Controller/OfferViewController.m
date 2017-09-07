@@ -112,7 +112,7 @@
     NSString *destinationstr=_destinationButton.titleLabel.text;
     NSString *flightNostr=_flightNo.text;
     NSDictionary *para=@{@"business_id":@2,@"aviation_demand_id":@2,@"final_price":@(finalPrice),@"weight":@(weight),@"aviation_company":aviationcompany,@"aviation_cabin":aviationcabin,@"in_time_str":intimestr,@"out_time_str":outtimestr,@"departure":departurestr,@"destination":destinationstr,@"flight_no":flightNostr};
-    [RequestAPI requestURL:@"/offer_edu" withParameters:para andHeader:nil byMethod:kPost andSerializer:kJson success:^(id responseObject) {
+    [RequestAPI requestURL:@"/offer_edu" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         NSLog(@"result=%@",responseObject[@"result"]);
     } failure:^(NSInteger statusCode, NSError *error) {
           NSLog(@"cuowu :%ld",(long)statusCode);
