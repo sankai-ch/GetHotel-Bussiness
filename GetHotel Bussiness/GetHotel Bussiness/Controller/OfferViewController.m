@@ -181,7 +181,7 @@
 }
 #pragma -action
 - (IBAction)ConfirmAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    [self offerRequst];
+    
     UITouch *touch=[[event allTouches] anyObject];
     //触摸实例在特定坐标系中的位置
     CGPoint location=[touch locationInView:_confirmButton];
@@ -204,7 +204,16 @@
     rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
         [ripple removeFromSuperview];
         //具体按钮事件的逻辑可以在这里开始执行
-        
+        [self offerRequst];
+        [_departButton setTitle:@"选择出发地" forState:UIControlStateNormal];
+        [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
+        [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
+        [_arrivaltimeBtn setTitle:@"选择到达日期" forState:UIControlStateNormal];
+        _finalPrice.text=@"";
+        _aviationCompany.text=@"";
+        _aviationCabin.text=@"";
+        _flightNo.text=@"";
+        _weight.text=@"";
     };
 
 }
@@ -259,12 +268,12 @@
     [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
     NSString *dateString =[pickerFormatter stringFromDate:pickerDate];
     if(tags){
-        _departuretimeBtn.titleLabel.text=dateString;
+        [_departuretimeBtn setTitle:dateString forState:UIControlStateNormal];
         _datePickView.hidden=YES;
     }
     else{
         
-        _arrivaltimeBtn.titleLabel.text=dateString;
+        [_arrivaltimeBtn setTitle:dateString forState:UIControlStateNormal];
         _datePickView.hidden=YES;
     }
 }
