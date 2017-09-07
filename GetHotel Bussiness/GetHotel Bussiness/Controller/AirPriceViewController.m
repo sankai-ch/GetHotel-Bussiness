@@ -10,7 +10,10 @@
 #import "HMSegmentedControl.h"
 #import "AirPriceTableViewCell.h"
 #import "staleTableViewCell.h"
-@interface AirPriceViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+@interface AirPriceViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
+    NSInteger offerFlag;
+    NSInteger staleFlag;
+}
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITableView *offeringList;
 @property (weak, nonatomic) IBOutlet UIView *headView;
@@ -23,6 +26,8 @@
 @implementation AirPriceViewController
 
 - (void)viewDidLoad {
+    offerFlag=1;
+    staleFlag=1;
     [super viewDidLoad];
     [self naviConfig];
     // Do any additional setup after loading the view.
@@ -75,6 +80,35 @@
         [weakSelf.scrollView scrollRectToVisible:CGRectMake(UI_SCREEN_W*index, 0,UI_SCREEN_W , 200) animated:YES];
     }];
     [self.view addSubview:_segmentedControl];
+}
+#pragma mark -scrollView
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    if(scrollView==_scrollView){
+        NSInteger page = [self scrollCheck:scrollView];
+         [_segmentedControl setSelectedSegmentIndex:page animated:YES];
+}
+}
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    if (scrollView == _scrollView) {
+        [self scrollCheck:scrollView];
+    }
+}
+
+
+- (NSInteger)scrollCheck: (UIScrollView *)scrollView{
+    NSInteger page = scrollView.contentOffset.x / (scrollView.frame.size.width);
+    if(offerFlag==1 && page==0){
+        offerFlag=0;
+        NSLog(@"第一次滑动来到scrollview可报价");
+        
+    }
+    if(staleFlag==1 && page==1){
+        staleFlag=0;
+         NSLog(@"第一次滑动来到srollview已过期");
+    }
+   
+    return page;
 }
 #pragma mark -tableview
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

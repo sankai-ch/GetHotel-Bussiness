@@ -10,6 +10,7 @@
 #import "quoteTableViewCell.h"
 #import "POP.h"
 #import "CityListViewController.h"
+#import "SelectOfferModel.h"
 @interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     BOOL tags;
 }
@@ -21,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIView *datePickView;
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property(strong,nonatomic)NSMutableArray *selectOfferArr;
 - (IBAction)cancelAction:(UIBarButtonItem *)sender;
 - (IBAction)confirmAction:(UIBarButtonItem *)sender;
 - (IBAction)departuretime:(UIButton *)sender forEvent:(UIEvent *)event;
@@ -42,7 +44,8 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDestinationCity:) name:@"destination" object:nil];
     self.quoteTable.tableFooterView = [UIView new];
     tags=nil;
-   
+    _selectOfferArr=[NSMutableArray new];
+    [self selectOfferRequest];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -92,6 +95,27 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     //[self.navigationController popViewControllerAnimated:YES];//用push返回上一页
 }
+#pragma mark -request
+-(void)selectOfferRequest{
+    [RequestAPI requestURL:@"/selectOffer_edu" withParameters:@{@"Id":@2} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        if([responseObject[@"result"]integerValue]==1){
+             NSLog(@"%@",responseObject[@"content"]);
+            for(NSDictionary *result in responseObject[@"content"]){
+               
+                SelectOfferModel *offer=[[SelectOfferModel alloc]initWithDict:result];
+                [_selectOfferArr removeAllObjects];
+                [_selectOfferArr addObject:offer];
+            }
+            [_quoteTable reloadData];
+        }
+        else{
+            NSString *errorMsg=[ErrorHandler getProperErrorString:[responseObject[@"resultFlag"]integerValue]];
+            [Utilities popUpAlertViewWithMsg:@"错误" andTitle:@"警报" onView:self];
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"%ld",(long)statusCode);
+    }];
+}
 #pragma mark -tableview
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 140.f;
@@ -102,10 +126,22 @@
 }
 //设置每组多少行
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 2;
+    return _selectOfferArr.count;
 }
 -(UITableView *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     quoteTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
+    SelectOfferModel *selectOfferModel=_selectOfferArr[indexPath.row];
+    cell.PriceLabel.text=[NSString stringWithFormat:@"%ld",(long)selectOfferModel.finalprice];
+    NSDate *indate=[NSDate dateWithTimeIntervalSince1970:selectOfferModel.intime];
+    NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
+    formatter.dateFormat=@"yyyy-MM-dd HH:mm";
+    NSString *inTime=[formatter stringFromDate:indate];
+    NSDate *outdate=[NSDate dateWithTimeIntervalSince1970:selectOfferModel.outtime];
+    
+    NSString *outTime=[formatter stringFromDate:outdate];
+    cell.TimeLabel.text=[NSString stringWithFormat:@"%@——%@",inTime,outTime];
+    cell.flightLabel.text=[NSString stringWithFormat:@"%@ %@ %@",selectOfferModel.aviationCompany,selectOfferModel.flightNo,selectOfferModel.aviationCabin];
+    cell.weight.text=[NSString stringWithFormat:@"%ld",(long)selectOfferModel.weight];
     return cell;
 }
 //创建左滑删除按钮
@@ -215,5 +251,8 @@
 - (IBAction)arrivaltime:(UIButton *)sender forEvent:(UIEvent *)event {
     _datePickView.hidden=NO;
     tags=NO;
+}
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    _datePickView.hidden=YES;
 }
 @end
