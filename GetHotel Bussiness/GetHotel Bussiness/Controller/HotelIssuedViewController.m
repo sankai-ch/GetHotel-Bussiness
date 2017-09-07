@@ -10,7 +10,10 @@
 #import "MyHotelTableViewCell.h"
 #import "ReleaseHotelViewController.h"
 #import "FindHotelModel.h"
-@interface HotelIssuedViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface HotelIssuedViewController ()<UITableViewDelegate,UITableViewDataSource>{
+    NSInteger pageNum;
+    BOOL hotelLast;
+}
 @property (strong, nonatomic) NSMutableArray *arr;
 @property (weak, nonatomic) IBOutlet UITableView *hotelTableView;
 - (IBAction)pushAction:(UIButton *)sender forEvent:(UIEvent *)event;
@@ -29,6 +32,8 @@
     _resetArr = [NSMutableArray new];
     
     _hotelTableView.tableFooterView = [UIView new];
+    
+    pageNum = 1;
     
     [self initializeData];
     [self setRefreshControl];
@@ -138,8 +143,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //取消选中
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    
+}
+
+//细胞将要出现时调用
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.row == _arr.count - 1){
+        if(!hotelLast) {
+            pageNum ++;
+            [self request];
+        }
+    }
 }
 
 #pragma mark - request

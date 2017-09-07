@@ -280,7 +280,12 @@
 }
 #pragma mark - Request
 - (void)issueRequest{
-    //NSDictionary *para = @{@"business_id":@2,@"hotel_name":@"海天",@""};
+    
+    //NSDictionary *para = @{@"business_id":@2,@"hotel_name":@"海天",@"hotel_type":
+    NSInteger row = [_pickView selectedRowInComponent:0];
+    NSString *title= _pickerArr[row];
+    [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
+    
     
     [RequestAPI requestURL:@"/addHotel" withParameters:@{@"":@2} andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         
@@ -304,12 +309,14 @@
 - (IBAction)yesAction:(UIBarButtonItem *)sender {
     NSInteger row = [_pickView selectedRowInComponent:0];
     NSString *title= _pickerArr[row];
-    //拿到某一列中选中的行号
-    NSInteger raw =[_pickView selectedRowInComponent:1];
-    //根据上面拿到的行号，找到对应的数据（选中行的标题）
-    NSString *ti= _arr[raw];
+    
+//    //拿到某一列中选中的行号
+//    NSInteger raw =[_pickView selectedRowInComponent:1];
+//    //根据上面拿到的行号，找到对应的数据（选中行的标题）
+//    NSString *ti= _arr[raw];
+    
     //把拿到的标题显示在button
-    [_chooseHotelBtn setTitle:[title stringByAppendingString:ti] forState:UIControlStateNormal];
+    [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
     
     // [_popupBtn setTitle:ti forState:UIControlStateNormal];
     _toolBar.hidden = YES;
