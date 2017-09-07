@@ -14,6 +14,7 @@
 		841D5B291F56B16F00B24FEE /* ReleaseHotelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D5B281F56B16F00B24FEE /* ReleaseHotelViewController.m */; };
 		841D5B2C1F56B48A00B24FEE /* MyHotelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D5B2B1F56B48A00B24FEE /* MyHotelTableViewCell.m */; };
 		84675FF81F6138A200CB3874 /* FindHotelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84675FF71F6138A200CB3874 /* FindHotelModel.m */; };
+		84675FFC1F6139CC00CB3874 /* ZLImageViewDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84675FFB1F6139CC00CB3874 /* ZLImageViewDisplayView.m */; };
 		84F8DDA81F56692C000DF6D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8DDA71F56692C000DF6D0 /* main.m */; };
 		84F8DDAB1F56692C000DF6D0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8DDAA1F56692C000DF6D0 /* AppDelegate.m */; };
 		84F8DDB11F56692C000DF6D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84F8DDAF1F56692C000DF6D0 /* Main.storyboard */; };
@@ -109,6 +110,8 @@
 		841D5B2B1F56B48A00B24FEE /* MyHotelTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHotelTableViewCell.m; sourceTree = "<group>"; };
 		84675FF61F6138A200CB3874 /* FindHotelModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindHotelModel.h; sourceTree = "<group>"; };
 		84675FF71F6138A200CB3874 /* FindHotelModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindHotelModel.m; sourceTree = "<group>"; };
+		84675FFA1F6139CC00CB3874 /* ZLImageViewDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLImageViewDisplayView.h; sourceTree = "<group>"; };
+		84675FFB1F6139CC00CB3874 /* ZLImageViewDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLImageViewDisplayView.m; sourceTree = "<group>"; };
 		84F8DDA31F56692C000DF6D0 /* GetHotel Bussiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GetHotel Bussiness.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8DDA71F56692C000DF6D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		84F8DDA91F56692C000DF6D0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -329,6 +332,15 @@
 			name = Main;
 			sourceTree = "<group>";
 		};
+		84675FF91F6139CC00CB3874 /* ZLImageViewDisplay */ = {
+			isa = PBXGroup;
+			children = (
+				84675FFA1F6139CC00CB3874 /* ZLImageViewDisplayView.h */,
+				84675FFB1F6139CC00CB3874 /* ZLImageViewDisplayView.m */,
+			);
+			path = ZLImageViewDisplay;
+			sourceTree = "<group>";
+		};
 		84F8DD9A1F56692C000DF6D0 = {
 			isa = PBXGroup;
 			children = (
@@ -400,6 +412,7 @@
 		84F8DDDC1F5669F7000DF6D0 /* 3rd */ = {
 			isa = PBXGroup;
 			children = (
+				84675FF91F6139CC00CB3874 /* ZLImageViewDisplay */,
 				84F8DDDD1F5669F7000DF6D0 /* DOPDropDownMenu - Enhanced */,
 				84F8DDE01F5669F7000DF6D0 /* HMSegmentedControl */,
 				84F8DDE31F5669F7000DF6D0 /* MDQREncode */,
@@ -824,6 +837,7 @@
 				84F8DE371F5669F7000DF6D0 /* qrencode.m in Sources */,
 				84F8DE4D1F5669F7000DF6D0 /* JSONS.m in Sources */,
 				84F8DE341F5669F7000DF6D0 /* HMSegmentedControl.m in Sources */,
+				84675FFC1F6139CC00CB3874 /* ZLImageViewDisplayView.m in Sources */,
 				84F8DE3A1F5669F7000DF6D0 /* rscode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
