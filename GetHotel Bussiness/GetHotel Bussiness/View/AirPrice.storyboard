@@ -722,13 +722,18 @@
                     <navigationItem key="navigationItem" id="479-Bd-cGu"/>
                     <connections>
                         <outlet property="arrivaltimeBtn" destination="UTO-4l-Asa" id="alq-0T-psq"/>
+                        <outlet property="aviationCabin" destination="QOr-fd-9gY" id="VY7-GJ-2lr"/>
+                        <outlet property="aviationCompany" destination="Thw-cY-Rgh" id="qZH-Wr-QwQ"/>
                         <outlet property="confirmButton" destination="r7C-pe-I8L" id="Gwb-ZV-C9f"/>
                         <outlet property="datePickView" destination="x6Q-xH-UYq" id="dWx-Rb-vdn"/>
                         <outlet property="datePicker" destination="e7k-QM-Nwx" id="SyJ-HZ-OZn"/>
                         <outlet property="departButton" destination="64C-Qe-mnq" id="vRk-4C-A7S"/>
                         <outlet property="departuretimeBtn" destination="heh-R1-lyx" id="f8i-m4-iDe"/>
                         <outlet property="destinationButton" destination="qez-d2-OVv" id="bSp-Tz-uZd"/>
+                        <outlet property="finalPrice" destination="udp-ac-bMd" id="RZH-Yc-xHY"/>
+                        <outlet property="flightNo" destination="25M-9D-w9v" id="yA9-Ct-lb1"/>
                         <outlet property="quoteTable" destination="ri3-dV-RvC" id="zPy-jS-5Lu"/>
+                        <outlet property="weight" destination="RQh-E9-qp7" id="tUm-pR-I0p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fs8-uv-o4o" userLabel="First Responder" sceneMemberID="firstResponder"/>

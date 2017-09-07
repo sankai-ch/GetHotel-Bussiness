@@ -29,6 +29,11 @@
 - (IBAction)arrivaltime:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIButton *arrivaltimeBtn;
 @property (weak, nonatomic) IBOutlet UIButton *departuretimeBtn;
+@property (weak, nonatomic) IBOutlet UITextField *finalPrice;
+@property (weak, nonatomic) IBOutlet UITextField *weight;
+@property (weak, nonatomic) IBOutlet UITextField *aviationCompany;
+@property (weak, nonatomic) IBOutlet UITextField *flightNo;
+@property (weak, nonatomic) IBOutlet UITextField *aviationCabin;
 
 
 
@@ -96,14 +101,33 @@
     //[self.navigationController popViewControllerAnimated:YES];//用push返回上一页
 }
 #pragma mark -request
+-(void)offerRequst{
+    double finalPrice=[_finalPrice.text doubleValue];
+    NSInteger weight=[_weight.text integerValue];
+    NSString *aviationcompany=_aviationCompany.text;
+    NSString *aviationcabin=_aviationCabin.text;
+    NSString *intimestr=_departuretimeBtn.titleLabel.text;
+    NSString *outtimestr=_arrivaltimeBtn.titleLabel.text;
+    NSString *departurestr=_departButton.titleLabel.text;
+    NSString *destinationstr=_destinationButton.titleLabel.text;
+    NSString *flightNostr=_flightNo.text;
+    NSDictionary *para=@{@"business_id":@2,@"aviation_demand_id":@2,@"final_price":@(finalPrice),@"weight":@(weight),@"aviation_company":aviationcompany,@"aviation_cabin":aviationcabin,@"in_time_str":intimestr,@"out_time_str":outtimestr,@"departure":departurestr,@"destination":destinationstr,@"flight_no":flightNostr};
+    [RequestAPI requestURL:@"/offer_edu" withParameters:para andHeader:nil byMethod:kPost andSerializer:kJson success:^(id responseObject) {
+        NSLog(@"result=%@",responseObject[@"result"]);
+    } failure:^(NSInteger statusCode, NSError *error) {
+          NSLog(@"cuowu :%ld",(long)statusCode);
+    }];
+}
+
 -(void)selectOfferRequest{
     [RequestAPI requestURL:@"/selectOffer_edu" withParameters:@{@"Id":@2} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         if([responseObject[@"result"]integerValue]==1){
-             NSLog(@"%@",responseObject[@"content"]);
+             //NSLog(@"%@",responseObject[@"content"]);
+            [_selectOfferArr removeAllObjects];
             for(NSDictionary *result in responseObject[@"content"]){
                
                 SelectOfferModel *offer=[[SelectOfferModel alloc]initWithDict:result];
-                [_selectOfferArr removeAllObjects];
+                
                 [_selectOfferArr addObject:offer];
             }
             [_quoteTable reloadData];
@@ -157,6 +181,7 @@
 }
 #pragma -action
 - (IBAction)ConfirmAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    [self offerRequst];
     UITouch *touch=[[event allTouches] anyObject];
     //触摸实例在特定坐标系中的位置
     CGPoint location=[touch locationInView:_confirmButton];
@@ -179,6 +204,7 @@
     rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
         [ripple removeFromSuperview];
         //具体按钮事件的逻辑可以在这里开始执行
+        
     };
 
 }
@@ -230,7 +256,7 @@
 - (IBAction)confirmAction:(UIBarButtonItem *)sender {
     NSData *pickerDate= _datePicker.date;
     NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
-    [pickerFormatter setDateFormat:@"yyyy-MM-dd"];
+    [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
     NSString *dateString =[pickerFormatter stringFromDate:pickerDate];
     if(tags){
         _departuretimeBtn.titleLabel.text=dateString;
