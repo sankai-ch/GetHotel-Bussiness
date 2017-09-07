@@ -16,6 +16,7 @@
 #import "StorageMgr.h"
 #import "RequestAPI.h"
 #import "ErrorHandler.h"
+#import "JSONS.h"
 #import "NSDate+Utility.h"
 #import "NSString+Crypt.h"
 #import <SDWebImage/UIImageView+WebCache.h>

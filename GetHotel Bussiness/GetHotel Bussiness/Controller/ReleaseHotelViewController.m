@@ -10,6 +10,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "addHotelModel.h"
 @interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
     
     UIImagePickerController *imagePickerController;
@@ -20,8 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolBar;
 - (IBAction)cancelAction:(UIBarButtonItem *)sender;
 
-@property (strong, nonatomic) NSArray *pickerArr;
-@property (strong, nonatomic) NSArray *arr;
+@property (strong, nonatomic) NSMutableArray *pickerArr;
 - (IBAction)yesAction:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *hotelPic;
 @property (weak, nonatomic) IBOutlet UIView *grayView;
@@ -39,16 +39,27 @@
 @implementation ReleaseHotelViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    _pickerArr = @[@"天马行空大酒店",@"滴滴滴大酒店",@"南京家园大酒店"];
-    _arr = @[@"无锡火车站路500号",@"无锡中央车站对面",@"无锡滨湖区五湖大道100号",@"南京市学府路300号"];
-    [_pickView selectRow:2 inComponent:0 animated:NO];
-    [_pickView reloadComponent:0];
-    [_pickView reloadComponent:1];
     
+    [super viewDidLoad];
+    
+    // Do any additional setup after loading the view.
+    
+    //_pickerArr = @[@"天马行空大酒店",@"滴滴滴大酒店",@"南京家园大酒店"];
+    //_arr = @[@"无锡火车站路500号",@"无锡中央车站对面",@"无锡滨湖区五湖大道100号",@"南京市学府路300号"];
+    
+    [_pickView selectRow:1 inComponent:0 animated:YES];
+    [_pickView reloadComponent:0];
+    //[_pickView reloadComponent:1];
+    
+    //_pickerArr = [NSMutableArray new];
+    //_arr = [NSMutableArray new];
+    //_pickView.frame = CGRectMake(0, 480, 320, 260);
+   
+    _pickView.frame = CGRectMake(0, 480, 320, 260);
     //将手势添加到hotelPic这个视图中
     [self addTapGestureRecognizer:_hotelPic];
+    
+    _pickerArr = [NSMutableArray new];
     
     imagePickerController = [[UIImagePickerController alloc] init];
     imagePickerController.delegate = self;
@@ -90,6 +101,7 @@
 }
 - (void)Issue{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"issue" object:self userInfo:@{@"hotelName":_roomNameLabel.text}];
+    [self request];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -105,6 +117,59 @@
     [_chooseHotelBtn.layer setBorderColor:[UIColor colorWithRed:0.19 green:0.57 blue:0.95 alpha:1].CGColor];//边框颜色
 }
 
+
+#pragma mark - request
+- (void)request{
+    NSInteger row = [_pickView selectedRowInComponent:0];
+    NSString *title= _pickerArr[row];
+    
+    
+    //把拿到的标题显示在button
+    [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
+
+    
+
+    [RequestAPI requestURL:@"/addHotel" withParameters:@{@"business_id":@2,@"hotel_name":title, @"hotel_type":_breakfastLabel.text,  @"room_imgs": _hotelPic} andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
+        
+        NSLog(@"addHotel：%@",responseObject);
+        
+        if ([responseObject[@"flag"] isEqualToString:@"success"]){
+            
+            NSDictionary *result = responseObject[@"content"];
+            NSArray *list = result[@"list"];
+            NSLog(@"%@",list);
+            
+        }
+        
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"错误码=%ld",(long)statusCode);
+    }];
+
+}
+
+- (void)obtainHotelName{
+    [RequestAPI requestURL:@"/searchHotelName" withParameters:nil andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        
+        NSLog(@"searchHotelName:%@",responseObject);
+        
+        if ([responseObject[@"result"]integerValue] == 1) {
+            
+            NSLog(@"content:%@",responseObject[@"content"]);
+            
+            NSArray *result = responseObject[@"content"];
+            for(NSDictionary *dict in result){
+                
+                addHotelModel *model = [[addHotelModel alloc] initWithDict:dict];
+                
+                [_pickerArr addObject:model];
+            }
+            NSLog(@"pickerARR:%@",_pickerArr);
+        }
+        
+    } failure:^(NSInteger statusCode, NSError *error) {
+         NSLog(@"错误码=%ld",(long)statusCode);
+    }];
+}
 #pragma mark - 单击手势
 
 - (void)addTapGestureRecognizer: (id)any{
@@ -216,16 +281,15 @@
 - (void) saveImage:(UIImage *)currentImage {
     //设置照片的品质
     NSData *imageData = UIImageJPEGRepresentation(currentImage, 0.5);
-    
     NSLog(@"%@",NSHomeDirectory());
-    // 获取沙盒目录
+    //获取沙盒目录
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/currentImage.png"];
-    // 将图片写入文件
+    //将图片写入文件
     [imageData writeToFile:filePath atomically:NO];
     //将选择的图片显示出来
-    //    [self.photoImage setImage:[UIImage imageWithContentsOfFile:filePath]];
-    
+    //[self.photoImage setImage:[UIImage imageWithContentsOfFile:filePath]];
 }
+
 #pragma mark - 取消操作时调用
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:^{
@@ -246,24 +310,19 @@
 
 //每列多少行
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    if (component == 0) {
+    
         return _pickerArr.count;
-    }else{
-        return _arr.count;
-    }
     
 }
+
 //设置每行的标题
 - (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component __TVOS_PROHIBITED{
-    if (component ==0) {
         return _pickerArr[row];
-    }else{
-        return _arr[row];
-    }
 }
 //设置每列的宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
-    return _pickView.frame.size.width/2.3;
+    //return _pickView.frame.size.width/2.3;
+    return _pickView.frame.size.width;
 }
 
 /*
@@ -275,6 +334,7 @@
     // Pass the selected object to the new view controller.
 }
 */
+
 //键盘收回
 - (void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     //让根视图结束编辑状态达到收起键盘的目的
@@ -282,32 +342,98 @@
     //[self.view _ endEditing:YES];
 }
 
+#pragma mark - PickerView弹出效果
 
 
 - (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    _toolBar.hidden = NO;
-    _pickView.hidden = NO;
+    
+    [self obtainHotelName];
+    //[self obtainHotelName];
+    //_toolBar.hidden = NO;
+    //_pickView.hidden = NO;
     _grayView.hidden = NO;
+    //[self ViewAnimation:_pickView willHidden:NO];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [UIView beginAnimations:nil context:context];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:0.6];//动画时间长度，单位秒，浮点数
+    [self.view exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
+    _pickView.frame = CGRectMake(0, 300, 320, 260);
+    _toolBar.frame = CGRectMake(0, 220, 320, 260);
+    
+    [UIView setAnimationDelegate:self];
+    // 动画完毕后调用animationFinished
+    //[UIView setAnimationDidStopSelector:@selector(animationFinished)];
+    [UIView commitAnimations];
+    [self ViewAnimation:_pickView willHidden:NO];
+    [self ViewAnimation:_toolBar willHidden:NO];
+    //[_pickView selectRow:0 inComponent:0 animated:YES];
+    //[self.view addSubview:self.pickView];
+    
 }
+
+
 - (IBAction)cancelAction:(UIBarButtonItem *)sender {
     _toolBar.hidden = YES;
-    _pickView.hidden = YES;
+    //_pickView.hidden = YES;
     _grayView.hidden = YES;
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [UIView beginAnimations:nil context:context];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:0.6];//动画时间长度，单位秒，浮点数
+    _pickView.frame = CGRectMake(0, 480, 320, 260);
+    //_toolBar.frame = CGRectMake(0, 0, 320, 360);
+    [UIView setAnimationDelegate:self];
+    // 动画完毕后调用animationFinished
+    //[UIView setAnimationDidStopSelector:@selector(animationFinished)];
+    [UIView commitAnimations];
+    
+    [self ViewAnimation:_pickView willHidden:YES];
 }
 
 - (IBAction)yesAction:(UIBarButtonItem *)sender {
+    
     NSInteger row = [_pickView selectedRowInComponent:0];
     NSString *title= _pickerArr[row];
-    //拿到某一列中选中的行号
-    NSInteger raw =[_pickView selectedRowInComponent:1];
-    //根据上面拿到的行号，找到对应的数据（选中行的标题）
-    NSString *ti= _arr[raw];
+    
+    NSLog(@"title = %@",_pickerArr[row]);
+  
     //把拿到的标题显示在button
-    [_chooseHotelBtn setTitle:[title stringByAppendingString:ti] forState:UIControlStateNormal];
+    [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
+        //return ;
     
     // [_popupBtn setTitle:ti forState:UIControlStateNormal];
     _toolBar.hidden = YES;
-    _pickView.hidden = YES;
+    //[self ViewAnimation:_pickView willHidden:YES];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [UIView beginAnimations:nil context:context];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [UIView setAnimationDuration:0.6];//动画时间长度，单位秒，浮点数
+    //_pickView.frame = CGRectMake(0, 1, 320, 260);
+    //_toolBar.frame = CGRectMake(0, 0, 320, 360);
+    [UIView setAnimationDelegate:self];
+    // 动画完毕后调用animationFinished
+    //[UIView setAnimationDidStopSelector:@selector(animationFinished)];
+    [UIView commitAnimations];
+    
+    [self ViewAnimation:_pickView willHidden:YES];
+    //_pickView.hidden = YES;
     _grayView.hidden = YES;
 }
+- (void)ViewAnimation:(UIView*)view willHidden:(BOOL)hidden {
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        if (hidden) {
+            [view setHidden:!hidden];
+            //view.frame = CGRectMake(0, 245, 320, 260);
+        } else {
+            [view setHidden:hidden];
+            view.frame = CGRectMake(0, 245, 320, 260);
+        }
+    } completion:^(BOOL finished) {
+        [view setHidden:hidden];
+    }];
+}
+
 @end
