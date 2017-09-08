@@ -38,7 +38,7 @@
     
     [self initializeData];
     [self setRefreshControl];
-    [self deleteRequest];
+    //[self deleteRequest];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(issueRoom:) name:@"issue" object:nil];
     
@@ -106,13 +106,14 @@
     }
 
     //将URL中的字符以数组的形式分开存放
+    if (_resetArr.count == 4){
     for(NSInteger i = 0; i < _typeArr.count; i++){
         _resetArr = _typeArr[i];
         cell.hotelDescribeLabel.text = [NSString stringWithFormat:@"%@ %@", _resetArr[2],_resetArr[1]];
         
         cell.hotelAreaLabel.text = _resetArr[3];
     }
-    
+    }
     NSURL *url = [NSURL URLWithString:findHotel.hotelImg];
     //cell.hotelImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:findHotel.roomImg]]];
     [cell.hotelImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"hotels"]];
@@ -130,6 +131,7 @@
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         
         //先删数据 再删UI
+        [self deleteRequest];
         [_arr removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }];
@@ -153,9 +155,8 @@
         if(pages >= pageNum) {
             pageNum ++;
             [self request];
-            [self up];
+            
         }
-        
     }
 }
 
@@ -226,7 +227,10 @@
 - (void)deleteRequest{
     [RequestAPI requestURL:@"/deleteHotel" withParameters:@{@"id":@1} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         NSLog(@"%@",responseObject);
-        
+        if ([responseObject[@"result"] integerValue] == 1){
+            
+            
+        }
     } failure:^(NSInteger statusCode, NSError *error) {
         
     }];

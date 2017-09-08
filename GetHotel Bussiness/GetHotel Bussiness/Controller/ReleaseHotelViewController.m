@@ -100,7 +100,8 @@
 //   _chooseHotelBtn.layer.masksToBounds = YES;
 }
 - (void)Issue{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"issue" object:self userInfo:@{@"hotelName":_roomNameLabel.text}];
+    [self issueRequest];
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"issue" object:self userInfo:@{@"hotelName":_roomNameLabel.text}];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -208,7 +209,7 @@
     
     _hotelPic.image = image;
     
-    NSData *data = UIImageJPEGRepresentation(image, 1.0f);
+    //NSData *data = UIImageJPEGRepresentation(image, 1.0f);
     //_imgUrl = [data base64EncodedDataWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn];
     //_imgUrl = [data base64Encoding];
     NSLog(@"URL:%@",_imgUrl);
@@ -278,13 +279,16 @@
     NSInteger row = [_pickView selectedRowInComponent:0];
     NSString *title= _hotelNamePickerArr[row];
     [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
-    
-    NSDictionary *para = @{@"business_id":@2,@"hotel_name":_roomNameLabel.text,@"hotel_type":_roomAreaLabel.text,@"room_imgs":_imgUrl};
+    _imgUrl = @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505461689&di=9c9704fab9db8eccb77e1e1360fdbef4&imgtype=jpg&er=1&src=http%3A%2F%2Fimg3.redocn.com%2Ftupian%2F20150312%2Fhaixinghezhenzhubeikeshiliangbeijing_3937174.jpg";
+    NSDictionary *para = @{@"business_id":@1,@"hotel_name":title ,@"hotel_type":_roomAreaLabel.text,@"room_imgs":_imgUrl};
     
     [RequestAPI requestURL:@"/addHotel" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
+        if ([responseObject[@"result"]integerValue] == 1){
+            NSLog(@"issue:%@",responseObject[@"result"]);
+        }
         
     } failure:^(NSInteger statusCode, NSError *error) {
-        
+        NSLog(@"%ld",(long)statusCode);
     }];
 }
 
