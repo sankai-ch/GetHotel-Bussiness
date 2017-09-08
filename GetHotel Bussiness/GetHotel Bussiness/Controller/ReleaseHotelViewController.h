@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 @interface ReleaseHotelViewController : UIViewController
-
+- (IBAction)TextField_DidEndOnExit:(id)sender;
 @end
