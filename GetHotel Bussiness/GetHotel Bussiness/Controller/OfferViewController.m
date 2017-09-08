@@ -122,7 +122,7 @@
 -(void)selectOfferRequest{
     [RequestAPI requestURL:@"/selectOffer_edu" withParameters:@{@"Id":@2} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         if([responseObject[@"result"]integerValue]==1){
-             //NSLog(@"%@",responseObject[@"content"]);
+             NSLog(@"%@",responseObject[@"content"]);
             [_selectOfferArr removeAllObjects];
             for(NSDictionary *result in responseObject[@"content"]){
                
@@ -217,24 +217,54 @@
     };
 
 }
+
 #pragma mark - Action
 - (IBAction)depart:(UIButton *)sender forEvent:(UIEvent *)event {
-      NSNumber  *tag=@0;
-   // [self performSegueWithIdentifier:@"departAction" sender:tag];
-    CityListViewController *cityListVC=[Utilities getStoryboardInstance:@"AirPrice" byIdentity:@"CityListID"];
-    [cityListVC setTag:tag];
-    UINavigationController *nc=[[UINavigationController alloc]initWithRootViewController:cityListVC];
-    [self presentViewController:nc animated:YES completion:nil];
+    POPSpringAnimation *springForWardAnimation=[POPSpringAnimation animation];
+    springForWardAnimation.property=[POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+    springForWardAnimation.toValue=[NSValue valueWithCGSize:CGSizeMake(1.2, 1.2)];
+    springForWardAnimation.springBounciness=20;
+    springForWardAnimation.springSpeed=20;
+    [_departButton pop_addAnimation:springForWardAnimation forKey:@"springForwardAnimation"];
+    springForWardAnimation.completionBlock=^(POPAnimation *anim, BOOL finished){
+        POPBasicAnimation *basicBackWardAnimation=[POPBasicAnimation animation];
+        basicBackWardAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+        basicBackWardAnimation.duration = 0.25f;
+        basicBackWardAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.0, 1.0)];
+        [_departButton pop_addAnimation:basicBackWardAnimation forKey:@"basicBackWardAnimation"];
+        NSNumber  *tag=@0;
+        // [self performSegueWithIdentifier:@"departAction" sender:tag];
+        CityListViewController *cityListVC=[Utilities getStoryboardInstance:@"AirPrice" byIdentity:@"CityListID"];
+        [cityListVC setTag:tag];
+        UINavigationController *nc=[[UINavigationController alloc]initWithRootViewController:cityListVC];
+        [self presentViewController:nc animated:YES completion:nil];
+        
+    };
 }
 
 
 - (IBAction)destination:(UIButton *)sender forEvent:(UIEvent *)event {
-    NSNumber  *tag=@1;
-    // [self performSegueWithIdentifier:@"departAction" sender:tag];
-    CityListViewController *cityListVC=[Utilities getStoryboardInstance:@"AirPrice" byIdentity:@"CityListID"];
-    [cityListVC setTag:tag];
-    UINavigationController *nc=[[UINavigationController alloc]initWithRootViewController:cityListVC];
-    [self presentViewController:nc animated:YES completion:nil];
+    POPSpringAnimation *springForWardAnimation=[POPSpringAnimation animation];
+    springForWardAnimation.property=[POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+    springForWardAnimation.toValue=[NSValue valueWithCGSize:CGSizeMake(1.2, 1.2)];
+    springForWardAnimation.springBounciness=20;
+    springForWardAnimation.springSpeed=20;
+    [_destinationButton pop_addAnimation:springForWardAnimation forKey:@"springForwardAnimation"];
+    springForWardAnimation.completionBlock=^(POPAnimation *anim, BOOL finished){
+        POPBasicAnimation *basicBackWardAnimation=[POPBasicAnimation animation];
+        basicBackWardAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+        basicBackWardAnimation.duration = 0.25f;
+        basicBackWardAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.0, 1.0)];
+        [_destinationButton pop_addAnimation:basicBackWardAnimation forKey:@"basicBackWardAnimation"];
+        NSNumber  *tag=@1;
+        // [self performSegueWithIdentifier:@"departAction" sender:tag];
+        CityListViewController *cityListVC=[Utilities getStoryboardInstance:@"AirPrice" byIdentity:@"CityListID"];
+        [cityListVC setTag:tag];
+        UINavigationController *nc=[[UINavigationController alloc]initWithRootViewController:cityListVC];
+        [self presentViewController:nc animated:YES completion:nil];
+        
+    };
+
 }
 //-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
 //    CityListViewController *CityListViewController=[segue destinationViewController];
@@ -244,7 +274,7 @@
 //        CityListViewController.tag=sender;
 //    }
 //}
-#pragma  mark - notification
+
 -(void)checkDepartCity:(NSNotification *)note{
     NSString *cityStr=note.object;
     if(![_departButton.titleLabel.text isEqualToString:cityStr]){
@@ -279,13 +309,45 @@
 }
 
 - (IBAction)departuretime:(UIButton *)sender forEvent:(UIEvent *)event {
-    _datePickView.hidden=NO;
-    tags=YES;
+    POPSpringAnimation *springForWardAnimation=[POPSpringAnimation animation];
+    springForWardAnimation.property=[POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+    springForWardAnimation.toValue=[NSValue valueWithCGSize:CGSizeMake(1.2, 1.2)];
+    springForWardAnimation.springBounciness=20;
+    springForWardAnimation.springSpeed=20;
+    [_departuretimeBtn pop_addAnimation:springForWardAnimation forKey:@"springForwardAnimation"];
+    springForWardAnimation.completionBlock=^(POPAnimation *anim, BOOL finished){
+        POPBasicAnimation *basicBackWardAnimation=[POPBasicAnimation animation];
+        basicBackWardAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+        basicBackWardAnimation.duration = 0.25f;
+        basicBackWardAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.0, 1.0)];
+        [_departuretimeBtn pop_addAnimation:basicBackWardAnimation forKey:@"basicBackWardAnimation"];
+     
+        _datePickView.hidden=NO;
+        tags=YES;
+        
+    };
+
+  
 }
 
 - (IBAction)arrivaltime:(UIButton *)sender forEvent:(UIEvent *)event {
-    _datePickView.hidden=NO;
-    tags=NO;
+    POPSpringAnimation *springForWardAnimation=[POPSpringAnimation animation];
+    springForWardAnimation.property=[POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+    springForWardAnimation.toValue=[NSValue valueWithCGSize:CGSizeMake(1.2, 1.2)];
+    springForWardAnimation.springBounciness=20;
+    springForWardAnimation.springSpeed=20;
+    [_arrivaltimeBtn pop_addAnimation:springForWardAnimation forKey:@"springForwardAnimation"];
+    springForWardAnimation.completionBlock=^(POPAnimation *anim, BOOL finished){
+        POPBasicAnimation *basicBackWardAnimation=[POPBasicAnimation animation];
+        basicBackWardAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+        basicBackWardAnimation.duration = 0.25f;
+        basicBackWardAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.0, 1.0)];
+        [_arrivaltimeBtn pop_addAnimation:basicBackWardAnimation forKey:@"basicBackWardAnimation"];
+        
+        _datePickView.hidden=NO;
+        tags=YES;
+        
+    };
 }
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     _datePickView.hidden=YES;

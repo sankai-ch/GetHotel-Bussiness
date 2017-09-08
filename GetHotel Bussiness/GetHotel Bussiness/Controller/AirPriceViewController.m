@@ -10,15 +10,21 @@
 #import "HMSegmentedControl.h"
 #import "AirPriceTableViewCell.h"
 #import "staleTableViewCell.h"
+#import "OfferModel.h"
 @interface AirPriceViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     NSInteger offerFlag;
     NSInteger staleFlag;
+    NSInteger offerPageNum;
+    BOOL offerLast;
+    NSInteger statlePageNum;
+    BOOL statleLast;
+    NSInteger pageSize;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITableView *offeringList;
 @property (weak, nonatomic) IBOutlet UIView *headView;
 @property (weak, nonatomic) IBOutlet UITableView *offeredList;
-
+@property (strong,nonatomic) NSMutableArray *offerArr;
 
 @property (strong,nonatomic)HMSegmentedControl *segmentedControl;
 @end
@@ -28,10 +34,18 @@
 - (void)viewDidLoad {
     offerFlag=1;
     staleFlag=1;
+    offerPageNum=1;
+    statlePageNum=1;
+    pageSize=5;
     [super viewDidLoad];
     [self naviConfig];
     // Do any additional setup after loading the view.
     [self setSegment];
+    [self OfferRequest];
+    _offerArr=[NSMutableArray new];
+   
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -116,25 +130,53 @@
 }
 //设置多少组
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+   return _offerArr.count;
 }
 //设置每组多少行
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 2;
+    return 1;
 }
 -(UITableView *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if(tableView==_offeringList){
     AirPriceTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
+        OfferModel *offerModel=_offerArr[indexPath.section];
+        cell.DateCityAirTicket.text=offerModel.aviationdemandtitle;
+        NSInteger dateInTime=[offerModel.startime integerValue];
+        NSDate *startdate=[NSDate dateWithTimeIntervalSince1970:dateInTime];
     return cell;
     }
     else if(tableView==_offeredList){
         staleTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"offeredCell" forIndexPath:indexPath];
+        
         return cell;
     }
     return nil;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];  
+}
+#pragma -mark request
+-(void)OfferRequest{
+    NSDictionary *para=@{@"type":@1,@"pageNum":@(offerPageNum),@"pageSize":@(pageSize)};
+    [RequestAPI requestURL:@"/findAlldemandByType_edu" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        //NSLog(@"%@",responseObject[@"content"]);
+        if([responseObject[@"result"]integerValue]==1){
+       
+            NSDictionary *result=responseObject[@"content"][@"Aviation_demand"];
+            NSMutableArray *list=result[@"list"];
+            offerLast=[result[@"isLastPage"]boolValue];
+            if(offerPageNum==1){
+                 [_offerArr removeAllObjects];
+            }
+            for(NSDictionary *dict in list){
+                OfferModel *offerModel=[[OfferModel alloc]initWithDict:dict];
+                [_offerArr addObject:offerModel];
+            }
+            [_offeringList reloadData];
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"%ld",(long)statusCode);
+    }];
 }
 @end
