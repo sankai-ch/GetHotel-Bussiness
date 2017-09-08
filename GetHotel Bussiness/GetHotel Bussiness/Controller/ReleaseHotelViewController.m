@@ -11,7 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "addHotelModel.h"
-@interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
+@interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate>{
     
     UIImagePickerController *imagePickerController;
 }
@@ -253,25 +253,41 @@
 //- (void) image: (UIImage *) image didFinishSavingWithError:(NSError *) error contextInfo: (void *)contextInf{
 //    
 //}
-
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+#pragma mark - 键盘收回
 //键盘收回
 - (void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     //让根视图结束编辑状态达到收起键盘的目的
+    //[UIView animateWithDuration:0.5 animations:^{
+    //    self.view.transform = CGAffineTransformIsIdentity(self.view);
+    //}]
     [self.view endEditing:YES];
     //[self.view _ endEditing:YES];
 }
+- (IBAction)TextField_DidEndOnExit:(id)sender{
+    [sender resignFirstResponder];
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    int offset = self.view.frame.origin.y - 216.0;//iPhone键盘高
+    [UIView animateWithDuration:0.5 animations:^{
+        self.view.transform = CGAffineTransformMakeTranslation(0, -offset);
+    }];
+}
+
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+}
+- (void)keyboardWillChangeFrame: (NSNotification *)notification{
+    NSDictionary *userInfo = notification.userInfo;
+    double duration = [userInfo [UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect keyboardF = [userInfo [UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    [UIView animateWithDuration:duration animations:^{
+        
+    }];
+}
+
 #pragma mark - Request
 - (void)issueRequest{
     
