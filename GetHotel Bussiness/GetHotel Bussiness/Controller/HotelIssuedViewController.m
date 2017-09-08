@@ -12,7 +12,8 @@
 #import "FindHotelModel.h"
 @interface HotelIssuedViewController ()<UITableViewDelegate,UITableViewDataSource>{
     NSInteger pageNum;
-    BOOL hotelLast;
+    //BOOL hotelLast;
+    NSInteger pages;
 }
 @property (strong, nonatomic) NSMutableArray *arr;
 @property (weak, nonatomic) IBOutlet UITableView *hotelTableView;
@@ -37,6 +38,7 @@
     
     [self initializeData];
     [self setRefreshControl];
+    [self deleteRequest];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(issueRoom:) name:@"issue" object:nil];
     
@@ -148,13 +150,19 @@
 //细胞将要出现时调用
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row == _arr.count - 1){
-        if(!hotelLast) {
+        if(pages >= pageNum) {
             pageNum ++;
             [self request];
+            [self up];
         }
+        
     }
 }
 
+
+- (void)up{
+    
+}
 #pragma mark - request
 
 //下拉刷新
@@ -165,6 +173,7 @@
     [_hotelTableView addSubview:acquireRef];
 }
 - (void)acquireRef{
+    pageNum = 1;
     [self request];
 }
 - (void)initializeData{
@@ -211,6 +220,15 @@
         //[Utilities forceLogoutCheck:statusCode fromViewController:self];
         
         //[Utilities force]
+    }];
+}
+
+- (void)deleteRequest{
+    [RequestAPI requestURL:@"/deleteHotel" withParameters:@{@"id":@1} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSInteger statusCode, NSError *error) {
+        
     }];
 }
 

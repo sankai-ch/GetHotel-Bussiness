@@ -10,6 +10,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "addHotelModel.h"
 @interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
     
     UIImagePickerController *imagePickerController;
@@ -20,8 +21,8 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolBar;
 - (IBAction)cancelAction:(UIBarButtonItem *)sender;
 
-@property (strong, nonatomic) NSArray *pickerArr;
-@property (strong, nonatomic) NSArray *arr;
+@property (strong, nonatomic) NSMutableArray *pickerArr;
+
 - (IBAction)yesAction:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *hotelPic;
 @property (weak, nonatomic) IBOutlet UIView *grayView;
@@ -32,7 +33,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *roomPriceLabel;
 @property (weak, nonatomic) IBOutlet UITextField *weekendsPriceLabel;
 @property (strong, nonatomic) NSMutableArray *hotelNamePickerArr;
-
+@property (strong, nonatomic) UIActivityIndicatorView *avi;
+@property (strong, nonatomic) NSArray *testArr;
+@property (strong, nonatomic) NSString *imgUrl;
 
 @end
 
@@ -40,16 +43,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    _pickerArr = @[@"天马行空大酒店",@"滴滴滴大酒店",@"南京家园大酒店"];
-    _arr = @[@"无锡火车站路500号",@"无锡中央车站对面",@"无锡滨湖区五湖大道100号",@"南京市学府路300号"];
-    [_pickView selectRow:2 inComponent:0 animated:NO];
-    [_pickView reloadComponent:0];
-    [_pickView reloadComponent:1];
-    _hotelNamePickerArr = [NSMutableArray new];
-    
     //将手势添加到hotelPic这个视图中
     [self addTapGestureRecognizer:_hotelPic];
+    _hotelNamePickerArr = [NSMutableArray new];
+    
+    [self searchRequset];
+    //addHotelModel *model = [[addHotelModel alloc] init];
+    //NSLog(@"didi%@",model.hotelName);
+    
+    _pickerArr = [NSMutableArray new];
+    [_pickView selectRow:1 inComponent:0 animated:YES];
+    
+    [_pickView reloadComponent:0];
+
+    //_hotelNamePickerArr = model.hotelName;
+    
     
     imagePickerController = [[UIImagePickerController alloc] init];
     imagePickerController.delegate = self;
@@ -58,6 +66,8 @@
     
     [self btnStyle];
     [self naviConfig];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -188,15 +198,20 @@
     //NSLog(@"%@",info);
     
     //获取源图像（未经裁剪）
-    //    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     //获取裁剪后的图像
-    UIImage *image = info[UIImagePickerControllerEditedImage];
+    //UIImage *image = info[UIImagePickerControllerEditedImage];
     
     //将照片存到媒体库
     UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
     
     _hotelPic.image = image;
+    
+    NSData *data = UIImageJPEGRepresentation(image, 1.0f);
+    //_imgUrl = [data base64EncodedDataWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn];
+    //_imgUrl = [data base64Encoding];
+    NSLog(@"URL:%@",_imgUrl);
     
     //将照片存到沙盒
     [self saveImage:image];
@@ -239,29 +254,7 @@
 //}
 
 
-#pragma mark - pickerView
-//多少列
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    return 2;
-}
 
-//每列多少行
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    if (component == 0) {
-        return _pickerArr.count;
-    }else{
-        return _arr.count;
-    }
-    
-}
-//设置每行的标题
-- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component __TVOS_PROHIBITED{
-    return _hotelNamePickerArr[row];
-}
-//设置每列的宽度
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
-    return _pickView.frame.size.width/2.3;
-}
 
 /*
 #pragma mark - Navigation
@@ -283,15 +276,45 @@
     
     //NSDictionary *para = @{@"business_id":@2,@"hotel_name":@"海天",@"hotel_type":
     NSInteger row = [_pickView selectedRowInComponent:0];
-    NSString *title= _pickerArr[row];
+    NSString *title= _hotelNamePickerArr[row];
     [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
     
+    NSDictionary *para = @{@"business_id":@2,@"hotel_name":_roomNameLabel.text,@"hotel_type":_roomAreaLabel.text,@"room_imgs":_imgUrl};
     
-    [RequestAPI requestURL:@"/addHotel" withParameters:@{@"":@2} andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
+    [RequestAPI requestURL:@"/addHotel" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         
     } failure:^(NSInteger statusCode, NSError *error) {
         
     }];
+}
+
+- (void)searchRequset{
+    [RequestAPI requestURL:@"/searchHotelName" withParameters:nil andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        
+        //NSLog(@"%@",responseObject[@"content"]);
+        [_avi stopAnimating];
+        //NSArray *arr = responseObject[@"content"];
+        if ([responseObject[@"result"]integerValue] == 1)
+        {
+            _pickerArr = responseObject[@"content"];
+            for (NSDictionary *dict in _pickerArr){
+                NSString *str = dict[@"hotel_name"];
+                [_hotelNamePickerArr addObject:str];
+            }
+            [_pickView reloadAllComponents];
+        }
+        else{
+            [_avi stopAnimating];
+            [Utilities popUpAlertViewWithMsg:@"网络错误，请稍后再试" andTitle:@"提示" onView:self];
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"%ld",(long)statusCode);
+        
+    }];
+}
+- (void)initializeData{
+    _avi = [Utilities getCoverOnView:self.view];
+    [self searchRequset];
 }
 
 
@@ -299,6 +322,7 @@
     _toolBar.hidden = NO;
     _pickView.hidden = NO;
     _grayView.hidden = NO;
+    [self initializeData];
 }
 - (IBAction)cancelAction:(UIBarButtonItem *)sender {
     _toolBar.hidden = YES;
@@ -307,20 +331,38 @@
 }
 
 - (IBAction)yesAction:(UIBarButtonItem *)sender {
+   // NSInteger row = [_pickView selectedRowInComponent:0];
+    //NSString *title= _hotelNamePickerArr[row];
+    
     NSInteger row = [_pickView selectedRowInComponent:0];
-    NSString *title= _pickerArr[row];
-    
-//    //拿到某一列中选中的行号
-//    NSInteger raw =[_pickView selectedRowInComponent:1];
-//    //根据上面拿到的行号，找到对应的数据（选中行的标题）
-//    NSString *ti= _arr[raw];
-    
-    //把拿到的标题显示在button
+    NSString *title = _hotelNamePickerArr[row];
     [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
     
-    // [_popupBtn setTitle:ti forState:UIControlStateNormal];
     _toolBar.hidden = YES;
     _pickView.hidden = YES;
     _grayView.hidden = YES;
+}
+
+#pragma mark - pickerView
+//多少列
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 1;
+}
+
+//每列多少行
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    //addHotelModel *addModel = _hotelNamePickerArr[row];
+    return _hotelNamePickerArr.count;
+    
+}
+//设置每行的标题
+- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component __TVOS_PROHIBITED{
+    return _hotelNamePickerArr[row];
+    
+}
+
+//设置每列的宽度
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
+    return _pickView.frame.size.width/2.3;
 }
 @end
