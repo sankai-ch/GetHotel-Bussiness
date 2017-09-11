@@ -162,7 +162,7 @@
         NSString *startString=[offModel.start_time substringWithRange:NSMakeRange(6, 10)];
         
         cell.DateCityAirTicket.text=[NSString stringWithFormat:@"%@ %@",MDString,offModel.aviation_demand_title];
-        cell.PriceDuring.text=[NSString stringWithFormat:@"价格区间:%@——%@",offModel.low_price,offModel.high_price];
+        cell.PriceDuring.text=[NSString stringWithFormat:@"价格区间¥:%@——%@",offModel.low_price,offModel.high_price];
         cell.TimeLabel.text=[NSString stringWithFormat:@"出发时间%@左右",startString];
         cell.seatOfCompany.text=offModel.aviation_demand_detail;
         

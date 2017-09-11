@@ -15,8 +15,8 @@
         _aviation_demand_title=[Utilities nullAndNilCheck:dict[@"aviation_demand_title"] replaceBy:@"未知标题"];
         _aviation_demand_detail=[Utilities nullAndNilCheck:dict[@"aviation_demand_detail"] replaceBy:@"未知备注"];
         _start_time=[Utilities nullAndNilCheck:dict[@"start_time_str"] replaceBy:@""];
-        _low_price=[Utilities nullAndNilCheck:dict[@"low_price"] replaceBy:@""];
-        _high_price=[Utilities nullAndNilCheck:dict[@"high_price"] replaceBy:@""];
+        _low_price=[Utilities nullAndNilCheck:dict[@"low_price"] replaceBy:@"0"];
+        _high_price=[Utilities nullAndNilCheck:dict[@"high_price"] replaceBy:@"0"];
         
     }
     return self;
