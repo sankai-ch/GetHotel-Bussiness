@@ -26,6 +26,8 @@
 
 @implementation HotelIssuedViewController
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     _arr = [NSMutableArray new];
@@ -50,7 +52,7 @@
 }
 
 - (void)issueRoom:(NSNotification *)notification{
-    
+    [self initializeData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,7 +127,9 @@
     
     return cell;
 }
+
 //创建左滑删除按钮
+/*
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
@@ -136,6 +140,32 @@
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }];
     return @[deleteAction];
+}
+*/
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    //[self deleteRequest];
+    //[self deleteRequest];
+    //[_hotelTableView reloadData];
+   
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该酒店吗" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //删除数据
+        [self.arr removeObjectAtIndex:indexPath.row];
+        [self deleteRequest];
+         [_hotelTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    }];
+    UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:actionA];
+    [alert addAction:actionB];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+//修改delete按钮文字为“删除”
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+    return @"删除";
 }
 
 //设置cell的高度
@@ -172,11 +202,22 @@
     [acquireRef addTarget:self action:@selector(acquireRef) forControlEvents:UIControlEventValueChanged];
     acquireRef.tag = 10001;
     [_hotelTableView addSubview:acquireRef];
+    
+//    UIRefreshControl *deleteRef = [UIRefreshControl new];
+//    [deleteRef addTarget:self action:@selector(deleteRef) forControlEvents:UIControlEventValueChanged];
+//    deleteRef.tag = 10002;
+//    [_hotelTableView addSubview:deleteRef];
 }
 - (void)acquireRef{
     pageNum = 1;
     [self request];
 }
+
+- (void)deleteRef{
+    pageNum = 1;
+    [self deleteRequest];
+}
+
 - (void)initializeData{
     _avi = [Utilities getCoverOnView:self.view];
     [self request];
@@ -195,8 +236,10 @@
             [_avi stopAnimating];
             NSArray *arr = responseObject[@"content"];
             
-            NSLog(@"123=%@",arr);
-            
+            //NSLog(@"123=%@",arr);
+//            if (pageNum == 1){
+//                [_arr removeAllObjects];
+//            }
             for(NSDictionary *dict in arr ){
                 //用类中FindHotelModel类中定义的初始化方法initWithDict:将遍历得来的字典dict 转换成字典对象
                 FindHotelModel *findModel = [[FindHotelModel alloc] initWithDict:dict];
@@ -208,6 +251,7 @@
             }
             //NSLog(@"%@",_typeArr[1]);
             //重载数据
+            
             [_hotelTableView reloadData];
         }else {
             [_avi stopAnimating];
@@ -216,23 +260,28 @@
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"错误码:%ld",(long)statusCode);
         UIRefreshControl *ref = (UIRefreshControl *)
-        [_hotelTableView viewWithTag:10004];
+        [_hotelTableView viewWithTag:10001];
         [ref endRefreshing];
         //[Utilities forceLogoutCheck:statusCode fromViewController:self];
         
-        //[Utilities force]
     }];
 }
-
+//删除网络请求
 - (void)deleteRequest{
+    
     [RequestAPI requestURL:@"/deleteHotel" withParameters:@{@"id":@1} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         NSLog(@"%@",responseObject);
-        if ([responseObject[@"result"] integerValue] == 1){
-            
-            
-        }
-    } failure:^(NSInteger statusCode, NSError *error) {
         
+//        UIRefreshControl *ref = (UIRefreshControl *)[_hotelTableView viewWithTag:10002];
+//        [ref endRefreshing];
+        
+        [_avi stopAnimating];
+        
+        [self request];
+    } failure:^(NSInteger statusCode, NSError *error) {
+//        UIRefreshControl *ref = (UIRefreshControl *)[_hotelTableView viewWithTag:10002];
+//        [ref endRefreshing];
+        [_avi stopAnimating];
     }];
 }
 

@@ -279,6 +279,7 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
+/*
 - (void)keyboardWillChangeFrame: (NSNotification *)notification{
     NSDictionary *userInfo = notification.userInfo;
     double duration = [userInfo [UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -287,7 +288,7 @@
         
     }];
 }
-
+*/
 #pragma mark - Request
 - (void)issueRequest{
     
@@ -296,7 +297,7 @@
     NSString *title= _hotelNamePickerArr[row];
     [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
     _imgUrl = @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505461689&di=9c9704fab9db8eccb77e1e1360fdbef4&imgtype=jpg&er=1&src=http%3A%2F%2Fimg3.redocn.com%2Ftupian%2F20150312%2Fhaixinghezhenzhubeikeshiliangbeijing_3937174.jpg";
-    NSDictionary *para = @{@"business_id":@1,@"hotel_name":title ,@"hotel_type":_roomAreaLabel.text,@"room_imgs":_imgUrl};
+    NSDictionary *para = @{@"business_id":@1,@"hotel_name":title ,@"hotel_type":_roomAreaLabel.text,@"room_imgs":_imgUrl,@"price":_roomPriceLabel.text};
     
     [RequestAPI requestURL:@"/addHotel" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         if ([responseObject[@"result"]integerValue] == 1){
@@ -335,6 +336,59 @@
 - (void)initializeData{
     _avi = [Utilities getCoverOnView:self.view];
     [self searchRequset];
+}
+
+
+#pragma mark - reg & unreg notification
+
+- (void)regNotification
+
+{
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+}
+
+- (void)unregNotification
+
+{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+}
+
+#pragma mark - notification handler
+
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
+
+{
+    
+    NSDictionary *info = [notification userInfo];
+    
+    CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    CGRect beginKeyboardRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    
+    CGRect endKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGFloat yOffset = endKeyboardRect.origin.y - beginKeyboardRect.origin.y;
+    
+    CGRect roomAreaRect = self.roomAreaLabel.frame;
+    
+    CGRect roomPriceRect = self.roomPriceLabel.frame;
+    
+    roomAreaRect.origin.y += yOffset;
+    
+    roomPriceRect.origin.y += yOffset;
+    
+    [UIView animateWithDuration:duration animations:^{
+        
+        self.roomAreaLabel.frame = roomAreaRect;
+        
+        self.roomPriceLabel.frame = roomPriceRect;
+        
+    }];
+    
 }
 
 
