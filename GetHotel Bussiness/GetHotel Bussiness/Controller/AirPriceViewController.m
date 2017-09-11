@@ -11,17 +11,22 @@
 #import "AirPriceTableViewCell.h"
 #import "staleTableViewCell.h"
 #import "offerModel.h"
+#import "staleModel.h"
 @interface AirPriceViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     NSInteger offerFlag;
     NSInteger staleFlag;
     NSInteger offerPageNum;
     BOOL offerLast;
+    NSInteger stalePageNum;
+    BOOL staleLast;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITableView *offeringList;
 @property (weak, nonatomic) IBOutlet UIView *headView;
 @property (weak, nonatomic) IBOutlet UITableView *offeredList;
 @property(strong,nonatomic)NSMutableArray *offerArr;
+@property(strong,nonatomic)NSMutableArray *staleArr;
+@property(strong,nonatomic)UIActivityIndicatorView *avi;
 
 
 @property (strong,nonatomic)HMSegmentedControl *segmentedControl;
@@ -33,12 +38,14 @@
     offerFlag=1;
     staleFlag=1;
     offerPageNum=1;
+    stalePageNum=1;
     [super viewDidLoad];
     [self naviConfig];
     // Do any additional setup after loading the view.
     [self setSegment];
     [self offerRequest];
     _offerArr=[NSMutableArray new];
+    _staleArr=[NSMutableArray new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -88,6 +95,35 @@
     }];
     [self.view addSubview:_segmentedControl];
 }
+#pragma mark -refreshControl
+-(void)setRefreshControl{
+    UIRefreshControl *offerRef=[UIRefreshControl new];
+    [offerRef addTarget:self action:@selector(offerRef) forControlEvents:UIControlEventValueChanged];
+    offerRef.tag=10001;
+    [_offeringList addSubview:offerRef];
+    UIRefreshControl *staleRef=[UIRefreshControl new];
+    [staleRef addTarget:self action:@selector(staleRef) forControlEvents:UIControlEventValueChanged];
+    staleRef.tag=10002;
+    [_offeredList addSubview:staleRef];
+}
+
+-(void)offerRef{
+    offerPageNum=1;
+    [self offerRequest];
+}
+-(void)staleRef{
+    stalePageNum=1;
+    [self staleRequest];
+}
+-(void)offerInitializeData{
+    _avi=[Utilities getCoverOnView:self.view];
+    [self offerRequest];
+    
+}
+-(void)staleInitializeData{
+    _avi=[Utilities getCoverOnView:self.view];
+    [self staleRequest];
+}
 #pragma mark -scrollView
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -121,6 +157,8 @@
 -(void)offerRequest{
     NSDictionary *para=@{@"type":@1,@"pageNum":@(offerPageNum),@"pageSize":@5};
     [RequestAPI requestURL:@"/findAlldemandByType_edu" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        [_avi stopAnimating];
+        
         NSLog(@"%@",responseObject);
         
             NSDictionary *result=responseObject[@"content"][@"Aviation_demand"];
@@ -138,6 +176,26 @@
         }
             failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"%ld",(long)statusCode);
+    }];
+}
+-(void)staleRequest{
+     NSDictionary *para=@{@"type":@0,@"pageNum":@(stalePageNum),@"pageSize":@5};
+    [RequestAPI requestURL:@"/findAlldemandByType_edu" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        [_avi stopAnimating];
+        NSDictionary *result=responseObject[@"content"][@"Aviation_demand"];
+        NSArray *list=result[@"list"];
+        staleLast =[result[@"isLastPage"]boolValue];
+        if(stalePageNum==1){
+            [_staleArr removeAllObjects];
+        }
+        for(NSDictionary *dict in list){
+            staleModel *stalemodel=[[staleModel alloc]initWithDict:dict];
+            [_staleArr addObject:stalemodel];
+        }
+        [_offeredList reloadData];
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"%ld",(long)statusCode);
+        
     }];
 }
 #pragma mark -tableview
