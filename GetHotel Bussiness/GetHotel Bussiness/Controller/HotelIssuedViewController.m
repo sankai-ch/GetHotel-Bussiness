@@ -21,6 +21,8 @@
 @property (strong, nonatomic) UIActivityIndicatorView *avi;
 @property (strong, nonatomic) NSMutableArray *typeArr;
 @property (strong, nonatomic) NSMutableArray *resetArr;
+@property (strong, nonatomic) FindHotelModel *hotelModel;
+
 
 @end
 
@@ -149,18 +151,23 @@
     //[self deleteRequest];
     //[self deleteRequest];
     //[_hotelTableView reloadData];
-   
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该酒店吗" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        //删除数据
-        [self.arr removeObjectAtIndex:indexPath.row];
-        [self deleteRequest];
-         [_hotelTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-    }];
-    UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:actionA];
-    [alert addAction:actionB];
-    [self presentViewController:alert animated:YES completion:nil];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该酒店吗" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //[self deleteRequest];
+            //删除数据
+            [self.arr removeObjectAtIndex:indexPath.row];
+            //移除tableView中的数据
+            [_hotelTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            //[self request];
+            
+        }];
+        UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        [alert addAction:actionA];
+        [alert addAction:actionB];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 //修改delete按钮文字为“删除”
@@ -185,7 +192,6 @@
         if(pages >= pageNum) {
             pageNum ++;
             [self request];
-            
         }
     }
 }
@@ -212,11 +218,11 @@
     pageNum = 1;
     [self request];
 }
-
-- (void)deleteRef{
-    pageNum = 1;
-    [self deleteRequest];
-}
+//
+//- (void)deleteRef{
+//    pageNum = 1;
+//    [self deleteRequest];
+//}
 
 - (void)initializeData{
     _avi = [Utilities getCoverOnView:self.view];
@@ -224,6 +230,11 @@
 }
 
 - (void)request{
+
+    
+    //FindHotelModel *findModel = [[FindHotelModel alloc]initWithDict:dict];
+    
+    
     NSDictionary *para = @{@"business_id":@1};
     [RequestAPI requestURL:@"/findHotelBySelf" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         
@@ -231,15 +242,15 @@
         UIRefreshControl *ref = (UIRefreshControl *)[_hotelTableView viewWithTag:10001];
         [ref endRefreshing];
         
-        if ([responseObject[@"result"]integerValue] == 1) {
+        if ([responseObject[@"result"] integerValue] == 1) {
             
             [_avi stopAnimating];
             NSArray *arr = responseObject[@"content"];
             
             //NSLog(@"123=%@",arr);
-//            if (pageNum == 1){
-//                [_arr removeAllObjects];
-//            }
+            if (pageNum == 1){
+                [_arr removeAllObjects];
+            }
             for(NSDictionary *dict in arr ){
                 //用类中FindHotelModel类中定义的初始化方法initWithDict:将遍历得来的字典dict 转换成字典对象
                 FindHotelModel *findModel = [[FindHotelModel alloc] initWithDict:dict];
@@ -251,8 +262,8 @@
             }
             //NSLog(@"%@",_typeArr[1]);
             //重载数据
-            
             [_hotelTableView reloadData];
+            
         }else {
             [_avi stopAnimating];
             [Utilities popUpAlertViewWithMsg:@"请求发生了错误，请稍后再试" andTitle:@"提示" onView:self];
@@ -268,19 +279,25 @@
 }
 //删除网络请求
 - (void)deleteRequest{
-    
-    [RequestAPI requestURL:@"/deleteHotel" withParameters:@{@"id":@1} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
-        NSLog(@"%@",responseObject);
+    NSDictionary *para = @{@"id":@(_hotelModel.ID)};
+    [RequestAPI requestURL:@"/deleteHotel" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         
-//        UIRefreshControl *ref = (UIRefreshControl *)[_hotelTableView viewWithTag:10002];
-//        [ref endRefreshing];
+//        if ([responseObject[@"result"]integerValue] == -104)
+//        {
         
+        NSLog(@"result:%@",responseObject[@"result"]);
         [_avi stopAnimating];
         
         [self request];
+        
+        
+//        }else{
+//            [_avi stopAnimating];
+//            [Utilities popUpAlertViewWithMsg:@"网络错误，请稍后再试" andTitle:@"提示" onView:self];
+//        }
+             [_hotelTableView reloadData];
     } failure:^(NSInteger statusCode, NSError *error) {
-//        UIRefreshControl *ref = (UIRefreshControl *)[_hotelTableView viewWithTag:10002];
-//        [ref endRefreshing];
+
         [_avi stopAnimating];
     }];
 }

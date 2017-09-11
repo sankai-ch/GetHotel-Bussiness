@@ -17,6 +17,7 @@
         _hotelType = [Utilities nullAndNilCheck:dict[@"hotel_type"] replaceBy:@"未知"];
         _price = [[Utilities nullAndNilCheck:dict[@"price"] replaceBy:0] integerValue];
         _hotelImg = [Utilities nullAndNilCheck:dict[@"hotel_img"] replaceBy:@""];
+        _ID = [[Utilities nullAndNilCheck:dict[@"id"] replaceBy:0] integerValue];
     }
     return self;
 }
