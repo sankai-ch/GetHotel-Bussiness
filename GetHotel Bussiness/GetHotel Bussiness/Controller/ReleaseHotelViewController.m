@@ -93,12 +93,9 @@
     self.navigationItem.leftBarButtonItem = left;
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(Issue)];
     self.navigationItem.rightBarButtonItem = right;
-    //设置边框颜色
-//   _chooseHotelBtn.layer.borderColor = [[UIColor redColor] CGColor];
-//    //设置边框宽度
-//    _chooseHotelBtn.layer.borderWidth = 1.0f;
-//   _chooseHotelBtn.layer.masksToBounds = YES;
+    
 }
+
 - (void)Issue{
     [self issueRequest];
     //[[NSNotificationCenter defaultCenter] postNotificationName:@"issue" object:self userInfo:@{@"hotelName":_roomNameLabel.text}];
@@ -262,7 +259,7 @@
     //}]
     [self.view endEditing:YES];
     //[self.view _ endEditing:YES];
-}
+} 
 - (IBAction)TextField_DidEndOnExit:(id)sender{
     [sender resignFirstResponder];
 }

@@ -14,7 +14,7 @@
 @property (strong, nonatomic) NSString *hotelType;
 @property (nonatomic) NSInteger price;
 @property (strong, nonatomic) NSString *hotelImg;
-
+@property (nonatomic) NSInteger ID;
 - (instancetype)initWithDict: (NSDictionary *)dict;
 
 @end
