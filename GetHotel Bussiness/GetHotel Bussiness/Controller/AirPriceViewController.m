@@ -10,14 +10,18 @@
 #import "HMSegmentedControl.h"
 #import "AirPriceTableViewCell.h"
 #import "staleTableViewCell.h"
+#import "offerModel.h"
 @interface AirPriceViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     NSInteger offerFlag;
     NSInteger staleFlag;
+    NSInteger offerPageNum;
+    BOOL offerLast;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITableView *offeringList;
 @property (weak, nonatomic) IBOutlet UIView *headView;
 @property (weak, nonatomic) IBOutlet UITableView *offeredList;
+@property(strong,nonatomic)NSMutableArray *offerArr;
 
 
 @property (strong,nonatomic)HMSegmentedControl *segmentedControl;
@@ -28,10 +32,13 @@
 - (void)viewDidLoad {
     offerFlag=1;
     staleFlag=1;
+    offerPageNum=1;
     [super viewDidLoad];
     [self naviConfig];
     // Do any additional setup after loading the view.
     [self setSegment];
+    [self offerRequest];
+    _offerArr=[NSMutableArray new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -110,22 +117,55 @@
    
     return page;
 }
+#pragma mark -request
+-(void)offerRequest{
+    NSDictionary *para=@{@"type":@1,@"pageNum":@(offerPageNum),@"pageSize":@5};
+    [RequestAPI requestURL:@"/findAlldemandByType_edu" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+            NSDictionary *result=responseObject[@"content"][@"Aviation_demand"];
+            NSArray *list=result[@"list"];
+            offerLast=[result[@"isLastPage"]boolValue];
+            if(offerPageNum==1){
+                [_offerArr removeAllObjects];
+            }
+            for(NSDictionary *dict in list){
+                offerModel *offModel=[[offerModel alloc]initWithDict:dict];
+                [_offerArr addObject:offModel];
+            }
+            [_offeringList reloadData];
+     
+        }
+            failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"%ld",(long)statusCode);
+    }];
+}
 #pragma mark -tableview
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 125.f;
 }
 //设置多少组
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return _offerArr.count;
 }
 //设置每组多少行
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 2;
+    return 1;
 }
 -(UITableView *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if(tableView==_offeringList){
     AirPriceTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
+        offerModel *offModel=_offerArr[indexPath.section];
+   
+        NSString *MDString=[offModel.start_time substringWithRange:NSMakeRange(5, 6)];
+        NSString *startString=[offModel.start_time substringWithRange:NSMakeRange(6, 10)];
+        
+        cell.DateCityAirTicket.text=[NSString stringWithFormat:@"%@ %@",MDString,offModel.aviation_demand_title];
+        cell.PriceDuring.text=[NSString stringWithFormat:@"价格区间:%@——%@",offModel.low_price,offModel.high_price];
+        cell.TimeLabel.text=[NSString stringWithFormat:@"出发时间%@左右",startString];
+        cell.seatOfCompany.text=offModel.aviation_demand_detail;
+        
     return cell;
     }
     else if(tableView==_offeredList){
