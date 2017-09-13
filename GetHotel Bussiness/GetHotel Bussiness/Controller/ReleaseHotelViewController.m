@@ -106,6 +106,7 @@
 //用model的方式返回上一页
 - (void)backAction{
     [self dismissViewControllerAnimated:YES completion:nil];
+    
     //[self.navigationController popViewControllerAnimated:YES];//用push返回上一页
 }
 
@@ -288,7 +289,6 @@
 */
 #pragma mark - Request
 - (void)issueRequest{
-    
     //NSDictionary *para = @{@"business_id":@2,@"hotel_name":@"海天",@"hotel_type":
     NSInteger row = [_pickView selectedRowInComponent:0];
     NSString *title= _hotelNamePickerArr[row];

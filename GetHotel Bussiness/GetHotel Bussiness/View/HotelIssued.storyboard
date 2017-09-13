@@ -284,7 +284,7 @@
                                 <rect key="frame" x="40" y="517" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tRe-mw-rew">
                                 <rect key="frame" x="40" y="546" width="295" height="1"/>
@@ -297,7 +297,7 @@
                                 <rect key="frame" x="40" y="579" width="295" height="21"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xYd-xi-gKr">
                                 <rect key="frame" x="40" y="608" width="295" height="1"/>
