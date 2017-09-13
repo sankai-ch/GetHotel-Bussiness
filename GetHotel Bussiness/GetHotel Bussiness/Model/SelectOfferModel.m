@@ -17,8 +17,8 @@
         self.weight=[[Utilities nullAndNilCheck:dict[@"weight"] replaceBy:0] integerValue];
         self.aviationCompany=[Utilities nullAndNilCheck:dict[@"aviation_company"] replaceBy:@"未知公司"];
         self.aviationCabin=[Utilities nullAndNilCheck:dict[@"aviation_cabin"] replaceBy:@"普通舱"];
-        self.intime=[[Utilities nullAndNilCheck:dict[@"in_time"] replaceBy:0] integerValue];
-        self.outtime=[[Utilities nullAndNilCheck:dict[@"out_time"] replaceBy:0]integerValue];
+        self.in_time_str=[Utilities nullAndNilCheck:dict[@"in_time_str"] replaceBy:@""];
+        self.out_time_str=[Utilities nullAndNilCheck:dict[@"out_time_str"] replaceBy:@""];
         self.departure=[Utilities nullAndNilCheck:dict[@"departure"] replaceBy:@"未知出发地"];
         self.destination=[Utilities nullAndNilCheck:dict[@"destination"] replaceBy:@"未知目的地"];
         self.flightNo=[Utilities nullAndNilCheck:dict[@"flight_no"] replaceBy:@"未知"];

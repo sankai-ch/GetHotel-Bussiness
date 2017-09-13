@@ -126,8 +126,10 @@
     [RequestAPI requestURL:@"/selectOffer_edu" withParameters:@{@"Id":[[StorageMgr singletonStorageMgr]objectForKey:@"id"]} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         if([responseObject[@"result"]integerValue]==1){
              NSLog(@"%@",responseObject[@"content"]);
+            NSArray *list=responseObject[@"content"];
+            
             [_selectOfferArr removeAllObjects];
-            for(NSDictionary *result in responseObject[@"content"]){
+            for(NSDictionary *result in list){
                
                 SelectOfferModel *offer=[[SelectOfferModel alloc]initWithDict:result];
                 
@@ -158,14 +160,11 @@
 -(UITableView *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     quoteTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
     SelectOfferModel *selectOfferModel=_selectOfferArr[indexPath.row];
-    cell.PriceLabel.text=[NSString stringWithFormat:@"%ld",(long)selectOfferModel.finalprice];
-    NSDate *indate=[NSDate dateWithTimeIntervalSince1970:selectOfferModel.intime];
     NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
-    formatter.dateFormat=@"yyyy-MM-dd HH:mm";
-    NSString *inTime=[formatter stringFromDate:indate];
-    NSDate *outdate=[NSDate dateWithTimeIntervalSince1970:selectOfferModel.outtime];
-    
-    NSString *outTime=[formatter stringFromDate:outdate];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    cell.PriceLabel.text=[NSString stringWithFormat:@"%ld",(long)selectOfferModel.finalprice];
+    NSString *inTime=selectOfferModel.in_time_str;
+    NSString *outTime=selectOfferModel.out_time_str;
     cell.TimeLabel.text=[NSString stringWithFormat:@"%@——%@",inTime,outTime];
     cell.flightLabel.text=[NSString stringWithFormat:@"%@ %@ %@",selectOfferModel.aviationCompany,selectOfferModel.flightNo,selectOfferModel.aviationCabin];
     cell.weight.text=[NSString stringWithFormat:@"%ld",(long)selectOfferModel.weight];
@@ -217,6 +216,8 @@
         _aviationCabin.text=@"";
         _flightNo.text=@"";
         _weight.text=@"";
+        [self selectOfferRequest];
+        
     };
 
 }
