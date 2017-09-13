@@ -15,9 +15,9 @@
     if (self){
         _hotelName = [Utilities nullAndNilCheck:dict[@"hotel_name"] replaceBy:@"未知"];
         _hotelType = [Utilities nullAndNilCheck:dict[@"hotel_type"] replaceBy:@"未知"];
-        _price = [[Utilities nullAndNilCheck:dict[@"price"] replaceBy:0] integerValue];
+        _price = [[Utilities nullAndNilCheck:dict[@"price"] replaceBy:@"0"] integerValue];
         _hotelImg = [Utilities nullAndNilCheck:dict[@"hotel_img"] replaceBy:@""];
-        _ID = [[Utilities nullAndNilCheck:dict[@"id"] replaceBy:0] integerValue];
+        _ID = [[Utilities nullAndNilCheck:dict[@"id"] replaceBy:@"0"] integerValue];
     }
     return self;
 }

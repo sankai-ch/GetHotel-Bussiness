@@ -22,7 +22,7 @@
 @property (strong, nonatomic) UIActivityIndicatorView *avi;
 @property (strong, nonatomic) NSMutableArray *typeArr;
 @property (strong, nonatomic) NSMutableArray *resetArr;
-@property (strong, nonatomic) FindHotelModel *hotelModel;
+//@property (strong, nonatomic) FindHotelModel *hotelModel;
 
 
 @end
@@ -96,7 +96,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
  
     MyHotelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myHotel" forIndexPath:indexPath];
-    _hotelModel = _arr[indexPath.row];
+    FindHotelModel *hotelModel = _arr[indexPath.row];
+    
     //访问权限
     NSString *userAgent = @"";
     userAgent = [NSString stringWithFormat:@"%@/%@ (%@; iOS %@; Scale/%0.2f)", [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleExecutableKey] ?: [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] ?: [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleVersionKey], [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [[UIScreen mainScreen] scale]];
@@ -113,19 +114,19 @@
 
     //将URL中的字符以数组的形式分开存放
     if (_resetArr.count == 4){
-    for(NSInteger i = 0; i < _typeArr.count; i++){
-        _resetArr = _typeArr[i];
-        cell.hotelDescribeLabel.text = [NSString stringWithFormat:@"%@ %@", _resetArr[2],_resetArr[1]];
+        for(NSInteger i = 0; i < _typeArr.count; i++){
+            _resetArr = _typeArr[i];
+            cell.hotelDescribeLabel.text = [NSString stringWithFormat:@"%@ %@", _resetArr[2],_resetArr[1]];
         
-        cell.hotelAreaLabel.text = _resetArr[3];
+            cell.hotelAreaLabel.text = _resetArr[3];
+        }
     }
-    }
-    NSURL *url = [NSURL URLWithString:_hotelModel.hotelImg];
+    NSURL *url = [NSURL URLWithString:hotelModel.hotelImg];
     //cell.hotelImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:findHotel.roomImg]]];
     
     [cell.hotelImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"hotels"]];
-    cell.hotelNameLabel.text = _hotelModel.hotelName;
-    cell.hotelPriceLabel.text = [NSString stringWithFormat:@"%ld",(long)_hotelModel.price];
+    cell.hotelNameLabel.text = hotelModel.hotelName;
+    cell.hotelPriceLabel.text = [NSString stringWithFormat:@"%ld",(long)hotelModel.price];
     //cell.hotelDescribeLabel.text = findHotel.hotelType;
     //NSLog(@"hotelName = %@",findHotel.hotelName);
     
@@ -148,15 +149,11 @@
 */
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
     [tableView setEditing:NO animated:YES];
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该条酒店发布吗?" preferredStyle:UIAlertControllerStyleAlert];
-        
         UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self deleteRequest];
+            [self deleteRequest:indexPath];
             [_arr removeObjectAtIndex:indexPath.row];//删除数据
             //移除tableView中的数据
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
@@ -224,15 +221,15 @@
 }
 
 - (void)request{
-    NSDictionary *para = @{@"business_id" : @1};
+    NSDictionary *para = @{@"business_id" : @2};
     [RequestAPI requestURL:@"/findHotelBySelf" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         
         UIRefreshControl *ref = (UIRefreshControl *)[_hotelTableView viewWithTag:10001];
         [ref endRefreshing];
+        [_avi stopAnimating];
         
+        NSLog(@"responseObject = %@", responseObject);
         if ([responseObject[@"result"] integerValue] == 1) {
-            
-            [_avi stopAnimating];
             NSArray *arr = responseObject[@"content"];
             
             //NSLog(@"123=%@",arr);
@@ -251,7 +248,6 @@
             [_hotelTableView reloadData];
             
         }else {
-            [_avi stopAnimating];
             [Utilities popUpAlertViewWithMsg:@"请求发生了错误，请稍后再试" andTitle:@"提示" onView:self];
         }
     } failure:^(NSInteger statusCode, NSError *error) {
@@ -265,16 +261,18 @@
     }];
 }
 //删除网络请求
-- (void)deleteRequest{
-    NSDictionary *para = @{@"id":@(_hotelModel.ID)};
-    NSLog(@"id是:%ld",(long)_hotelModel.ID);
+- (void)deleteRequest:(NSIndexPath *)indexPath {
+    FindHotelModel *hotelModel = _arr[indexPath.row];
+    NSDictionary *para = @{@"id":@(hotelModel.ID)};
+    NSLog(@"id是:%ld",(long)hotelModel.ID);
     [RequestAPI requestURL:@"/deleteHotel" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         NSLog(@"delete responseObject = %@",responseObject);
+        
         [_hotelTableView reloadData];
+        
 //        if ([responseObject[@"result"] integerValue] == 1){
 //            [_hotelTableView reloadData];
 //        }else{
-//            
 //        }
     } failure:^(NSInteger statusCode, NSError *error) {
         [_avi stopAnimating];
