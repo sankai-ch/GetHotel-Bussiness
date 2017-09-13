@@ -17,7 +17,8 @@
         _lowPrice=[Utilities nullAndNilCheck:dict[@"low_price"] replaceBy:@"0"];
         _highPrice=[Utilities nullAndNilCheck:dict[@"high_price"] replaceBy:@"0"];
         _startTime=[Utilities nullAndNilCheck:dict[@"start_time_str"] replaceBy:@""];
-        
+        _lowtimestr=[Utilities nullAndNilCheck:dict[@"set_low_time_str"] replaceBy:@""];
+        _hightimestr=[Utilities nullAndNilCheck:dict[@"set_high_time_str"] replaceBy:@""];
     }
     return self;
 }

@@ -17,6 +17,11 @@
         _start_time=[Utilities nullAndNilCheck:dict[@"start_time_str"] replaceBy:@""];
         _low_price=[Utilities nullAndNilCheck:dict[@"low_price"] replaceBy:@"0"];
         _high_price=[Utilities nullAndNilCheck:dict[@"high_price"] replaceBy:@"0"];
+        _lowtimestr=[Utilities nullAndNilCheck:dict[@"set_low_time_str"] replaceBy:@""];
+        _hightimestr=[Utilities nullAndNilCheck:dict[@"set_high_time_str"] replaceBy:@""];
+        _aviation_demand_id=[[Utilities nullAndNilCheck:dict[@"id"] replaceBy:@""]integerValue];
+        
+        
         
     }
     return self;

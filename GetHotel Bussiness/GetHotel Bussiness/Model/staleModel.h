@@ -14,6 +14,7 @@
 @property(strong,nonatomic)NSString *lowPrice;
 @property(strong,nonatomic)NSString *highPrice;
 @property(strong,nonatomic)NSString *startTime;
-
+@property(strong,nonatomic)NSString *lowtimestr;
+@property(strong,nonatomic)NSString *hightimestr;
 - (instancetype)initWithDict: (NSDictionary *)dict;
 @end

@@ -51,6 +51,7 @@
     tags=nil;
     _selectOfferArr=[NSMutableArray new];
     [self selectOfferRequest];
+    NSLog(@"%@",[[StorageMgr singletonStorageMgr]objectForKey:@"id"]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,18 +112,20 @@
     NSString *departurestr=_departButton.titleLabel.text;
     NSString *destinationstr=_destinationButton.titleLabel.text;
     NSString *flightNostr=_flightNo.text;
-    NSDictionary *para=@{@"business_id":@2,@"aviation_demand_id":@2,@"final_price":@(finalPrice),@"weight":@(weight),@"aviation_company":aviationcompany,@"aviation_cabin":aviationcabin,@"in_time_str":intimestr,@"out_time_str":outtimestr,@"departure":departurestr,@"destination":destinationstr,@"flight_no":flightNostr};
+    
+    NSDictionary *para=@{@"business_id":@2,@"aviation_demand_id":[[StorageMgr singletonStorageMgr]objectForKey:@"id"],@"final_price":@(finalPrice),@"weight":@(weight),@"aviation_company":aviationcompany,@"aviation_cabin":aviationcabin,@"in_time_str":intimestr,@"out_time_str":outtimestr,@"departure":departurestr,@"destination":destinationstr,@"flight_no":flightNostr};
     [RequestAPI requestURL:@"/offer_edu" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         NSLog(@"result=%@",responseObject[@"result"]);
+        [_quoteTable reloadData];
     } failure:^(NSInteger statusCode, NSError *error) {
           NSLog(@"cuowu :%ld",(long)statusCode);
     }];
 }
 
 -(void)selectOfferRequest{
-    [RequestAPI requestURL:@"/selectOffer_edu" withParameters:@{@"Id":@2} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+    [RequestAPI requestURL:@"/selectOffer_edu" withParameters:@{@"Id":[[StorageMgr singletonStorageMgr]objectForKey:@"id"]} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         if([responseObject[@"result"]integerValue]==1){
-             //NSLog(@"%@",responseObject[@"content"]);
+             NSLog(@"%@",responseObject[@"content"]);
             [_selectOfferArr removeAllObjects];
             for(NSDictionary *result in responseObject[@"content"]){
                

@@ -43,7 +43,8 @@
     [self naviConfig];
     // Do any additional setup after loading the view.
     [self setSegment];
-    [self offerRequest];
+    [self setRefreshControl];
+    [self offerInitializeData];
     _offerArr=[NSMutableArray new];
     _staleArr=[NSMutableArray new];
 }
@@ -144,11 +145,13 @@
     if(offerFlag==1 && page==0){
         offerFlag=0;
         NSLog(@"第一次滑动来到scrollview可报价");
+        [self offerInitializeData];
         
     }
     if(staleFlag==1 && page==1){
         staleFlag=0;
          NSLog(@"第一次滑动来到srollview已过期");
+        [self staleInitializeData];
     }
    
     return page;
@@ -158,7 +161,8 @@
     NSDictionary *para=@{@"type":@1,@"pageNum":@(offerPageNum),@"pageSize":@5};
     [RequestAPI requestURL:@"/findAlldemandByType_edu" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         [_avi stopAnimating];
-        
+        UIRefreshControl *ref=(UIRefreshControl *)[_offeringList viewWithTag:10001];
+        [ref endRefreshing];
         NSLog(@"%@",responseObject);
         
             NSDictionary *result=responseObject[@"content"][@"Aviation_demand"];
@@ -181,7 +185,10 @@
 -(void)staleRequest{
      NSDictionary *para=@{@"type":@0,@"pageNum":@(stalePageNum),@"pageSize":@5};
     [RequestAPI requestURL:@"/findAlldemandByType_edu" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
         [_avi stopAnimating];
+        UIRefreshControl *ref=(UIRefreshControl *)[_offeredList viewWithTag:10002];
+        [ref endRefreshing];
         NSDictionary *result=responseObject[@"content"][@"Aviation_demand"];
         NSArray *list=result[@"list"];
         staleLast =[result[@"isLastPage"]boolValue];
@@ -204,7 +211,12 @@
 }
 //设置多少组
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return _offerArr.count;
+    if(tableView==_offeringList){
+        return _offerArr.count;
+    }
+    else{
+        return _staleArr.count;
+    }
 }
 //设置每组多少行
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -216,8 +228,8 @@
     AirPriceTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
         offerModel *offModel=_offerArr[indexPath.section];
    
-        NSString *MDString=[offModel.start_time substringWithRange:NSMakeRange(5, 6)];
-        NSString *startString=[offModel.start_time substringWithRange:NSMakeRange(6, 10)];
+        NSString *MDString=[offModel.lowtimestr substringWithRange:NSMakeRange(5, 6)];
+        NSString *startString=[offModel.lowtimestr substringWithRange:NSMakeRange(5, 6)];
         
         cell.DateCityAirTicket.text=[NSString stringWithFormat:@"%@ %@",MDString,offModel.aviation_demand_title];
         cell.PriceDuring.text=[NSString stringWithFormat:@"价格区间¥:%@——%@",offModel.low_price,offModel.high_price];
@@ -228,11 +240,42 @@
     }
     else if(tableView==_offeredList){
         staleTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"offeredCell" forIndexPath:indexPath];
+        staleModel *stalemodel=_staleArr[indexPath.section];
+        NSString *MDString=[stalemodel.lowtimestr substringWithRange:NSMakeRange(5, 6)];
+        NSString *startString=[stalemodel.lowtimestr substringWithRange:NSMakeRange(5, 6)];
+        cell.DateCityAirTicket.text=[NSString stringWithFormat:@"%@ %@——%@ 机票",MDString,stalemodel.departure,stalemodel.destination];
+        cell.PriceDuring.text=[NSString stringWithFormat:@"价格区间:¥%@-%@",stalemodel.lowPrice,stalemodel.highPrice];
+        cell.TimeLabel.text=[NSString stringWithFormat:@"出发时间%@左右",startString];
         return cell;
     }
     return nil;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(tableView==_offeringList){
+        offerModel *offermodel=_offerArr[indexPath.section];
+      
+        [[StorageMgr singletonStorageMgr]removeObjectForKey:@"id"];
+        [[StorageMgr singletonStorageMgr]addKey:@"id" andValue:@(offermodel.aviation_demand_id)];
+      
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];  
+}
+//细胞将要出现时的调用
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(tableView == _offeringList){
+        if(indexPath.section == _offerArr.count-1){
+            if(!offerLast){
+                offerPageNum++;
+                [self offerRequest];
+            }
+        }
+    }else{
+        if(indexPath.section==_staleArr.count-1){
+            if(!staleFlag){
+                stalePageNum++;
+                [self staleRequest];
+            }
+        }
+    }
 }
 @end

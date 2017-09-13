@@ -14,6 +14,9 @@
 @property(strong,nonatomic)NSString *aviation_demand_detail;
 @property(strong,nonatomic)NSString *low_price;
 @property(strong,nonatomic)NSString *high_price;
+@property(strong,nonatomic)NSString *lowtimestr;
+@property(strong,nonatomic)NSString *hightimestr;
+@property(nonatomic)NSInteger aviation_demand_id;
 
 - (instancetype)initWithDict: (NSDictionary *)dict;
 @end
