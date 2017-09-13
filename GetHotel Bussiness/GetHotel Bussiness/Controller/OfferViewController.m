@@ -102,6 +102,25 @@
     //[self.navigationController popViewControllerAnimated:YES];//用push返回上一页
 }
 #pragma mark -request
+//删除网络请求
+- (void)deleteRequest:(NSIndexPath *)indexPath {
+    SelectOfferModel *seModel = _selectOfferArr[indexPath.row];
+    NSDictionary *para = @{@"id":@(seModel.Id)};
+   
+    [RequestAPI requestURL:@"/deleteHotel" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+        NSLog(@"delete responseObject = %@",responseObject);
+        
+        [_quoteTable reloadData];
+        
+        //        if ([responseObject[@"result"] integerValue] == 1){
+        //            [_hotelTableView reloadData];
+        //        }else{
+        //        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        
+        NSLog(@"删除error:%ld",(long)statusCode);
+    }];
+}
 -(void)offerRequst{
     double finalPrice=[_finalPrice.text doubleValue];
     NSInteger weight=[_weight.text integerValue];
@@ -170,16 +189,39 @@
     cell.weight.text=[NSString stringWithFormat:@"%ld",(long)selectOfferModel.weight];
     return cell;
 }
-//创建左滑删除按钮
-- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        
-        //先删数据 再删UI
-       
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }];
-    return @[deleteAction];
+////创建左滑删除按钮
+//- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+//        
+//        //先删数据 再删UI
+//       
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//    }];
+//    return @[deleteAction];
+//}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView setEditing:NO animated:YES];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该条酒店发布吗?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            [self deleteRequest:indexPath];
+            [_selectOfferArr removeObjectAtIndex:indexPath.row];//删除数据
+            //移除tableView中的数据
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+        }];
+        UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        [alert addAction:actionA];
+        [alert addAction:actionB];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+//修改delete按钮文字为“删除”
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+    return @"删除";
 }
 #pragma -action
 - (IBAction)ConfirmAction:(UIButton *)sender forEvent:(UIEvent *)event {
@@ -206,17 +248,38 @@
     rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
         [ripple removeFromSuperview];
         //具体按钮事件的逻辑可以在这里开始执行
-        [self offerRequst];
-        [_departButton setTitle:@"选择出发地" forState:UIControlStateNormal];
-        [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
-        [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
-        [_arrivaltimeBtn setTitle:@"选择到达日期" forState:UIControlStateNormal];
-        _finalPrice.text=@"";
-        _aviationCompany.text=@"";
-        _aviationCabin.text=@"";
-        _flightNo.text=@"";
-        _weight.text=@"";
-        [self selectOfferRequest];
+        if([_departuretimeBtn.titleLabel.text isEqualToString:@"选择出发地"]==true){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择出发地！" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            }];
+
+        }else if([_destinationButton.titleLabel.text isEqualToString:@"选择目的地"]==true){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择目的地！" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            }];
+        }else if([_departuretimeBtn.titleLabel.text isEqualToString:@"选择出发日期"]==true){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择出发日期！" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            }];
+        }else if([_arrivaltimeBtn.titleLabel.text isEqualToString:@"选择到达日期"]==true){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择到达日期" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            }];
+        }
+        else{
+            [self offerRequst];
+            [_departButton setTitle:@"选择出发地" forState:UIControlStateNormal];
+            [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
+            [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
+            [_arrivaltimeBtn setTitle:@"选择到达日期" forState:UIControlStateNormal];
+            _finalPrice.text=@"";
+            _aviationCompany.text=@"";
+            _aviationCabin.text=@"";
+            _flightNo.text=@"";
+            _weight.text=@"";
+            [self selectOfferRequest];
+        }
+       
         
     };
 

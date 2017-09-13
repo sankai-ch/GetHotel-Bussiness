@@ -157,6 +157,7 @@
     return page;
 }
 #pragma mark -request
+
 -(void)offerRequest{
     NSDictionary *para=@{@"type":@1,@"pageNum":@(offerPageNum),@"pageSize":@5};
     [RequestAPI requestURL:@"/findAlldemandByType_edu" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
@@ -278,4 +279,5 @@
         }
     }
 }
+
 @end

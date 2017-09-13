@@ -22,6 +22,7 @@
         self.departure=[Utilities nullAndNilCheck:dict[@"departure"] replaceBy:@"未知出发地"];
         self.destination=[Utilities nullAndNilCheck:dict[@"destination"] replaceBy:@"未知目的地"];
         self.flightNo=[Utilities nullAndNilCheck:dict[@"flight_no"] replaceBy:@"未知"];
+        self.Id=[[Utilities nullAndNilCheck:dict[@"id"] replaceBy:0]integerValue];
     }
     return self;
 }

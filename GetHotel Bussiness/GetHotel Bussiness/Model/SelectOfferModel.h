@@ -18,6 +18,7 @@
 @property(strong,nonatomic)NSString *departure;
 @property(strong,nonatomic)NSString *destination;
 @property(strong,nonatomic)NSString *flightNo;
+@property(nonatomic)NSInteger Id;
 
 -(instancetype)initWithDict:(NSDictionary *)dict;
 
