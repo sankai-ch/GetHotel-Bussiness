@@ -13,8 +13,8 @@
 @property(nonatomic)NSInteger weight;
 @property(strong,nonatomic)NSString *aviationCompany;
 @property(strong,nonatomic)NSString *aviationCabin;
-@property(nonatomic)NSTimeInterval intime;
-@property(nonatomic)NSTimeInterval outtime;
+@property(strong,nonatomic)NSString *in_time_str;
+@property(strong,nonatomic)NSString *out_time_str;
 @property(strong,nonatomic)NSString *departure;
 @property(strong,nonatomic)NSString *destination;
 @property(strong,nonatomic)NSString *flightNo;
