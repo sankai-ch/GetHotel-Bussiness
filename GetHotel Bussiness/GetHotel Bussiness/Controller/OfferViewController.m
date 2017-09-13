@@ -247,27 +247,13 @@
     [ripple.layer pop_addAnimation:rippleCRAnimation forKey:@"rippleCRAnimation"];
     rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
         [ripple removeFromSuperview];
-        //具体按钮事件的逻辑可以在这里开始执行
-        if([_departuretimeBtn.titleLabel.text isEqualToString:@"选择出发地"]==true){
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择出发地！" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            }];
-
-        }else if([_destinationButton.titleLabel.text isEqualToString:@"选择目的地"]==true){
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择目的地！" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            }];
-        }else if([_departuretimeBtn.titleLabel.text isEqualToString:@"选择出发日期"]==true){
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择出发日期！" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            }];
-        }else if([_arrivaltimeBtn.titleLabel.text isEqualToString:@"选择到达日期"]==true){
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择到达日期" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            }];
-        }
-        else{
-            [self offerRequst];
+        if(![_departuretimeBtn.titleLabel.text isEqualToString:@""]){
+            [Utilities popUpAlertViewWithMsg:@"请填写出发地" andTitle:@"提示" onView:self];
+        }else{
+            
+        
+        ////具体按钮事件的逻辑可以在这里开始执行
+                  [self offerRequst];
             [_departButton setTitle:@"选择出发地" forState:UIControlStateNormal];
             [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
             [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
