@@ -97,15 +97,23 @@
 }
 
 - (void)Issue{
-    [self issueRequest];
+    
     //[[NSNotificationCenter defaultCenter] postNotificationName:@"issue" object:self userInfo:@{@"hotelName":_roomNameLabel.text}];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if([_roomPriceLabel.text  isEqualToString:@""]){
+        [Utilities popUpAlertViewWithMsg:@"请填写价格" andTitle:@"提示" onView:self];
+    }else if ([_roomAreaLabel.text isEqualToString:@""]){
+        [Utilities popUpAlertViewWithMsg:@"房间类型有误，请重新填写" andTitle:@"提示" onView:self];
+    }else{
+        [self issueRequest];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 
 //用model的方式返回上一页
 - (void)backAction{
     [self dismissViewControllerAnimated:YES completion:nil];
+    
     //[self.navigationController popViewControllerAnimated:YES];//用push返回上一页
 }
 
@@ -263,19 +271,19 @@
 - (IBAction)TextField_DidEndOnExit:(id)sender{
     [sender resignFirstResponder];
 }
+//
+//-(void)textFieldDidBeginEditing:(UITextField *)textField
+//{
+//    int offset = self.view.frame.origin.y - 216.0;//iPhone键盘高
+//    [UIView animateWithDuration:0.5 animations:^{
+//        self.view.transform = CGAffineTransformMakeTranslation(0, -offset);
+//    }];
+//}
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    int offset = self.view.frame.origin.y - 216.0;//iPhone键盘高
-    [UIView animateWithDuration:0.5 animations:^{
-        self.view.transform = CGAffineTransformMakeTranslation(0, -offset);
-    }];
-}
 
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-}
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+//}
 /*
 - (void)keyboardWillChangeFrame: (NSNotification *)notification{
     NSDictionary *userInfo = notification.userInfo;
@@ -288,13 +296,12 @@
 */
 #pragma mark - Request
 - (void)issueRequest{
-    
     //NSDictionary *para = @{@"business_id":@2,@"hotel_name":@"海天",@"hotel_type":
     NSInteger row = [_pickView selectedRowInComponent:0];
     NSString *title= _hotelNamePickerArr[row];
     [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
     _imgUrl = @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505461689&di=9c9704fab9db8eccb77e1e1360fdbef4&imgtype=jpg&er=1&src=http%3A%2F%2Fimg3.redocn.com%2Ftupian%2F20150312%2Fhaixinghezhenzhubeikeshiliangbeijing_3937174.jpg";
-    NSDictionary *para = @{@"business_id":@1,@"hotel_name":title ,@"hotel_type":_roomAreaLabel.text,@"room_imgs":_imgUrl,@"price":_roomPriceLabel.text};
+    NSDictionary *para = @{@"business_id":@2,@"hotel_name":title ,@"hotel_type":_roomAreaLabel.text,@"room_imgs":_imgUrl,@"price":_roomPriceLabel.text};
     
     [RequestAPI requestURL:@"/addHotel" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         if ([responseObject[@"result"]integerValue] == 1){
@@ -322,7 +329,6 @@
             [_pickView reloadAllComponents];
         }
         else{
-            [_avi stopAnimating];
             [Utilities popUpAlertViewWithMsg:@"网络错误，请稍后再试" andTitle:@"提示" onView:self];
         }
     } failure:^(NSInteger statusCode, NSError *error) {
@@ -336,57 +342,57 @@
 }
 
 
-#pragma mark - reg & unreg notification
-
-- (void)regNotification
-
-{
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    
-}
-
-- (void)unregNotification
-
-{
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-    
-}
-
-#pragma mark - notification handler
-
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
-
-{
-    
-    NSDictionary *info = [notification userInfo];
-    
-    CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    
-    CGRect beginKeyboardRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    
-    CGRect endKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    CGFloat yOffset = endKeyboardRect.origin.y - beginKeyboardRect.origin.y;
-    
-    CGRect roomAreaRect = self.roomAreaLabel.frame;
-    
-    CGRect roomPriceRect = self.roomPriceLabel.frame;
-    
-    roomAreaRect.origin.y += yOffset;
-    
-    roomPriceRect.origin.y += yOffset;
-    
-    [UIView animateWithDuration:duration animations:^{
-        
-        self.roomAreaLabel.frame = roomAreaRect;
-        
-        self.roomPriceLabel.frame = roomPriceRect;
-        
-    }];
-    
-}
+//#pragma mark - reg & unreg notification
+//
+//- (void)regNotification
+//
+//{
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+//    
+//}
+//
+//- (void)unregNotification
+//
+//{
+//    
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+//    
+//}
+//
+//#pragma mark - notification handler
+//
+//- (void)keyboardWillChangeFrame:(NSNotification *)notification
+//
+//{
+//    
+//    NSDictionary *info = [notification userInfo];
+//    
+//    CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+//    
+//    CGRect beginKeyboardRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+//    
+//    CGRect endKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+//    
+//    CGFloat yOffset = endKeyboardRect.origin.y - beginKeyboardRect.origin.y;
+//    
+//    CGRect roomAreaRect = self.roomAreaLabel.frame;
+//    
+//    CGRect roomPriceRect = self.roomPriceLabel.frame;
+//    
+//    roomAreaRect.origin.y += yOffset;
+//    
+//    roomPriceRect.origin.y += yOffset;
+//    
+//    [UIView animateWithDuration:duration animations:^{
+//        
+//        self.roomAreaLabel.frame = roomAreaRect;
+//        
+//        self.roomPriceLabel.frame = roomPriceRect;
+//        
+//    }];
+//    
+//}
 
 
 - (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event {
