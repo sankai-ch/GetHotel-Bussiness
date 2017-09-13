@@ -57,6 +57,7 @@
 
 - (void)issueRoom:(NSNotification *)notification{
     [self initializeData];
+    [self request];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -87,7 +88,6 @@
 #pragma mark - tableView
 //多少行
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
     return _arr.count;
 }
 
@@ -96,7 +96,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
  
     MyHotelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myHotel" forIndexPath:indexPath];
-    FindHotelModel *findHotel =_arr[indexPath.row];
+    _hotelModel = _arr[indexPath.row];
     //访问权限
     NSString *userAgent = @"";
     userAgent = [NSString stringWithFormat:@"%@/%@ (%@; iOS %@; Scale/%0.2f)", [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleExecutableKey] ?: [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] ?: [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleVersionKey], [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [[UIScreen mainScreen] scale]];
@@ -120,12 +120,12 @@
         cell.hotelAreaLabel.text = _resetArr[3];
     }
     }
-    NSURL *url = [NSURL URLWithString:findHotel.hotelImg];
+    NSURL *url = [NSURL URLWithString:_hotelModel.hotelImg];
     //cell.hotelImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:findHotel.roomImg]]];
-    [cell.hotelImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"hotels"]];
     
-    cell.hotelNameLabel.text = findHotel.hotelName;
-    cell.hotelPriceLabel.text = [NSString stringWithFormat:@"%ld",(long)findHotel.price];
+    [cell.hotelImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"hotels"]];
+    cell.hotelNameLabel.text = _hotelModel.hotelName;
+    cell.hotelPriceLabel.text = [NSString stringWithFormat:@"%ld",(long)_hotelModel.price];
     //cell.hotelDescribeLabel.text = findHotel.hotelType;
     //NSLog(@"hotelName = %@",findHotel.hotelName);
     
@@ -184,16 +184,16 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-//细胞将要出现时调用
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row == _arr.count - 1){
-        if(pages >= pageNum) {
-            pageNum ++;
-            [self request];
-            //[self deleteRequest];
-        }
-    }
-}
+////细胞将要出现时调用
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+//    if(indexPath.row == _arr.count - 1){
+//        if(pages >= pageNum) {
+//            pageNum ++;
+//            [self request];
+//            //[self deleteRequest];
+//        }
+//    }
+//}
 
 
 - (void)up{
@@ -270,11 +270,12 @@
     NSLog(@"id是:%ld",(long)_hotelModel.ID);
     [RequestAPI requestURL:@"/deleteHotel" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
         NSLog(@"delete responseObject = %@",responseObject);
-        if ([responseObject[@"result"] integerValue] == 1){
-            [_hotelTableView reloadData];
-        }else{
-            
-        }
+        [_hotelTableView reloadData];
+//        if ([responseObject[@"result"] integerValue] == 1){
+//            [_hotelTableView reloadData];
+//        }else{
+//            
+//        }
     } failure:^(NSInteger statusCode, NSError *error) {
         [_avi stopAnimating];
         NSLog(@"删除error:%ld",(long)statusCode);
