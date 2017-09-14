@@ -11,7 +11,7 @@
 #import "POP.h"
 #import "CityListViewController.h"
 #import "SelectOfferModel.h"
-@interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
+@interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>{
     BOOL tags;
 }
 @property (weak, nonatomic) IBOutlet UITableView *quoteTable;
@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *departButton;
 @property (weak, nonatomic) IBOutlet UIButton *destinationButton;
 @property (weak, nonatomic) IBOutlet UIView *datePickView;
+@property (weak, nonatomic) IBOutlet UIButton *selecCabin;
+- (IBAction)cabinAction:(UIButton *)sender forEvent:(UIEvent *)event;
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property(strong,nonatomic)NSMutableArray *selectOfferArr;
@@ -34,6 +36,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *aviationCompany;
 @property (weak, nonatomic) IBOutlet UITextField *flightNo;
 @property (weak, nonatomic) IBOutlet UITextField *aviationCabin;
+@property (weak, nonatomic) IBOutlet UIView *cabinPicker;
+@property(strong,nonatomic)NSArray *cabinnamearr;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
 
 
 
@@ -45,12 +50,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self naviConfig];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDepartCity:) name:@"depart" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDestinationCity:) name:@"destination" object:nil];
     self.quoteTable.tableFooterView = [UIView new];
     tags=nil;
     _selectOfferArr=[NSMutableArray new];
     [self selectOfferRequest];
+    self.cabinnamearr=@[@"头等舱",@"商务舱",@"经济舱"];
     NSLog(@"%@",[[StorageMgr singletonStorageMgr]objectForKey:@"id"]);
 }
 
@@ -246,10 +253,7 @@
     rippleCRAnimation.toValue=@(_confirmButton.frame.size.width+_confirmButton.frame.size.height);
     [ripple.layer pop_addAnimation:rippleCRAnimation forKey:@"rippleCRAnimation"];
     rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
-        [ripple removeFromSuperview];
-        if(![_departuretimeBtn.titleLabel.text isEqualToString:@""]){
-            [Utilities popUpAlertViewWithMsg:@"请填写出发地" andTitle:@"提示" onView:self];
-        }else{
+      
             
         
         ////具体按钮事件的逻辑可以在这里开始执行
@@ -264,7 +268,7 @@
             _flightNo.text=@"";
             _weight.text=@"";
             [self selectOfferRequest];
-        }
+        
        
         
     };
@@ -342,5 +346,23 @@
 }
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     _datePickView.hidden=YES;
+    _cabinPicker.hidden=YES;
+}
+- (IBAction)cabinAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    _cabinPicker.hidden=NO;
+}
+#pragma mark - pickerview
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 1;
+}
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    return _cabinnamearr.count;
+}
+- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component __TVOS_PROHIBITED{
+    return _cabinnamearr[row];
+    
+}
+-(CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
+    return  _pickerview.frame.size.width/2.3;
 }
 @end
