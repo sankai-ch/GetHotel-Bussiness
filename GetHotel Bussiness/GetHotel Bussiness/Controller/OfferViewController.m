@@ -39,6 +39,8 @@
 @property (weak, nonatomic) IBOutlet UIView *cabinPicker;
 @property(strong,nonatomic)NSArray *cabinnamearr;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
+- (IBAction)cancel2:(UIBarButtonItem *)sender;
+- (IBAction)confirm2:(UIBarButtonItem *)sender;
 
 
 
@@ -132,7 +134,7 @@
     double finalPrice=[_finalPrice.text doubleValue];
     NSInteger weight=[_weight.text integerValue];
     NSString *aviationcompany=_aviationCompany.text;
-    NSString *aviationcabin=_aviationCabin.text;
+    NSString *aviationcabin=_selecCabin.titleLabel.text;
     NSString *intimestr=_departuretimeBtn.titleLabel.text;
     NSString *outtimestr=_arrivaltimeBtn.titleLabel.text;
     NSString *departurestr=_departButton.titleLabel.text;
@@ -262,9 +264,10 @@
             [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
             [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
             [_arrivaltimeBtn setTitle:@"选择到达日期" forState:UIControlStateNormal];
+        [_selecCabin setTitle:@"选择舱位" forState:UIControlStateNormal];
             _finalPrice.text=@"";
             _aviationCompany.text=@"";
-            _aviationCabin.text=@"";
+        
             _flightNo.text=@"";
             _weight.text=@"";
             [self selectOfferRequest];
@@ -364,5 +367,15 @@
 }
 -(CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
     return  _pickerview.frame.size.width/2.3;
+}
+- (IBAction)cancel2:(UIBarButtonItem *)sender {
+    _cabinPicker.hidden=YES;
+}
+
+- (IBAction)confirm2:(UIBarButtonItem *)sender {
+    _cabinPicker.hidden=YES;
+    NSInteger row=[_pickerview selectedRowInComponent:0];
+    NSString *title=_cabinnamearr[row];
+    [_selecCabin setTitle:title forState:UIControlStateNormal];
 }
 @end
