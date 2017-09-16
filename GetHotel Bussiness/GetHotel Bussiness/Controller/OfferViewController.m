@@ -39,6 +39,9 @@
 @property (weak, nonatomic) IBOutlet UIView *cabinPicker;
 @property(strong,nonatomic)NSArray *cabinnamearr;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
+@property(nonatomic)NSTimeInterval startTime;
+@property(nonatomic)NSTimeInterval arrTime;
+
 - (IBAction)cancel2:(UIBarButtonItem *)sender;
 - (IBAction)confirm2:(UIBarButtonItem *)sender;
 
@@ -323,18 +326,28 @@
 }
 
 - (IBAction)confirmAction:(UIBarButtonItem *)sender {
-    NSData *pickerDate= _datePicker.date;
-    NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
-    [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSString *dateString =[pickerFormatter stringFromDate:pickerDate];
+    NSDate *datetemp=[NSDate new];
     if(tags){
-        [_departuretimeBtn setTitle:dateString forState:UIControlStateNormal];
+        NSData *pickerDate= _datePicker.date;
+        datetemp=_datePicker.date;
+        NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
+        [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSString *startString =[pickerFormatter stringFromDate:pickerDate];
+        [_departuretimeBtn setTitle:startString forState:UIControlStateNormal];
+       
         _datePickView.hidden=YES;
     }
+    
     else{
         
-        [_arrivaltimeBtn setTitle:dateString forState:UIControlStateNormal];
+        NSData *pickerDate= _datePicker.date;
+        NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
+        [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSString *arrString =[pickerFormatter stringFromDate:pickerDate];
+        [_arrivaltimeBtn setTitle:arrString forState:UIControlStateNormal];
+     
         _datePickView.hidden=YES;
+      
     }
 }
 

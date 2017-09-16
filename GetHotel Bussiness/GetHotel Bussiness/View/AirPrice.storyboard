@@ -850,16 +850,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="请输入的搜索城市" translatesAutoresizingMaskIntoConstraints="NO" id="ao6-11-dQR">
-                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
-                                <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="9eJ-0U-zTY" id="5sc-Yx-9Mz"/>
-                                </connections>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pGx-c1-wwc">
-                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CityListCell" textLabel="RQo-F5-fmd" style="IBUITableViewCellStyleDefault" id="TTa-lk-MVp">
@@ -911,12 +903,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ZNS-Dw-JKb" firstAttribute="top" secondItem="ibx-dH-llY" secondAttribute="bottom" id="74A-e9-3AR"/>
-                            <constraint firstItem="ao6-11-dQR" firstAttribute="leading" secondItem="y9u-In-26I" secondAttribute="leading" id="8be-Yo-d8p"/>
                             <constraint firstAttribute="bottom" secondItem="pGx-c1-wwc" secondAttribute="bottom" id="AYq-lg-C9P"/>
                             <constraint firstAttribute="trailing" secondItem="pGx-c1-wwc" secondAttribute="trailing" id="HtA-kg-qnz"/>
-                            <constraint firstItem="pGx-c1-wwc" firstAttribute="top" secondItem="ao6-11-dQR" secondAttribute="bottom" id="bBv-u3-fft"/>
-                            <constraint firstItem="ao6-11-dQR" firstAttribute="top" secondItem="ibx-dH-llY" secondAttribute="bottom" id="dNb-ax-CvY"/>
-                            <constraint firstItem="ZNS-Dw-JKb" firstAttribute="leading" secondItem="ao6-11-dQR" secondAttribute="trailing" id="h1Y-vn-CYV"/>
+                            <constraint firstItem="pGx-c1-wwc" firstAttribute="top" secondItem="ibx-dH-llY" secondAttribute="bottom" id="SHQ-Hg-Wbs"/>
                             <constraint firstAttribute="trailing" secondItem="ZNS-Dw-JKb" secondAttribute="trailing" constant="-50" id="hzN-3E-l2C"/>
                             <constraint firstItem="pGx-c1-wwc" firstAttribute="leading" secondItem="y9u-In-26I" secondAttribute="leading" id="qXa-D7-5Ds"/>
                         </constraints>
@@ -925,7 +914,6 @@
                     <connections>
                         <outlet property="cancelBtn" destination="4CG-oL-Ks4" id="ahv-NC-c7i"/>
                         <outlet property="cancelViewTralling" destination="oGM-ok-g6Z" id="TNx-Xq-hSQ"/>
-                        <outlet property="seachBar" destination="ao6-11-dQR" id="uvU-GH-AFI"/>
                         <outlet property="tableView" destination="pGx-c1-wwc" id="Ag4-eS-aR5"/>
                         <outlet property="tableViewBottom" destination="AYq-lg-C9P" id="7SU-LT-l5z"/>
                     </connections>

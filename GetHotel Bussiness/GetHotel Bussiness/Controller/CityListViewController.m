@@ -44,7 +44,7 @@
 //这个方法专门做导航条的控制
 - (void)naviConfig{
     //设置导航条标题的文字
-    self.navigationItem.title = @"城市列表";
+    self.navigationItem.title = @"机场列表";
     //设置导航条的颜色（风格颜色）
     self.navigationController.navigationBar.barTintColor = UIColorFromRGB(15, 100, 240);
     //设置导航条标题颜色
@@ -77,7 +77,7 @@
 */
 #pragma mark -tableView
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return _cityListArr.count;
+    return _arr.count;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     CityListModel *cityListModel=_cityListArr[section];
@@ -111,22 +111,22 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 #pragma mark -searchBar
--(void)seachBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    if(searchText.length==0){
-        [self requestCity];
-        return;
-    }
-    [self requestOfFindCity:searchText];
-}
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    [_seachBar resignFirstResponder];
-}
--(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-    _cancelViewTralling.constant=0;
-    [UIView animateWithDuration:0.5f animations:^{
-        [self.view layoutIfNeeded];
-    }];
-}
+//-(void)seachBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+//    if(searchText.length==0){
+//        [self requestCity];
+//        return;
+//    }
+////    [self requestOfFindCity:searchText];
+//}
+//-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+//    [_seachBar resignFirstResponder];
+//}
+//-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+//    _cancelViewTralling.constant=0;
+//    [UIView animateWithDuration:0.5f animations:^{
+//        [self.view layoutIfNeeded];
+//    }];
+//}
 
 #pragma mark - keyBorder
 -(void)keyboardWillShow:(NSNotification *)notification{
@@ -138,47 +138,49 @@
 }
 - (nullable NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView {
     //NSLog(@"-----------------------------%lu",(unsigned long)_arr.count);
-    if (_arr.count !=23) {
-        return 0;
-    }
+ 
     return _arr;
 }
 #pragma mark - request
 
 -(void)requestCity{
-    [RequestAPI requestURL:@"/findCity" withParameters:@{@"id":@0} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
-        NSLog(@"%@",responseObject);
-        if([responseObject[@"result"] integerValue]==1){
-            NSArray *content=responseObject[@"content"];
-            [_arr removeAllObjects];
-            [_cityListArr removeAllObjects];
-            for(NSDictionary *dict in content){
-                CityListModel *cityList=[[CityListModel alloc]initWithDict:dict];
-                [_cityListArr addObject:cityList];
-                [_arr addObject:cityList.tip];
-            }
-            [_tableView reloadData];
-        }
-    } failure:^(NSInteger statusCode, NSError *error) {
+  
+    NSData *JSONData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"airport" ofType:@"json"]];
+    NSArray *airports = (NSArray *)[JSONData JSONCol];
+    NSLog(@"airports = %@", airports);
+    //NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingAllowFragments error:nil];
+    [_arr removeAllObjects];
+    [_cityListArr removeAllObjects];
+    for(NSArray *airportGroup in airports){
+        NSDictionary *group = airportGroup[0];
+        NSString *groupStr = group[@"short"];
+        [_arr addObject:groupStr];
         
-    }];
+        NSDictionary *aiportInGroup = airportGroup[1];
+        NSArray *airportList = aiportInGroup[@"airportList"];
+        NSDictionary *airportListInGroup = @{@"short":groupStr,@"airportList":airportList};
+        CityListModel *cityList = [[CityListModel alloc] initWithDict:airportListInGroup];
+        [_cityListArr addObject:cityList];
+    }
+    [_tableView reloadData];
+
 }
--(void)requestOfFindCity:(NSString *)text {
-    [RequestAPI requestURL:@"/getCityByName" withParameters:@{@"name":text,@"id":@0} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
-        if([responseObject[@"result"] integerValue]==1){
-            NSArray *content=responseObject[@"content"];
-            [_cityListArr removeAllObjects];
-            [_arr removeAllObjects];
-            for(NSDictionary *dict in content){
-                CityListModel *cityModel=[[CityListModel alloc]initWithDict: dict];
-                [_cityListArr addObject:cityModel];
-            }
-            [_tableView reloadData];
-        }
-    } failure:^(NSInteger statusCode, NSError *error) {
-        
-    }];
-}
+//-(void)requestOfFindCity:(NSString *)text {
+//    [RequestAPI requestURL:@"/getCityByName" withParameters:@{@"name":text,@"id":@0} andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
+//        if([responseObject[@"result"] integerValue]==1){
+//            NSArray *content=responseObject[@"content"];
+//            [_cityListArr removeAllObjects];
+//            [_arr removeAllObjects];
+//            for(NSDictionary *dict in content){
+//                CityListModel *cityModel=[[CityListModel alloc]initWithDict: dict];
+//                [_cityListArr addObject:cityModel];
+//            }
+//            [_tableView reloadData];
+//        }
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        
+//    }];
+//}
 - (IBAction)cancelAction:(UIButton *)sender forEvent:(UIEvent *)event {
     [_seachBar resignFirstResponder];
     _cancelViewTralling.constant=-50;
