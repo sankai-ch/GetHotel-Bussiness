@@ -67,6 +67,8 @@
     [self btnStyle];
     [self naviConfig];
     
+   
+    
     
 }
 
@@ -96,18 +98,29 @@
     
 }
 
+
+
+
 - (void)Issue{
     
+    
+    
     //[[NSNotificationCenter defaultCenter] postNotificationName:@"issue" object:self userInfo:@{@"hotelName":_roomNameLabel.text}];
+    
     if([_roomPriceLabel.text  isEqualToString:@""]){
         [Utilities popUpAlertViewWithMsg:@"请填写价格" andTitle:@"提示" onView:self];
-    }else if ([_roomAreaLabel.text isEqualToString:@""]){
+    }else if (_roomPriceLabel.text ){
+        [Utilities popUpAlertViewWithMsg:@"价格类型不正确请重新填写" andTitle:@"提示" onView:self];
+        
+    }
+    else if ([_roomAreaLabel.text isEqualToString:@""]){
         [Utilities popUpAlertViewWithMsg:@"房间类型有误，请重新填写" andTitle:@"提示" onView:self];
     }else{
         [self issueRequest];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
+
 
 
 //用model的方式返回上一页
