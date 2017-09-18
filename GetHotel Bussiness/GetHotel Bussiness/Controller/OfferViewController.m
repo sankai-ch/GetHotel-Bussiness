@@ -11,7 +11,7 @@
 #import "POP.h"
 #import "CityListViewController.h"
 #import "SelectOfferModel.h"
-@interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
+@interface OfferViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>{
     BOOL tags;
 }
 @property (weak, nonatomic) IBOutlet UITableView *quoteTable;
@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *departButton;
 @property (weak, nonatomic) IBOutlet UIButton *destinationButton;
 @property (weak, nonatomic) IBOutlet UIView *datePickView;
+@property (weak, nonatomic) IBOutlet UIButton *selecCabin;
+- (IBAction)cabinAction:(UIButton *)sender forEvent:(UIEvent *)event;
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property(strong,nonatomic)NSMutableArray *selectOfferArr;
@@ -34,6 +36,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *aviationCompany;
 @property (weak, nonatomic) IBOutlet UITextField *flightNo;
 @property (weak, nonatomic) IBOutlet UITextField *aviationCabin;
+@property (weak, nonatomic) IBOutlet UIView *cabinPicker;
+@property(strong,nonatomic)NSArray *cabinnamearr;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
+@property(nonatomic)NSTimeInterval startTime;
+@property(nonatomic)NSTimeInterval arrTime;
+
+- (IBAction)cancel2:(UIBarButtonItem *)sender;
+- (IBAction)confirm2:(UIBarButtonItem *)sender;
 
 
 
@@ -45,12 +55,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self naviConfig];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDepartCity:) name:@"depart" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDestinationCity:) name:@"destination" object:nil];
     self.quoteTable.tableFooterView = [UIView new];
     tags=nil;
     _selectOfferArr=[NSMutableArray new];
     [self selectOfferRequest];
+    self.cabinnamearr=@[@"头等舱",@"商务舱",@"经济舱"];
     NSLog(@"%@",[[StorageMgr singletonStorageMgr]objectForKey:@"id"]);
 }
 
@@ -125,7 +137,7 @@
     double finalPrice=[_finalPrice.text doubleValue];
     NSInteger weight=[_weight.text integerValue];
     NSString *aviationcompany=_aviationCompany.text;
-    NSString *aviationcabin=_aviationCabin.text;
+    NSString *aviationcabin=_selecCabin.titleLabel.text;
     NSString *intimestr=_departuretimeBtn.titleLabel.text;
     NSString *outtimestr=_arrivaltimeBtn.titleLabel.text;
     NSString *departurestr=_departButton.titleLabel.text;
@@ -246,10 +258,7 @@
     rippleCRAnimation.toValue=@(_confirmButton.frame.size.width+_confirmButton.frame.size.height);
     [ripple.layer pop_addAnimation:rippleCRAnimation forKey:@"rippleCRAnimation"];
     rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
-        [ripple removeFromSuperview];
-        if(![_departuretimeBtn.titleLabel.text isEqualToString:@""]){
-            [Utilities popUpAlertViewWithMsg:@"请填写出发地" andTitle:@"提示" onView:self];
-        }else{
+      
             
         
         ////具体按钮事件的逻辑可以在这里开始执行
@@ -258,13 +267,14 @@
             [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
             [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
             [_arrivaltimeBtn setTitle:@"选择到达日期" forState:UIControlStateNormal];
+        [_selecCabin setTitle:@"选择舱位" forState:UIControlStateNormal];
             _finalPrice.text=@"";
             _aviationCompany.text=@"";
-            _aviationCabin.text=@"";
+        
             _flightNo.text=@"";
             _weight.text=@"";
             [self selectOfferRequest];
-        }
+        
        
         
     };
@@ -316,18 +326,28 @@
 }
 
 - (IBAction)confirmAction:(UIBarButtonItem *)sender {
-    NSData *pickerDate= _datePicker.date;
-    NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
-    [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSString *dateString =[pickerFormatter stringFromDate:pickerDate];
+    NSDate *datetemp=[NSDate new];
     if(tags){
-        [_departuretimeBtn setTitle:dateString forState:UIControlStateNormal];
+        NSData *pickerDate= _datePicker.date;
+        datetemp=_datePicker.date;
+        NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
+        [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSString *startString =[pickerFormatter stringFromDate:pickerDate];
+        [_departuretimeBtn setTitle:startString forState:UIControlStateNormal];
+       
         _datePickView.hidden=YES;
     }
+    
     else{
         
-        [_arrivaltimeBtn setTitle:dateString forState:UIControlStateNormal];
+        NSData *pickerDate= _datePicker.date;
+        NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
+        [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSString *arrString =[pickerFormatter stringFromDate:pickerDate];
+        [_arrivaltimeBtn setTitle:arrString forState:UIControlStateNormal];
+     
         _datePickView.hidden=YES;
+      
     }
 }
 
@@ -342,5 +362,33 @@
 }
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     _datePickView.hidden=YES;
+    _cabinPicker.hidden=YES;
+}
+- (IBAction)cabinAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    _cabinPicker.hidden=NO;
+}
+#pragma mark - pickerview
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 1;
+}
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    return _cabinnamearr.count;
+}
+- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component __TVOS_PROHIBITED{
+    return _cabinnamearr[row];
+    
+}
+-(CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
+    return  _pickerview.frame.size.width/2.3;
+}
+- (IBAction)cancel2:(UIBarButtonItem *)sender {
+    _cabinPicker.hidden=YES;
+}
+
+- (IBAction)confirm2:(UIBarButtonItem *)sender {
+    _cabinPicker.hidden=YES;
+    NSInteger row=[_pickerview selectedRowInComponent:0];
+    NSString *title=_cabinnamearr[row];
+    [_selecCabin setTitle:title forState:UIControlStateNormal];
 }
 @end

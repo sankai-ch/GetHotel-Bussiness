@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>IQKeyboardManager.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>Pods-GetHotel Bussiness.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -32,7 +37,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0FE6495F5CB0456B076F7BA1A5FFFDC9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2FEEBA79924F4764F0D0EF1533A3196C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>65611EB41C3D9EAF2B0184A7F6ABD345</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>719FBF25B51760D7F03CFA6265E8275B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>904F4F27FD314010A3812EB2A9306183</key>
 		<dict>
 			<key>primary</key>
 			<true/>

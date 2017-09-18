@@ -47,6 +47,8 @@
     [self offerInitializeData];
     _offerArr=[NSMutableArray new];
     _staleArr=[NSMutableArray new];
+    _offeringList.tableFooterView=[UIView new];
+    _offeredList.tableFooterView=[UIView new];
 }
 
 - (void)didReceiveMemoryWarning {
