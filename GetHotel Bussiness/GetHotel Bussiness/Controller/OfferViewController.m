@@ -184,10 +184,12 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
+
 //设置每组多少行
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _selectOfferArr.count;
 }
+
 -(UITableView *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     quoteTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OfferCell" forIndexPath:indexPath];
     SelectOfferModel *selectOfferModel=_selectOfferArr[indexPath.row];
@@ -201,6 +203,7 @@
     cell.weight.text=[NSString stringWithFormat:@"%ld",(long)selectOfferModel.weight];
     return cell;
 }
+
 ////创建左滑删除按钮
 //- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
 //    
@@ -235,6 +238,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     return @"删除";
 }
+
 #pragma -action
 - (IBAction)ConfirmAction:(UIButton *)sender forEvent:(UIEvent *)event {
     
@@ -258,22 +262,24 @@
     rippleCRAnimation.toValue=@(_confirmButton.frame.size.width+_confirmButton.frame.size.height);
     [ripple.layer pop_addAnimation:rippleCRAnimation forKey:@"rippleCRAnimation"];
     rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
-      
-            
         
-        ////具体按钮事件的逻辑可以在这里开始执行
-                  [self offerRequst];
+        
+            ////具体按钮事件的逻辑可以在这里开始执行
+            [self offerRequst];
             [_departButton setTitle:@"选择出发地" forState:UIControlStateNormal];
             [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
             [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
             [_arrivaltimeBtn setTitle:@"选择到达日期" forState:UIControlStateNormal];
-        [_selecCabin setTitle:@"选择舱位" forState:UIControlStateNormal];
+            [_selecCabin setTitle:@"选择舱位" forState:UIControlStateNormal];
             _finalPrice.text=@"";
             _aviationCompany.text=@"";
-        
+            
             _flightNo.text=@"";
             _weight.text=@"";
             [self selectOfferRequest];
+
+    
+        
         
        
         

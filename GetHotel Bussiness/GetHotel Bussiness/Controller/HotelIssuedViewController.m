@@ -37,23 +37,19 @@
     
     pageNum = 1;
     
-    [self initializeData];
-    [self setRefreshControl];
-    //[self deleteRequest];
     
     _arr = [NSMutableArray new];
     _typeArr = [NSMutableArray new];
     _resetArr = [NSMutableArray new];
     
+    [self initializeData];
+    [self setRefreshControl];
+    
     _hotelTableView.tableFooterView = [UIView new];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(issueRoom:) name:@"issue" object:nil];
-    
     [self naviConfig];
 }
 
-- (void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 - (void)issueRoom:(NSNotification *)notification{
     [self initializeData];
@@ -153,10 +149,19 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该条酒店发布吗?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self deleteRequest:indexPath];
-            [_arr removeObjectAtIndex:indexPath.row];//删除数据
-            //移除tableView中的数据
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+            
+            UIAlertController *alertAA = [UIAlertController alertControllerWithTitle:@"提示" message:@"删除成功!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self deleteRequest:indexPath];
+                [_arr removeObjectAtIndex:indexPath.row];//删除数据
+                //移除tableView中的数据
+                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+            }];
+            
+            [alertAA addAction:actionB];
+            [self presentViewController:alertAA animated:YES completion:nil];
+            
+            
         }];
         UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
         [alert addAction:actionA];
@@ -192,10 +197,18 @@
 //    }
 //}
 
-
-- (void)up{
-    
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == _arr.count - 1) {
+        if(pages >= pageNum){
+            pageNum++;
+            [self request];
+        }
+        
+    }
 }
+
+
+
 #pragma mark - request
 
 //下拉刷新
