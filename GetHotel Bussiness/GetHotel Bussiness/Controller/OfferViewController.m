@@ -41,7 +41,7 @@
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
 @property(nonatomic)NSTimeInterval startTime;
 @property(nonatomic)NSTimeInterval arrTime;
-
+@property(nonatomic)NSTimeInterval tempTime;
 - (IBAction)cancel2:(UIBarButtonItem *)sender;
 - (IBAction)confirm2:(UIBarButtonItem *)sender;
 
@@ -55,7 +55,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self naviConfig];
-    
+    _startTime = [NSDate.date timeIntervalSince1970];
+    _arrTime = [NSDate.dateTomorrow timeIntervalSince1970];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDepartCity:) name:@"depart" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkDestinationCity:) name:@"destination" object:nil];
     self.quoteTable.tableFooterView = [UIView new];
@@ -219,7 +220,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView setEditing:NO animated:YES];
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该条酒店发布吗?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该条航空发布吗?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             [self deleteRequest:indexPath];
@@ -242,48 +243,69 @@
 #pragma -action
 - (IBAction)ConfirmAction:(UIButton *)sender forEvent:(UIEvent *)event {
     
-    UITouch *touch=[[event allTouches] anyObject];
-    //触摸实例在特定坐标系中的位置
-    CGPoint location=[touch locationInView:_confirmButton];
-    //创一个视图座位涟漪效果的展示体，以point为中心
-    UIView *ripple=[[UIView alloc]initWithFrame:CGRectMake(location.x-10, location.y-10, 20, 20)];
-    ripple.layer.cornerRadius=10;
-    ripple.backgroundColor=[[UIColor whiteColor]colorWithAlphaComponent:0.2];
-    [_confirmButton addSubview:ripple];
-    POPBasicAnimation *rippleSizeAnimation=[POPBasicAnimation animation];
-    rippleSizeAnimation.property=[POPAnimatableProperty propertyWithName:kPOPLayerSize];
-    rippleSizeAnimation.duration=0.5;
-    rippleSizeAnimation.toValue=[NSValue valueWithCGSize:CGSizeMake((_confirmButton.frame.size.width+_confirmButton.frame.size.height)*2, (_confirmButton.frame.size.width+_confirmButton.frame.size.height)*2)];
-    [ripple pop_addAnimation:rippleSizeAnimation forKey:@"rippleSizeAnimation"];
-    
-    POPBasicAnimation *rippleCRAnimation =[POPBasicAnimation animation];
-    rippleCRAnimation.property=[POPAnimatableProperty propertyWithName:kPOPLayerCornerRadius];
-    rippleCRAnimation.duration=0.5;
-    rippleCRAnimation.toValue=@(_confirmButton.frame.size.width+_confirmButton.frame.size.height);
-    [ripple.layer pop_addAnimation:rippleCRAnimation forKey:@"rippleCRAnimation"];
-    rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
+    if([_departButton.titleLabel.text isEqualToString:@"选择出发地"]){
+        [Utilities popUpAlertViewWithMsg:@"请填写出发地" andTitle:@"提示" onView:self];
         
+    }else if([_destinationButton.titleLabel.text isEqualToString:@"选择目的地"]){
+        [Utilities popUpAlertViewWithMsg:@"请填写目的地" andTitle:@"提示" onView:self];
+    }else if ([_departuretimeBtn.titleLabel.text isEqualToString:@"选择出发日期"]){
+        [Utilities popUpAlertViewWithMsg:@"请填写出发日期" andTitle:@"提示" onView:self];
+    }else if ([_arrivaltimeBtn.titleLabel.text isEqualToString:@"选择到达日期"]){
+        [Utilities popUpAlertViewWithMsg:@"请填写到达日期" andTitle:@"提示" onView:self];
+    }else if ([_selecCabin.titleLabel.text isEqualToString:@"选择舱位"]){
+        [Utilities popUpAlertViewWithMsg:@"请填写舱位" andTitle:@"提示" onView:self];
+    }else if ([_finalPrice.text isEqualToString:@""]){
+        [Utilities popUpAlertViewWithMsg:@"请填写价格" andTitle:@"提示" onView:self];
+    }else if ([_aviationCompany.text isEqualToString:@""]){
+        [Utilities popUpAlertViewWithMsg:@"请填写航空公司" andTitle:@"提示" onView:self];
+    }else if ([_flightNo.text isEqualToString:@""]){
+        [Utilities popUpAlertViewWithMsg:@"请填写航班" andTitle:@"提示" onView:self];
+    }else if ([_weight.text isEqualToString:@""]){
+        [Utilities popUpAlertViewWithMsg:@"请填写行李重量" andTitle:@"提示" onView:self];
+    }else{
+        [self offerRequst];
+        [_departButton setTitle:@"选择出发地" forState:UIControlStateNormal];
+        [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
+        [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
+        [_arrivaltimeBtn setTitle:@"选择到达日期" forState:UIControlStateNormal];
+        [_selecCabin setTitle:@"选择舱位" forState:UIControlStateNormal];
+        _finalPrice.text=@"";
+        _aviationCompany.text=@"";
         
-            ////具体按钮事件的逻辑可以在这里开始执行
-            [self offerRequst];
-            [_departButton setTitle:@"选择出发地" forState:UIControlStateNormal];
-            [_destinationButton setTitle:@"选择目的地" forState:UIControlStateNormal];
-            [_departuretimeBtn setTitle:@"选择出发日期" forState:UIControlStateNormal];
-            [_arrivaltimeBtn setTitle:@"选择到达日期" forState:UIControlStateNormal];
-            [_selecCabin setTitle:@"选择舱位" forState:UIControlStateNormal];
-            _finalPrice.text=@"";
-            _aviationCompany.text=@"";
-            
-            _flightNo.text=@"";
-            _weight.text=@"";
-            [self selectOfferRequest];
-
-    
-        
-        
-       
-        
-    };
+        _flightNo.text=@"";
+        _weight.text=@"";
+        [self selectOfferRequest];
+}
+//    UITouch *touch=[[event allTouches] anyObject];
+//    //触摸实例在特定坐标系中的位置
+//    CGPoint location=[touch locationInView:_confirmButton];
+//    //创一个视图座位涟漪效果的展示体，以point为中心
+//    UIView *ripple=[[UIView alloc]initWithFrame:CGRectMake(location.x-10, location.y-10, 20, 20)];
+//    ripple.layer.cornerRadius=10;
+//    ripple.backgroundColor=[[UIColor whiteColor]colorWithAlphaComponent:0.2];
+//    [_confirmButton addSubview:ripple];
+//    POPBasicAnimation *rippleSizeAnimation=[POPBasicAnimation animation];
+//    rippleSizeAnimation.property=[POPAnimatableProperty propertyWithName:kPOPLayerSize];
+//    rippleSizeAnimation.duration=0.5;
+//    rippleSizeAnimation.toValue=[NSValue valueWithCGSize:CGSizeMake((_confirmButton.frame.size.width+_confirmButton.frame.size.height)*2, (_confirmButton.frame.size.width+_confirmButton.frame.size.height)*2)];
+//    [ripple pop_addAnimation:rippleSizeAnimation forKey:@"rippleSizeAnimation"];
+//    
+//    POPBasicAnimation *rippleCRAnimation =[POPBasicAnimation animation];
+//    rippleCRAnimation.property=[POPAnimatableProperty propertyWithName:kPOPLayerCornerRadius];
+//    rippleCRAnimation.duration=0.5;
+//    rippleCRAnimation.toValue=@(_confirmButton.frame.size.width+_confirmButton.frame.size.height);
+//    [ripple.layer pop_addAnimation:rippleCRAnimation forKey:@"rippleCRAnimation"];
+//    rippleCRAnimation.completionBlock = ^(POPAnimation *anim, BOOL additive) {
+//        
+//        
+//        
+//
+//    
+//        
+//        
+//       
+//        
+//    };
 
 }
 #pragma mark - Action
@@ -332,21 +354,30 @@
 }
 
 - (IBAction)confirmAction:(UIBarButtonItem *)sender {
-    NSDate *datetemp=[NSDate new];
+    //NSDate *datetemp=[NSDate new];
     if(tags){
-        NSData *pickerDate= _datePicker.date;
-        datetemp=_datePicker.date;
+        NSDate *pickerDate= _datePicker.date;
+        //datetemp=_datePicker.date;
+        _tempTime = [pickerDate timeIntervalSince1970];
+        if (_startTime > _arrTime) {
+            [Utilities popUpAlertViewWithMsg:@"时间有误" andTitle:nil onView:self];
+            return;
+        }
         NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
         [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         NSString *startString =[pickerFormatter stringFromDate:pickerDate];
         [_departuretimeBtn setTitle:startString forState:UIControlStateNormal];
-       
         _datePickView.hidden=YES;
     }
     
     else{
         
-        NSData *pickerDate= _datePicker.date;
+        NSDate *pickerDate= _datePicker.date;
+        _tempTime = [pickerDate timeIntervalSince1970];
+        if (_tempTime < _arrTime) {
+            [Utilities popUpAlertViewWithMsg:@"时间有误" andTitle:nil onView:self];
+            return;
+        }
         NSDateFormatter *pickerFormatter =[[NSDateFormatter alloc ]init];
         [pickerFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         NSString *arrString =[pickerFormatter stringFromDate:pickerDate];
