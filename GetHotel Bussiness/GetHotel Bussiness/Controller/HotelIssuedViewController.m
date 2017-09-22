@@ -23,6 +23,7 @@
 @property (strong, nonatomic) UIActivityIndicatorView *avi;
 @property (strong, nonatomic) NSMutableArray *typeArr;
 @property (strong, nonatomic) NSMutableArray *resetArr;
+@property (strong, nonatomic) UIImageView *NothingImg;
 //@property (strong, nonatomic) FindHotelModel *hotelModel;
 
 
@@ -43,14 +44,32 @@
     _typeArr = [NSMutableArray new];
     _resetArr = [NSMutableArray new];
     
+    if (_arr.count == 0){
+        [self nothingForTableView];
+    }
+    
     [self initializeData];
     [self setRefreshControl];
     
+    
+    
     _hotelTableView.tableFooterView = [UIView new];
+    
+    //[[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(issueRoom:) name:@"issue" object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(issueRoom:) name:@"issue" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(acquireRef) name:@"AlipayResult" object:nil];
+    
     [self naviConfig];
 }
 
+- (void)nothingForTableView{
+    _NothingImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"no_things"]];
+    _NothingImg.frame = CGRectMake((UI_SCREEN_W - 170) / 2, 100 , 200, 200);
+    [_hotelTableView addSubview:_NothingImg];
+    
+}
 
 - (void)issueRoom:(NSNotification *)notification{
     [self initializeData];
@@ -135,20 +154,22 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该条酒店发布吗?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *actionA = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            UIAlertController *alertAA = [UIAlertController alertControllerWithTitle:@"提示" message:@"删除成功!" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self deleteRequest:indexPath];
-                [_arr removeObjectAtIndex:indexPath.row];//删除数据
-                //移除tableView中的数据
-                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+            [self deleteRequest:indexPath];
+            [_arr removeObjectAtIndex:indexPath.row];//删除数据
+            //移除tableView中的数据
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+            //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithArray:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            UIAlertController *alertAA = [UIAlertController alertControllerWithTitle:@"提示" message:@"删除成功!" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
             }];
             
-            [alertAA addAction:actionB];
-            [self presentViewController:alertAA animated:YES completion:nil];
-            
-            
-        }];
+//            [alertAA addAction:actionB];
+//            [self presentViewController:alertAA animated:YES completion:nil];
+//            
+        
+//        }];
         UIAlertAction *actionB = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
         [alert addAction:actionA];
         [alert addAction:actionB];
@@ -206,8 +227,10 @@
     
 }
 - (void)acquireRef{
+    NSLog(@"收到通知");
     pageNum = 1;
     [self request];
+    //[self deleteRequest:indexPath];
 }
 
 - (void)initializeData{
@@ -243,6 +266,12 @@
                 [_typeArr addObject:roomInfoObj];
                 //NSLog(@"typeArr = %@", dict[@"hotel_type"]);
             }
+        
+        if (_arr.count == 0) {
+            _NothingImg.hidden = NO;
+        }else{
+            _NothingImg.hidden = YES;
+        }
             [_hotelTableView reloadData];
             
         //}else {
@@ -260,15 +289,22 @@
         
     }];
 }
+
+
 //删除网络请求
 - (void)deleteRequest:(NSIndexPath *)indexPath {
     FindHotelModel *hotelModel = _arr[indexPath.row];
     NSDictionary *para = @{@"id":@(hotelModel.ID)};
     NSLog(@"id是:%ld",(long)hotelModel.ID);
     [RequestAPI requestURL:@"/deleteHotel" withParameters:para andHeader:nil byMethod:kGet andSerializer:kForm success:^(id responseObject) {
-        NSLog(@"delete responseObject = %@",responseObject);
+        [_avi stopAnimating];
+        //if([responseObject[@"result"] integerValue] == 1){
+            
+            [self request];
+            
         
-        [_hotelTableView reloadData];
+        
+        //[_hotelTableView reloadData];
         
     } failure:^(NSInteger statusCode, NSError *error) {
         [_avi stopAnimating];

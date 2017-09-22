@@ -71,9 +71,9 @@
     [self naviConfig];
     
    
-    
-    
-}
+    }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -326,6 +326,7 @@
         }
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"发布成功!" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"AlipayResult" object:nil];
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
         [alert addAction:action];
