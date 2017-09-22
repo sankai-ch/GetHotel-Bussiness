@@ -16,6 +16,7 @@
     //BOOL hotelLast;
     NSInteger pages;
 }
+- (IBAction)gotoAction:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (strong, nonatomic) NSMutableArray *arr;
 @property (weak, nonatomic) IBOutlet UITableView *hotelTableView;
 - (IBAction)pushAction:(UIButton *)sender forEvent:(UIEvent *)event;
@@ -109,13 +110,13 @@
     }
 
     //将URL中的字符以数组的形式分开存放
+    NSLog(@"typeArr = %@", _typeArr);
+    _resetArr = _typeArr[indexPath.row];
+    //NSLog(@"resetArr= %@",_resetArr);
+    
     if (_resetArr.count == 4){
-        for(NSInteger i = 0; i < _typeArr.count; i++){
-            _resetArr = _typeArr[i];
             cell.hotelDescribeLabel.text = [NSString stringWithFormat:@"%@ %@", _resetArr[2],_resetArr[1]];
-        
             cell.hotelAreaLabel.text = _resetArr[3];
-        }
     }
     NSURL *url = [NSURL URLWithString:hotelModel.hotelImg];
     //cell.hotelImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:findHotel.roomImg]]];
@@ -128,21 +129,6 @@
     
     return cell;
 }
-
-//创建左滑删除按钮
-/*
-- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        
-        //先删数据 再删UI
-        [self deleteRequest];
-        [_arr removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }];
-    return @[deleteAction];
-}
-*/
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView setEditing:NO animated:YES];
@@ -218,10 +204,6 @@
     acquireRef.tag = 10001;
     [_hotelTableView addSubview:acquireRef];
     
-//    UIRefreshControl *deleteRef = [UIRefreshControl new];
-//    [deleteRef addTarget:self action:@selector(deleteRef) forControlEvents:UIControlEventValueChanged];
-//    deleteRef.tag = 10002;
-//    [_hotelTableView addSubview:deleteRef];
 }
 - (void)acquireRef{
     pageNum = 1;
@@ -234,7 +216,7 @@
 }
 
 - (void)request{
-    NSDictionary *para = @{@"business_id" : @2};
+    NSDictionary *para = @{@"business_id" : @1};
     [RequestAPI requestURL:@"/findHotelBySelf" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         
         UIRefreshControl *ref = (UIRefreshControl *)[_hotelTableView viewWithTag:10001];
@@ -242,12 +224,14 @@
         [_avi stopAnimating];
         
         NSLog(@"responseObject = %@", responseObject);
-        if ([responseObject[@"result"] integerValue] == 1) {
+        //if ([responseObject[@"result"] integerValue] == 1) {
             NSArray *arr = responseObject[@"content"];
             
             //NSLog(@"123=%@",arr);
             if (pageNum == 1){
+                
                 [_arr removeAllObjects];
+                [_typeArr removeAllObjects];
             }
             for(NSDictionary *dict in arr ){
                 //用类中FindHotelModel类中定义的初始化方法initWithDict:将遍历得来的字典dict 转换成字典对象
@@ -257,18 +241,21 @@
                 NSString *roomInfoJSONStr = dict[@"hotel_type"];
                 id roomInfoObj = [roomInfoJSONStr JSONCol];
                 [_typeArr addObject:roomInfoObj];
+                //NSLog(@"typeArr = %@", dict[@"hotel_type"]);
             }
             [_hotelTableView reloadData];
             
-        }else {
-            [Utilities popUpAlertViewWithMsg:@"请求发生了错误，请稍后再试" andTitle:@"提示" onView:self];
-        }
-    } failure:^(NSInteger statusCode, NSError *error) {
+        //}else {
+            //[Utilities popUpAlertViewWithMsg:@"请求发生了错误，请稍后再试" andTitle:@"提示" onView:self];
+       // }
+    }
+                   failure:^(NSInteger statusCode, NSError *error) {
         [_avi stopAnimating];
         NSLog(@"错误码:%ld",(long)statusCode);
         UIRefreshControl *ref = (UIRefreshControl *)
         [_hotelTableView viewWithTag:10004];
         [ref endRefreshing];
+        [Utilities popUpAlertViewWithMsg:@"网络错误，请稍后再试！" andTitle:@"提示" onView:self];
         //[Utilities forceLogoutCheck:statusCode fromViewController:self];
         
     }];
@@ -283,10 +270,6 @@
         
         [_hotelTableView reloadData];
         
-//        if ([responseObject[@"result"] integerValue] == 1){
-//            [_hotelTableView reloadData];
-//        }else{
-//        }
     } failure:^(NSInteger statusCode, NSError *error) {
         [_avi stopAnimating];
         NSLog(@"删除error:%ld",(long)statusCode);
@@ -313,4 +296,5 @@
     //[self.navigationController pushViewController:nc animated:YES];
     //[self.navigationController pushViewController:nc animated:YES];
 }
+
 @end

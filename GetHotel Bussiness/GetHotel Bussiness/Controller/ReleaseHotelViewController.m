@@ -11,10 +11,12 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "addHotelModel.h"
+#import "HotelIssuedViewController.h"
 @interface ReleaseHotelViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate>{
-    
+    NSInteger switchA;
     UIImagePickerController *imagePickerController;
 }
+- (IBAction)switch:(UISwitch *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIButton *chooseHotelBtn;
 - (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickView;
@@ -58,6 +60,7 @@
 
     //_hotelNamePickerArr = model.hotelName;
     
+    switchA = 1;
     
     imagePickerController = [[UIImagePickerController alloc] init];
     imagePickerController.delegate = self;
@@ -114,13 +117,8 @@
     }else if(_roomPriceLabel.text.length >= 5){
         [Utilities popUpAlertViewWithMsg:@"房间价格不合理，请重新填写价格" andTitle:@"提示" onView:self];
     }else{
+        
         [self issueRequest];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"发布成功" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }];
-        [alert addAction:action];
-        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 
@@ -316,16 +314,29 @@
     NSInteger row = [_pickView selectedRowInComponent:0];
     NSString *title= _hotelNamePickerArr[row];
     [_chooseHotelBtn setTitle:title forState:UIControlStateNormal];
+    
     _imgUrl = @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505461689&di=9c9704fab9db8eccb77e1e1360fdbef4&imgtype=jpg&er=1&src=http%3A%2F%2Fimg3.redocn.com%2Ftupian%2F20150312%2Fhaixinghezhenzhubeikeshiliangbeijing_3937174.jpg";
-    NSDictionary *para = @{@"business_id":@2,@"hotel_name":title ,@"hotel_type":_roomAreaLabel.text,@"room_imgs":_imgUrl,@"price":_roomPriceLabel.text};
+    
+   
+    NSDictionary *para = @{@"business_id":@1,@"hotel_name":title ,@"hotel_type":[NSString stringWithFormat:@"%@,%@,%@,%@",_bedTypeLabel.text,_breakfastLabel.text,_roomNameLabel.text,_roomAreaLabel.text],@"room_imgs":_imgUrl,@"price":_roomPriceLabel.text};
     
     [RequestAPI requestURL:@"/addHotel" withParameters:para andHeader:nil byMethod:kPost andSerializer:kForm success:^(id responseObject) {
         if ([responseObject[@"result"]integerValue] == 1){
             NSLog(@"issue:%@",responseObject[@"result"]);
         }
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"发布成功!" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+        [alert addAction:action];
+        [self presentViewController:alert animated:YES completion:nil];
+       
         
     } failure:^(NSInteger statusCode, NSError *error) {
+        [_avi stopAnimating];
         NSLog(@"%ld",(long)statusCode);
+        NSLog(@"%@",error);
+        [Utilities popUpAlertViewWithMsg:@"发布失败" andTitle:@"提示" onView:self];
     }];
 }
 
@@ -358,60 +369,8 @@
 }
 
 
-//#pragma mark - reg & unreg notification
-//
-//- (void)regNotification
-//
-//{
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-//    
-//}
-//
-//- (void)unregNotification
-//
-//{
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-//    
-//}
-//
-//#pragma mark - notification handler
-//
-//- (void)keyboardWillChangeFrame:(NSNotification *)notification
-//
-//{
-//    
-//    NSDictionary *info = [notification userInfo];
-//    
-//    CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-//    
-//    CGRect beginKeyboardRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-//    
-//    CGRect endKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//    
-//    CGFloat yOffset = endKeyboardRect.origin.y - beginKeyboardRect.origin.y;
-//    
-//    CGRect roomAreaRect = self.roomAreaLabel.frame;
-//    
-//    CGRect roomPriceRect = self.roomPriceLabel.frame;
-//    
-//    roomAreaRect.origin.y += yOffset;
-//    
-//    roomPriceRect.origin.y += yOffset;
-//    
-//    [UIView animateWithDuration:duration animations:^{
-//        
-//        self.roomAreaLabel.frame = roomAreaRect;
-//        
-//        self.roomPriceLabel.frame = roomPriceRect;
-//        
-//    }];
-//    
-//}
-
-
 - (IBAction)chooseHotelAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    [_chooseHotelBtn setTitle:@"请选择酒店▼" forState:UIControlStateNormal];
     _toolBar.hidden = NO;
     _pickView.hidden = NO;
     _grayView.hidden = NO;
@@ -457,5 +416,14 @@
 //设置每列的宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
     return _pickView.frame.size.width/2.3;
+}
+- (IBAction)switch:(UISwitch *)sender forEvent:(UIEvent *)event {
+    if (switchA%2 == 0){
+        _breakfastLabel.text = @"不含早";
+    }else{
+        _breakfastLabel.text = @"含早";
+    }
+    switchA ++;
+    
 }
 @end

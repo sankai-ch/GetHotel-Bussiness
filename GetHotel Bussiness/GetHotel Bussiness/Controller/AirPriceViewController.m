@@ -205,7 +205,7 @@
         [_offeredList reloadData];
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"%ld",(long)statusCode);
-        
+        [Utilities popUpAlertViewWithMsg:@"网络错误，请稍后再试！" andTitle:@"提示" onView:self];
     }];
 }
 #pragma mark -tableview

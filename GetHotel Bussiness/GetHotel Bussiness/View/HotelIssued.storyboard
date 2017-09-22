@@ -37,6 +37,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
+                                            <action selector="pushAction:forEvent:" destination="8vG-Ks-UAf" eventType="touchUpInside" id="C1f-Tu-fDx"/>
                                             <segue destination="Gud-q5-rhE" kind="presentation" id="KLt-cF-QSX"/>
                                         </connections>
                                     </button>
@@ -118,8 +119,8 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="平米" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EnN-yS-lxI">
-                                                    <rect key="frame" x="214.5" y="86" width="29" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="㎡" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EnN-yS-lxI">
+                                                    <rect key="frame" x="214.5" y="86" width="14.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -193,7 +194,7 @@
         <!--酒店发布-->
         <scene sceneID="qRD-AM-mm4">
             <objects>
-                <viewController title="酒店发布" hidesBottomBarWhenPushed="YES" id="sXG-6l-sUw" customClass="ReleaseHotelViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ReleaseHotel" title="酒店发布" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sXG-6l-sUw" customClass="ReleaseHotelViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="guy-8l-9qw"/>
                         <viewControllerLayoutGuide type="bottom" id="VO3-Ro-5S1"/>
@@ -215,7 +216,7 @@
                                     <constraint firstAttribute="height" constant="35" id="zrx-vy-ZBk"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <state key="normal" title="请选择酒店"/>
+                                <state key="normal" title="请选择酒店▲ "/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                         <integer key="value" value="1"/>
@@ -236,7 +237,7 @@
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写房间名称" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8PE-OU-S0t">
                                 <rect key="frame" x="40" y="225" width="295" height="21"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -254,12 +255,18 @@
                                     <constraint firstAttribute="height" constant="90" id="ltO-Uy-iXQ"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="是否含早" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2dX-6L-RXE">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="是否含早" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2dX-6L-RXE">
                                 <rect key="frame" x="40" y="388" width="295" height="21"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="eQu-wT-Qe9">
+                                <rect key="frame" x="286" y="387" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switch:forEvent:" destination="sXG-6l-sUw" eventType="valueChanged" id="q2l-1m-quD"/>
+                                </connections>
+                            </switch>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uSQ-n0-Zkk">
                                 <rect key="frame" x="40" y="417" width="295" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -269,7 +276,7 @@
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写床型" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ftx-9W-k6f">
                                 <rect key="frame" x="40" y="455" width="295" height="21"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -282,7 +289,7 @@
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写房间面积" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aeb-X2-jZp">
                                 <rect key="frame" x="40" y="517" width="295" height="21"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
@@ -295,7 +302,7 @@
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写价格" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JZ0-j4-MUR">
                                 <rect key="frame" x="40" y="579" width="295" height="21"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
@@ -308,7 +315,7 @@
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="填写周末节假日加价" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Um-0s-b5T">
                                 <rect key="frame" x="40" y="641" width="295" height="21"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -356,6 +363,7 @@
                             <constraint firstItem="FSM-44-R1J" firstAttribute="top" secondItem="aVN-rV-WkB" secondAttribute="bottom" constant="20" id="3Xy-da-zAz"/>
                             <constraint firstItem="dqg-4F-Hbo" firstAttribute="top" secondItem="5Um-0s-b5T" secondAttribute="bottom" constant="8" id="5fo-NR-qub"/>
                             <constraint firstItem="D3X-uD-Mhc" firstAttribute="top" secondItem="8PE-OU-S0t" secondAttribute="bottom" constant="6" id="5vC-b3-P0P"/>
+                            <constraint firstItem="FEo-GK-F1t" firstAttribute="top" secondItem="BJw-KI-XhE" secondAttribute="bottom" id="7ZT-KQ-ulv"/>
                             <constraint firstItem="tRe-mw-rew" firstAttribute="leading" secondItem="aeb-X2-jZp" secondAttribute="leading" id="7ue-YB-v7h"/>
                             <constraint firstItem="Ftx-9W-k6f" firstAttribute="trailing" secondItem="2dX-6L-RXE" secondAttribute="trailing" id="7va-q0-f9H"/>
                             <constraint firstItem="tRe-mw-rew" firstAttribute="top" secondItem="aeb-X2-jZp" secondAttribute="bottom" constant="8" id="8mF-4s-TTU"/>
@@ -368,7 +376,6 @@
                             <constraint firstItem="dqg-4F-Hbo" firstAttribute="leading" secondItem="5Um-0s-b5T" secondAttribute="leading" id="J0M-tZ-zvR"/>
                             <constraint firstItem="aVN-rV-WkB" firstAttribute="centerX" secondItem="PT6-jI-fir" secondAttribute="centerX" id="K6U-aX-JJD"/>
                             <constraint firstAttribute="bottom" secondItem="fBf-IM-g7G" secondAttribute="bottom" id="Kuv-T0-pq0"/>
-                            <constraint firstItem="FEo-GK-F1t" firstAttribute="top" secondItem="BJw-KI-XhE" secondAttribute="bottom" id="M2k-hc-eYo"/>
                             <constraint firstItem="fBf-IM-g7G" firstAttribute="leading" secondItem="PT6-jI-fir" secondAttribute="leading" id="M51-xb-1fC"/>
                             <constraint firstItem="FSM-44-R1J" firstAttribute="leading" secondItem="Syr-jj-CUC" secondAttribute="leading" id="MKU-Rv-udd"/>
                             <constraint firstItem="xYd-xi-gKr" firstAttribute="trailing" secondItem="JZ0-j4-MUR" secondAttribute="trailing" id="OaF-Kw-HVZ"/>
@@ -387,12 +394,14 @@
                             <constraint firstItem="MO4-qM-J8e" firstAttribute="top" secondItem="D3X-uD-Mhc" secondAttribute="bottom" constant="25" id="evP-Oe-xww"/>
                             <constraint firstItem="S2a-sI-goj" firstAttribute="top" secondItem="Ftx-9W-k6f" secondAttribute="bottom" constant="8" id="fIB-Vs-VJZ"/>
                             <constraint firstItem="Syr-jj-CUC" firstAttribute="top" secondItem="guy-8l-9qw" secondAttribute="bottom" constant="20" id="fvP-0F-GMu"/>
+                            <constraint firstItem="eQu-wT-Qe9" firstAttribute="bottom" secondItem="uSQ-n0-Zkk" secondAttribute="bottom" id="gbV-Jg-oQg"/>
                             <constraint firstItem="tRe-mw-rew" firstAttribute="trailing" secondItem="aeb-X2-jZp" secondAttribute="trailing" id="gup-dH-pz4"/>
                             <constraint firstItem="BJw-KI-XhE" firstAttribute="leading" secondItem="PT6-jI-fir" secondAttribute="leading" id="gwi-fG-b9i"/>
                             <constraint firstAttribute="trailing" secondItem="D3X-uD-Mhc" secondAttribute="trailing" constant="40" id="hyk-Wl-vNt"/>
                             <constraint firstItem="uSQ-n0-Zkk" firstAttribute="trailing" secondItem="2dX-6L-RXE" secondAttribute="trailing" id="icx-Lb-rAd"/>
                             <constraint firstItem="Ftx-9W-k6f" firstAttribute="leading" secondItem="2dX-6L-RXE" secondAttribute="leading" id="lTM-P2-ZBJ"/>
                             <constraint firstItem="xYd-xi-gKr" firstAttribute="top" secondItem="JZ0-j4-MUR" secondAttribute="bottom" constant="8" id="lqO-Rl-WRr"/>
+                            <constraint firstItem="eQu-wT-Qe9" firstAttribute="trailing" secondItem="uSQ-n0-Zkk" secondAttribute="trailing" id="mcJ-jz-ar0"/>
                             <constraint firstAttribute="trailing" secondItem="FEo-GK-F1t" secondAttribute="trailing" id="mlS-hu-hbb"/>
                             <constraint firstItem="uSQ-n0-Zkk" firstAttribute="leading" secondItem="2dX-6L-RXE" secondAttribute="leading" id="msv-YT-UMu"/>
                             <constraint firstItem="2dX-6L-RXE" firstAttribute="top" secondItem="MO4-qM-J8e" secondAttribute="bottom" constant="20" id="nad-7f-fZw"/>
@@ -427,7 +436,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ev4-38-B51" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3476" y="-94.002998500749626"/>
+            <point key="canvasLocation" x="3149.5999999999999" y="-94.002998500749626"/>
         </scene>
         <!--酒店发布-->
         <scene sceneID="jhx-VA-9t8">
@@ -466,7 +475,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GCw-iu-OYD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2536.8000000000002" y="-94.002998500749626"/>
+            <point key="canvasLocation" x="2318" y="-94"/>
         </scene>
     </scenes>
     <resources>
